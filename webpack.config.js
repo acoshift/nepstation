@@ -76,7 +76,7 @@ module.exports = {
     new CommonsChunkPlugin({ name: 'angular2', filename: 'angular2.js', minChunks: Infinity }),
     new CommonsChunkPlugin({ name: 'common',   filename: 'common.js' }),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({ minimize: true, comments: false }),
+    //new webpack.optimize.UglifyJsPlugin({ minimize: true, comments: false }),
   ]
 };
 
