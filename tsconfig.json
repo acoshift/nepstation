@@ -20,12 +20,9 @@
     "buildOnSave": false,
     "files": [
         "bootstrap.ts",
-        "components/sale/customer/customer.ts",
-        "typings/angularjs/angular.d.ts",
-        "typings/jquery/jquery.d.ts",
-        "typings/tsd.d.ts"
+        "components/sale/customer/customer.ts"
     ],
     "atom": {
-        "rewriteTsconfig": true
+        "rewriteTsconfig": false
     }
 }
