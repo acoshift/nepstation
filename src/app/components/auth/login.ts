@@ -8,18 +8,18 @@ import {
   Router
 } from 'angular2/router';
 
-@Component({
-  selector: 'login',
-})
+import {
+  AuthService
+} from '../../services';
+
+@Component({ })
 @View({
   directives: [FORM_DIRECTIVES],
   template: require('./login.html'),
 })
-export default class LoginComponent {
-  constructor(private router: Router) {
-    if (localStorage.getItem('token')) {
-      router.navigate(['/Home']);
-    }
+export class LoginComponent {
+  constructor(private router: Router, private auth: AuthService) {
+    if (!auth.check()) return;
   }
 
   private form = {
@@ -29,10 +29,6 @@ export default class LoginComponent {
   }
 
   login() {
-    console.log(this.form);
-    // TODO: save token to localstorage
-    localStorage.setItem('token', 'test-token');
-    console.log(localStorage.getItem('token'));
-    this.router.navigate(['/Home']);
+    this.auth.login(this.form.user, this.form.pwd);
   }
 }

@@ -8,6 +8,10 @@ import {
   Router
 } from 'angular2/router';
 
+import {
+  AuthService
+} from '../services';
+
 @Component({
 
 })
@@ -16,12 +20,11 @@ import {
   template: '<button (click)="logout()">Logout</button>'
   //template: require('./home.html'),
 })
-export default class HomeComponent {
-  constructor(private router: Router) {
-    console.log('home');
+export class HomeComponent {
+  constructor(private router: Router, private auth: AuthService) {
   }
 
   logout() {
-    this.router.navigate(['/Auth.Logout'])
+    this.auth.logout();
   }
 }

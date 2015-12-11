@@ -10,8 +10,6 @@ import {Http, Headers} from 'angular2/http';
  */
 import {ROUTER_DIRECTIVES} from 'angular2/router';
 
-import LoginForm from './components/auth/login/login';
-
 /*
  * Directive
  * XLarge is a simple directive to show how one is made
@@ -41,7 +39,7 @@ export class XLarge {
   selector: 'app', // <app></app>
   // We need to tell Angular's compiler which directives are in our template.
   // Doing so will allow Angular to attach our behavior to an element
-  directives: [ ROUTER_DIRECTIVES, XLarge, LoginForm ],
+  directives: [ ROUTER_DIRECTIVES, XLarge ],
   // Our list of styles in our component. We may add more to compose many styles together
   styles: [`
     .title {

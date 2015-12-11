@@ -13,9 +13,13 @@
     "src/app/app.spec.ts",
     "src/app/app.ts",
     "src/app/bootstrap.ts",
+    "src/app/services.ts",
+    "src/app/components.ts",
     "src/app/components/home.ts",
     "src/app/components/auth/login.ts",
-    "src/app/components/auth/logout.ts"
+    "src/app/components/auth/logout.ts",
+    "src/app/services/auth.ts",
+    "src/app/services/db.ts"
   ],
   "atom": {
     "rewriteTsconfig": false
