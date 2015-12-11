@@ -1,29 +1,21 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "declaration": false,
-        "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true
-    },
-    "filesGlob": [
-        "**/*.ts",
-        "**/*.tsx",
-        "!node_modules/**"
-    ],
-    "compileOnSave": false,
-    "buildOnSave": false,
-    "files": [
-        "bootstrap.ts",
-        "components/sale/customer/customer.ts",
-        "typings/tsd.d.ts"
-    ],
-    "atom": {
-        "rewriteTsconfig": false
-    }
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "commonjs",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true
+  },
+  "buildOnSave": false,
+  "compileOnSave": false,
+  "files": [
+    "src/app/app.spec.ts",
+    "src/app/app.ts",
+    "src/app/bootstrap.ts",
+    "src/app/components/auth/login/login.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
 }
