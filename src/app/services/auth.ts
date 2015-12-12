@@ -1,6 +1,7 @@
 import {
   Component,
   Inject,
+  Injectable,
 } from 'angular2/angular2';
 
 import {
@@ -15,26 +16,38 @@ export interface LoginData {
   remember: boolean;
 }
 
-@Component({})
+@Injectable()
 export class AuthService {
   constructor(@Inject(Router) private router: Router,
               @Inject(DbService) private db: DbService) { }
 
   public check() {
-    if (!localStorage.getItem('token'))
+    if (!localStorage.getItem('token')) {
       this.router.navigate(['/Auth.Login']);
-    else
-      this.router.navigate(['/Home']);
+      return false;
+    }
+    return true;
   }
 
   login(loginData: LoginData) {
-    localStorage.setItem('token', 'test-token');
-    this.router.navigate(['/Home']);
-    // return this.db.request('auth', 'login', {user: user, pwd: pwd}, '{token}');
+    this.db.request('auth', 'login', loginData, 'token')
+      .subscribe(
+        r => localStorage.setItem('token', r.token),
+        (err) => this.loginFailed(err),
+        () => this.loginCompleted());
   }
 
   logout() {
+    this.db.request('auth', 'logout', null, null);
     localStorage.removeItem('token');
     this.router.navigate(['/Auth.Login']);
+  }
+
+  private loginFailed(err) {
+    console.log('login failed!');
+  }
+
+  private loginCompleted() {
+    this.router.navigate(['/Home']);
   }
 }

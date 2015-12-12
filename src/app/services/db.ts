@@ -1,5 +1,5 @@
 import {
-  Component,
+  Injectable,
   Inject,
 } from 'angular2/angular2';
 
@@ -10,27 +10,33 @@ import {
   Headers,
 } from 'angular2/http';
 
-@Component({})
+@Injectable()
 export class DbService {
   constructor(@Inject(Http) private http: Http) { }
 
   request(method: string, ns: string, param: any, retrieve: string) {
+    let headers = new Headers({
+      'Accept': 'application/json',
+      'Content-Type': 'application/nepq'
+    });
+    let token = localStorage.getItem('token');
+    if (token) headers.append('Authorization', token);
+    console.log(headers);
+
     return this.http.request(new Request({
       method: RequestMethod.Post,
       url: 'http://test.farkpage.com',
       body: this.makeRequest(method, 'test', ns, param, retrieve),
-      headers: new Headers({
-        'accept': 'application/json',
-        'content-type': 'application/nepq',
-        'token': localStorage.getItem('token')
-      })
-    }));
+      headers: headers
+    })).map(x => x.json());
   }
 
   private makeRequest(method: string, namespace: string, name: string, param: any, retrieve: string) {
     let ns = namespace && namespace !== '' ? `${namespace}.${name}` : name;
     let p = param ? `(${JSON.stringify(param)})` : '';
     let ret = retrieve ? `{${retrieve}}` : '';
-    return `${method} ${ns}${p}${ret}`;
+    let r = `${method} ${ns}${p}${ret}`;
+    console.log('make request: ' + r);
+    return r;
   }
 }
