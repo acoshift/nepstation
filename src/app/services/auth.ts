@@ -14,13 +14,19 @@ import { DbService } from './db';
 export class AuthService {
   constructor(@Inject(Router) private router: Router,
               @Inject(DbService) private db: DbService) {
-    this.token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    let token = this.token();
+    if (localStorage.getItem('token')) this.remember = true;
+    if (token) this.refresh();
   }
 
-  private token: string;
+  private remember = false;
+
+  private token() {
+    return sessionStorage.getItem('token') || localStorage.getItem('token');
+  }
 
   public check() {
-    if (!this.token) {
+    if (!this.token()) {
       this.router.navigate(['/Auth.Login']);
       return false;
     }
@@ -28,9 +34,10 @@ export class AuthService {
   }
 
   login(user: string, pwd: string, remember: boolean) {
+    this.remember = remember;
     this.db.request('auth', 'login', { user: user, pwd: pwd }, 'token')
       .subscribe(
-        r => this.setToken(r.token, remember),
+        r => this.setToken(r.token),
         (err) => this.loginFailed(err),
         () => this.loginCompleted());
   }
@@ -41,9 +48,13 @@ export class AuthService {
     this.router.navigate(['/Auth.Login']);
   }
 
-  private setToken(token: string, remember: boolean) {
-    this.token = token;
-    if (remember) localStorage.setItem('token', token);
+  refresh() {
+    this.db.request('auth', 'refresh', null, 'token')
+      .subscribe(r => this.setToken(r.token));
+  }
+
+  private setToken(token: string) {
+    if (this.remember) localStorage.setItem('token', token);
     else sessionStorage.setItem('token', token);
   }
 

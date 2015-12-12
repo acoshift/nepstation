@@ -19,8 +19,8 @@ export class DbService {
       'Accept': 'application/json',
       'Content-Type': 'application/nepq'
     });
-    let token = localStorage.getItem('token');
-    if (token) headers.append('Authorization', token);
+    let token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (token) headers.append('Authorization', 'Bearer ' + token);
 
     return this.http.request(new Request({
       method: RequestMethod.Post,
@@ -31,10 +31,10 @@ export class DbService {
   }
 
   private makeNepQ(method: string, namespace: string, name: string, param: any, retrieve: string) {
-    let ns = namespace && namespace !== '' ? `${namespace}.${name}` : name;
+    let ns = namespace && namespace !== '' ? ` ${namespace}.${name}` : ` ${name}`;
     let p = param ? `(${JSON.stringify(param)})` : '';
     let ret = retrieve ? `{${retrieve}}` : '';
-    let r = `${method} ${ns}${p}${ret}`;
+    let r = `${method}${ns}${p}${ret}`;
     console.log('make request: ' + r);
     return r;
   }
