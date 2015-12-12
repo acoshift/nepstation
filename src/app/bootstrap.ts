@@ -4,6 +4,7 @@ import {
   provide,
   FORM_PROVIDERS,
   ELEMENT_PROBE_PROVIDERS,
+  Inject,
 } from 'angular2/angular2';
 
 import {
@@ -36,7 +37,8 @@ import {
 })
 @RouteConfig(AppRoutes)
 class App {
-  constructor(private router: Router, private auth: AuthService) {
+  constructor(@Inject(Router) private router: Router,
+              @Inject(AuthService) private auth: AuthService) {
     if (!auth.check()) return;
   }
 }

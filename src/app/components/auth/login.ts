@@ -2,6 +2,7 @@ import {
   Component,
   View,
   FORM_DIRECTIVES,
+  Inject,
 } from 'angular2/angular2';
 
 import {
@@ -18,7 +19,8 @@ import {
   template: require('./login.html'),
 })
 export class LoginComponent {
-  constructor(private router: Router, private auth: AuthService) {
+  constructor(@Inject(Router) private router: Router,
+              @Inject(AuthService) private auth: AuthService) {
     if (!auth.check()) return;
   }
 
@@ -29,6 +31,6 @@ export class LoginComponent {
   }
 
   login() {
-    this.auth.login(this.form.user, this.form.pwd);
+    this.auth.login(this.form);
   }
 }

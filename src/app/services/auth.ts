@@ -1,5 +1,6 @@
 import {
   Component,
+  Inject,
 } from 'angular2/angular2';
 
 import {
@@ -8,9 +9,16 @@ import {
 
 import { DbService } from './db';
 
+export interface LoginData {
+  user: string;
+  pwd: string;
+  remember: boolean;
+}
+
 @Component({})
 export class AuthService {
-  constructor(private db: DbService, private router: Router) { }
+  constructor(@Inject(Router) private router: Router,
+              @Inject(DbService) private db: DbService) { }
 
   public check() {
     if (!localStorage.getItem('token'))
@@ -19,7 +27,7 @@ export class AuthService {
       this.router.navigate(['/Home']);
   }
 
-  login(user: string, pwd: string) {
+  login(loginData: LoginData) {
     localStorage.setItem('token', 'test-token');
     this.router.navigate(['/Home']);
     // return this.db.request('auth', 'login', {user: user, pwd: pwd}, '{token}');
