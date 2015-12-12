@@ -21,7 +21,6 @@ export class DbService {
     });
     let token = localStorage.getItem('token');
     if (token) headers.append('Authorization', token);
-    console.log(headers);
 
     return this.http.request(new Request({
       method: RequestMethod.Post,
