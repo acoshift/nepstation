@@ -10,37 +10,41 @@ import {
 
 import { DbService } from './db';
 
-export interface LoginData {
-  user: string;
-  pwd: string;
-  remember: boolean;
-}
-
 @Injectable()
 export class AuthService {
   constructor(@Inject(Router) private router: Router,
-              @Inject(DbService) private db: DbService) { }
+              @Inject(DbService) private db: DbService) {
+    this.token = sessionStorage.getItem('token') || localStorage.getItem('token');
+  }
+
+  private token: string;
 
   public check() {
-    if (!localStorage.getItem('token')) {
+    if (!this.token) {
       this.router.navigate(['/Auth.Login']);
       return false;
     }
     return true;
   }
 
-  login(loginData: LoginData) {
-    this.db.request('auth', 'login', loginData, 'token')
+  login(user: string, pwd: string, remember: boolean) {
+    this.db.request('auth', 'login', { user: user, pwd: pwd }, 'token')
       .subscribe(
-        r => localStorage.setItem('token', r.token),
+        r => this.setToken(r.token, remember),
         (err) => this.loginFailed(err),
         () => this.loginCompleted());
   }
 
   logout() {
-    this.db.request('auth', 'logout', null, null);
+    sessionStorage.removeItem('token');
     localStorage.removeItem('token');
     this.router.navigate(['/Auth.Login']);
+  }
+
+  private setToken(token: string, remember: boolean) {
+    this.token = token;
+    if (remember) localStorage.setItem('token', token);
+    else sessionStorage.setItem('token', token);
   }
 
   private loginFailed(err) {

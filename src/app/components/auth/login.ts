@@ -31,6 +31,7 @@ export class LoginComponent {
   }
 
   login() {
-    this.auth.login(this.form);
+    let { user, pwd, remember } = this.form;
+    this.auth.login(user, pwd, remember);
   }
 }
