@@ -25,12 +25,12 @@ export class DbService {
     return this.http.request(new Request({
       method: RequestMethod.Post,
       url: 'http://test.farkpage.com',
-      body: this.makeRequest(method, 'test', ns, param, retrieve),
+      body: this.makeNepQ(method, 'test', ns, param, retrieve),
       headers: headers
     })).map(x => x.json());
   }
 
-  private makeRequest(method: string, namespace: string, name: string, param: any, retrieve: string) {
+  private makeNepQ(method: string, namespace: string, name: string, param: any, retrieve: string) {
     let ns = namespace && namespace !== '' ? `${namespace}.${name}` : name;
     let p = param ? `(${JSON.stringify(param)})` : '';
     let ret = retrieve ? `{${retrieve}}` : '';
