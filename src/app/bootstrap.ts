@@ -22,7 +22,9 @@ import {
 } from 'angular2/http';
 
 import {
-  AppRoutes
+  AppRoutes,
+  HeaderComponent,
+  FooterComponent,
 } from './components';
 
 import {
@@ -32,8 +34,12 @@ import {
 
 @Component({
   selector: 'app',
-  template: `<router-outlet></router-outlet>`,
-  directives: [ ROUTER_DIRECTIVES ],
+  template: `<header></header><router-outlet></router-outlet><footer></footer>`,
+  directives: [
+    ROUTER_DIRECTIVES,
+    HeaderComponent,
+    FooterComponent,
+  ],
 })
 @RouteConfig(AppRoutes)
 class App {
