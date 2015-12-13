@@ -16,8 +16,7 @@ import {
 })
 @View({
   directives: [],
-  template: '<button (click)="logout()">Logout</button>'
-  //template: require('./home.html'),
+  template: require('./home.html'),
 })
 export class HomeComponent {
   constructor(private router: Router,

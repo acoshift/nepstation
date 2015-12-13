@@ -1,8 +1,20 @@
-<div class="form-group" [ngFormModel]="form">
-  <input [ngFormControl]="form.controls['user']" type="text" placeholder="Username">
-  <input [ngFormControl]="form.controls['pwd']" type="password" placeholder="Password">
+<div class="container">
+<div class="row">
+<div class="col-md-4 col-md-offset-4">
+<div [ngFormModel]="form">
+  <div class="form-group">
+    <input [ngFormControl]="form.controls['user']" type="text" class="form-control" placeholder="Username">
+  </div>
+  <div class="form-group">
+  <input [ngFormControl]="form.controls['pwd']" type="password" class="form-control" placeholder="Password">
+  </div>
+  <div class="checkbox">
   <label>
-    <input [ngFormControl]="form.controls['remember']" type="checkbox"> Remember me
+    <input [ngFormControl]="form.controls['remember']" type="checkbox"> Remember Me
   </label>
-  <button class="btn btn-primary" type="submit" (click)="login()">Log in</button>
+  </div>
+  <button class="btn btn-primary btn-block" type="submit" (click)="login()">Log in</button>
+</div>
+</div>
+</div>
 </div>
