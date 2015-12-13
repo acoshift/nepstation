@@ -33,9 +33,11 @@
     "angular2": "^2.0.0-alpha.53",
     "bootstrap": "^4.0.0-alpha.2",
     "core-js": "^1.2.6",
+    "jquery": "^2.1.4",
     "ng2-bootstrap": "^0.48.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-alpha.14",
+    "tether": "^1.1.1",
     "zone.js": "0.5.8"
   },
   "devDependencies": {

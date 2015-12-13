@@ -1,10 +1,13 @@
+/* Webpack require */
+require('tether/dist/css/tether.min.css');
 require('bootstrap/dist/css/bootstrap.min.css');
-//require('script!bootstrap/dist/js/bootstrap.min.js');
+require('script!jquery/dist/jquery.min.js');
+require('script!tether/dist/js/tether.min.js');
+require('script!bootstrap/dist/js/bootstrap.min.js');
 
 import {
   Component,
   provide,
-  Inject,
 } from 'angular2/core';
 
 import {
@@ -55,8 +58,8 @@ import {
 })
 @RouteConfig(AppRoutes)
 class App {
-  constructor(@Inject(Router) private router: Router,
-              @Inject(AuthService) private auth: AuthService) {
+  constructor(private router: Router,
+              private auth: AuthService) {
     if (!auth.check()) return;
   }
 }
