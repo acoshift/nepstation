@@ -1,8 +1,8 @@
-<div [ngFormModel]="form">
+<div class="form-group" [ngFormModel]="form">
   <input [ngFormControl]="form.controls['user']" type="text" placeholder="Username">
   <input [ngFormControl]="form.controls['pwd']" type="password" placeholder="Password">
   <label>
     <input [ngFormControl]="form.controls['remember']" type="checkbox"> Remember me
   </label>
-  <button type="submit" (click)="login()">Log in</button>
+  <button class="btn btn-primary" type="submit" (click)="login()">Log in</button>
 </div>

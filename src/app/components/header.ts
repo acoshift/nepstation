@@ -1,8 +1,7 @@
 import {
   Component,
   View,
-  Inject,
-} from 'angular2/angular2';
+} from 'angular2/core';
 
 import {
   Router,
@@ -17,7 +16,7 @@ import {
   template: '',
 })
 export class HeaderComponent {
-  constructor(@Inject(Router) private router: Router) { }
+  constructor(private router: Router) { }
 
   logout() {
     // this.auth.logout();

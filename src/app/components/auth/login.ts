@@ -1,30 +1,26 @@
 import {
   Component,
   View,
+} from 'angular2/core';
+
+import {
   FORM_DIRECTIVES,
-  CORE_DIRECTIVES,
-  Inject,
   ControlGroup,
   FormBuilder,
   Validators,
-} from 'angular2/angular2';
+} from 'angular2/common';
 
 import {
   Router
 } from 'angular2/router';
 
-/*
-import {
-  Alert,
-} from 'ng2-bootstrap';
-*/
 import {
   AuthService
 } from '../../services';
 
-@Component({ })
+@Component({})
 @View({
-  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
+  directives: [FORM_DIRECTIVES],
   template: require('./login.html'),
 })
 export class LoginComponent {
@@ -33,12 +29,15 @@ export class LoginComponent {
   constructor(private router: Router,
               private auth: AuthService,
               fb: FormBuilder) {
-    //if (!auth.check()) return;
     this.form = fb.group({
       user: ['', Validators.required],
       pwd: ['', Validators.required],
       remember: [false]
     });
+    if (auth.isLoggedIn()) {
+      router.navigate(['Home']);
+      return;
+    }
   }
 
   login() {

@@ -1,11 +1,23 @@
+require('bootstrap/dist/css/bootstrap.min.css');
+//require('script!bootstrap/dist/js/bootstrap.min.js');
+
 import {
-  bootstrap,
   Component,
   provide,
-  FORM_PROVIDERS,
-  ELEMENT_PROBE_PROVIDERS,
   Inject,
-} from 'angular2/angular2';
+} from 'angular2/core';
+
+import {
+  bootstrap,
+} from 'angular2/bootstrap';
+
+import {
+  FORM_PROVIDERS,
+} from 'angular2/common';
+
+import {
+  ELEMENT_PROBE_PROVIDERS,
+} from 'angular2/platform/browser';
 
 import {
   RouteConfig,

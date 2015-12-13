@@ -1,8 +1,3 @@
-// @AngularClass
-
-/*
- * Helper: root(), and rootDir() are defined at the bottom
- */
 var sliceArgs = Function.prototype.call.bind(Array.prototype.slice);
 var toString  = Function.prototype.call.bind(Object.prototype.toString);
 var path = require('path');
@@ -31,7 +26,8 @@ module.exports = {
       'rxjs',
       'zone.js',
       'reflect-metadata',
-      'angular2/angular2',
+      'angular2/bootstrap',
+      'angular2/common',
       'angular2/core',
       'angular2/router',
       'angular2/http',
@@ -55,18 +51,24 @@ module.exports = {
       // Support for *.json files.
       { test: /\.json$/,  loader: 'json' },
 
-      // Support for CSS as raw text
-      { test: /\.css$/,   loader: 'raw' },
+      // CSS
+      { test: /\.css$/,   loader: 'style!css' },
 
-      // Support for .html as raw text
+      // html as raw text
       { test: /\.html$/,  loader: 'raw' },
+
+      // Fonts
+      { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9\.\=]+)?$/, loader: 'file?name=./fonts/[hash].[ext]' },
+
+      // Images
+      { test: /\.(jpe?g|png|gif)$/i, loader: 'file?name=./img/[hash].[ext]' },
 
       // Support for .ts files.
       {
         test: /\.ts$/,
         loader: 'ts',
         query: { 'ignoreDiagnostics': [ 2403 ] }, // 2403 -> Subsequent variable declarations
-        exclude: [ /\.spec\.ts$/, /\.e2e\.ts$/, /node_modules/ ]
+        exclude: [ /\.spec\.ts$/, /\.e2e\.ts$/ ] // /node_modules/
       }
     ]
   },

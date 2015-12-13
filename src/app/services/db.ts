@@ -1,7 +1,6 @@
 import {
   Injectable,
-  Inject,
-} from 'angular2/angular2';
+} from 'angular2/core';
 
 import {
   Http,
@@ -12,7 +11,7 @@ import {
 
 @Injectable()
 export class DbService {
-  constructor(@Inject(Http) private http: Http) { }
+  constructor(private http: Http) { }
 
   server = 'http://localhost:9000/';
   // server = 'http://test.farkpage.com';

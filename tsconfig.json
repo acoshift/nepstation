@@ -10,8 +10,6 @@
   "buildOnSave": false,
   "compileOnSave": false,
   "files": [
-    "src/app/app.spec.ts",
-    "src/app/app.ts",
     "src/app/bootstrap.ts",
     "src/app/services.ts",
     "src/app/components.ts",

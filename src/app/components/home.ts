@@ -1,9 +1,7 @@
 import {
   Component,
   View,
-  FORM_DIRECTIVES,
-  Inject,
-} from 'angular2/angular2';
+} from 'angular2/core';
 
 import {
   Router
@@ -17,13 +15,13 @@ import {
 
 })
 @View({
-  directives: [FORM_DIRECTIVES],
+  directives: [],
   template: '<button (click)="logout()">Logout</button>'
   //template: require('./home.html'),
 })
 export class HomeComponent {
-  constructor(@Inject(Router) private router: Router,
-              @Inject(AuthService) private auth: AuthService) { }
+  constructor(private router: Router,
+              private auth: AuthService) { }
 
   logout() {
     this.auth.logout();

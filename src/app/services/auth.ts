@@ -1,8 +1,7 @@
 import {
   Component,
-  Inject,
   Injectable,
-} from 'angular2/angular2';
+} from 'angular2/core';
 
 import {
   Router
@@ -12,8 +11,8 @@ import { DbService } from './db';
 
 @Injectable()
 export class AuthService {
-  constructor(@Inject(Router) private router: Router,
-              @Inject(DbService) private db: DbService) {
+  constructor(private router: Router,
+              private db: DbService) {
     let token = this.token();
     if (localStorage.getItem('token')) this.remember = true;
     if (token) this.refresh();
@@ -22,7 +21,7 @@ export class AuthService {
   private remember = false;
 
   private token() {
-    return sessionStorage.getItem('token') || localStorage.getItem('token');
+    return sessionStorage.getItem('token') || localStorage.getItem('token') || null;
   }
 
   public check() {
@@ -31,6 +30,10 @@ export class AuthService {
       return false;
     }
     return true;
+  }
+
+  public isLoggedIn() {
+    return this.token() != null;
   }
 
   login(user: string, pwd: string, remember: boolean) {
