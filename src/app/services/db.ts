@@ -13,7 +13,7 @@ import {
 export class DbService {
   constructor(private http: Http) { }
 
-  server = 'https://farkpage.com/db';
+  server = 'https://farkpage.com/nepdb';
 
   db = 'test';
 
