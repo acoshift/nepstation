@@ -13,8 +13,7 @@ import {
 export class DbService {
   constructor(private http: Http) { }
 
-  server = 'http://localhost:9000/';
-  // server = 'http://test.farkpage.com';
+  server = 'https://farkpage.com/db';
 
   db = 'test';
 
