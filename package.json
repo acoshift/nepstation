@@ -1,5 +1,5 @@
 {
-  "name": "neperp",
+  "name": "nepstation",
   "version": "1.0.0",
   "description": "",
   "main": "",
@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/acoshift/neperp.git"
+    "url": "git+https://github.com/acoshift/nepstation.git"
   },
   "author": "",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/acoshift/neperp/issues"
+    "url": "https://github.com/acoshift/nepstation/issues"
   },
-  "homepage": "https://github.com/acoshift/neperp#readme",
+  "homepage": "https://github.com/acoshift/nepstation#readme",
   "dependencies": {
     "angular2": "^2.0.0-alpha.53",
     "bootstrap": "^4.0.0-alpha.2",
