@@ -37,9 +37,12 @@ export class AuthService {
     this.remember = remember;
     this.db.login({ user: user, pwd: pwd })
       .subscribe(
-        r => this.setToken(r.token),
-        (err) => this.loginFailed(err),
-        () => this.loginCompleted());
+        r => {
+          if (r.error) return this.loginFailed(r.error);
+          this.setToken(r.token);
+          this.router.navigate(['/Home']);
+        },
+        err => this.loginFailed(err));
   }
 
   logout() {
@@ -61,9 +64,5 @@ export class AuthService {
   private loginFailed(err) {
     // TODO:
     console.log('login failed!');
-  }
-
-  private loginCompleted() {
-    this.router.navigate(['/Home']);
   }
 }

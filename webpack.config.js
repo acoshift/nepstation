@@ -9,6 +9,8 @@ var path = require('path');
 var webpack = require('webpack');
 // Webpack Plugins
 var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+var DedupePlugin = webpack.optimize.DedupePlugin;
+var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 
 /*
  * Config
@@ -17,7 +19,6 @@ module.exports = {
   devtool: 'source-map', // for faster builds use 'eval'
   debug: true,
 
-  // our Webpack Development Server config
   devServer: {
     historyApiFallback: true,
     contentBase: 'src/public',
@@ -25,8 +26,7 @@ module.exports = {
   },
 
   entry: {
-    'angular2': [
-      // group angular2 deps into the angular2.js file
+    'lib': [
       'core-js',
       'rxjs',
       'zone.js',
@@ -34,12 +34,11 @@ module.exports = {
       'angular2/angular2',
       'angular2/core',
       'angular2/router',
-      'angular2/http'
+      'angular2/http',
     ],
-    'app': './src/app/bootstrap' // our angular app
+    'app': './src/app/bootstrap'
   },
 
-  // Config for our build files
   output: {
     path: root('__build__'),
     filename: '[name].js',
@@ -59,7 +58,7 @@ module.exports = {
       // Support for CSS as raw text
       { test: /\.css$/,   loader: 'raw' },
 
-      // support for .html as raw text
+      // Support for .html as raw text
       { test: /\.html$/,  loader: 'raw' },
 
       // Support for .ts files.
@@ -73,10 +72,10 @@ module.exports = {
   },
 
   plugins: [
-    new CommonsChunkPlugin({ name: 'angular2', filename: 'angular2.js', minChunks: Infinity }),
-    new CommonsChunkPlugin({ name: 'common',   filename: 'common.js' }),
-    new webpack.optimize.DedupePlugin(),
-    //new webpack.optimize.UglifyJsPlugin({ minimize: true, comments: false }),
+    new CommonsChunkPlugin({ name: 'lib', filename: 'lib.js', minChunks: Infinity, chunks: ['app'] }),
+    //new CommonsChunkPlugin({ name: 'common',   filename: 'common.js' }),
+    new DedupePlugin(),
+    //new UglifyJsPlugin({ minimize: true, comments: false }),
   ]
 };
 

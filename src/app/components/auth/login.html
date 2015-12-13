@@ -1,6 +1,8 @@
-<input type="text" [(ngModel)]="form.user">
-<input type="password" [(ngModel)]="form.pwd">
-<label>
-<input type="checkbox" [(ngModel)]="form.remember"> Remember me
-</label>
-<button (click)="login()">Login</button>
+<div [ngFormModel]="form">
+  <input [ngFormControl]="form.controls['user']" type="text" placeholder="Username">
+  <input [ngFormControl]="form.controls['pwd']" type="password" placeholder="Password">
+  <label>
+    <input [ngFormControl]="form.controls['remember']" type="checkbox"> Remember me
+  </label>
+  <button type="submit" (click)="login()">Log in</button>
+</div>

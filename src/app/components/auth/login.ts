@@ -2,36 +2,52 @@ import {
   Component,
   View,
   FORM_DIRECTIVES,
+  CORE_DIRECTIVES,
   Inject,
+  ControlGroup,
+  FormBuilder,
+  Validators,
 } from 'angular2/angular2';
 
 import {
   Router
 } from 'angular2/router';
 
+/*
+import {
+  Alert,
+} from 'ng2-bootstrap';
+*/
 import {
   AuthService
 } from '../../services';
 
 @Component({ })
 @View({
-  directives: [FORM_DIRECTIVES],
+  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
   template: require('./login.html'),
 })
 export class LoginComponent {
-  constructor(@Inject(Router) private router: Router,
-              @Inject(AuthService) private auth: AuthService) {
-    if (!auth.check()) return;
-  }
+  form: ControlGroup;
 
-  private form = {
-    user: '',
-    pwd: '',
-    remember: false
+  constructor(private router: Router,
+              private auth: AuthService,
+              fb: FormBuilder) {
+    //if (!auth.check()) return;
+    this.form = fb.group({
+      user: ['', Validators.required],
+      pwd: ['', Validators.required],
+      remember: [false]
+    });
   }
 
   login() {
-    let { user, pwd, remember } = this.form;
+    if (!this.form.valid) return this.invalidInput();
+    let { user, pwd, remember } = this.form.value;
     this.auth.login(user, pwd, remember);
+  }
+
+  invalidInput() {
+    // TODO: show invalid input to user
   }
 }

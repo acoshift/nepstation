@@ -22,6 +22,10 @@
     "src/app/services/auth.ts",
     "src/app/services/db.ts"
   ],
+  "exclude": [
+    "node_modules",
+    "public"
+  ],
   "atom": {
     "rewriteTsconfig": false
   }
