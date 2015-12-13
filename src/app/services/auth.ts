@@ -35,7 +35,7 @@ export class AuthService {
 
   login(user: string, pwd: string, remember: boolean) {
     this.remember = remember;
-    this.db.request('auth', 'login', { user: user, pwd: pwd }, 'token')
+    this.db.login({ user: user, pwd: pwd })
       .subscribe(
         r => this.setToken(r.token),
         (err) => this.loginFailed(err),
@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   refresh() {
-    this.db.request('auth', 'refresh', null, 'token')
+    this.db.refresh()
       .subscribe(r => this.setToken(r.token));
   }
 
@@ -59,6 +59,7 @@ export class AuthService {
   }
 
   private loginFailed(err) {
+    // TODO:
     console.log('login failed!');
   }
 

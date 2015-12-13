@@ -14,7 +14,12 @@ import {
 export class DbService {
   constructor(@Inject(Http) private http: Http) { }
 
-  request(method: string, ns: string, param: any, retrieve: string) {
+  server = 'http://localhost:9000/';
+  // server = 'http://test.farkpage.com';
+
+  db = 'test';
+
+  request(body: string) {
     let headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/nepq'
@@ -24,14 +29,21 @@ export class DbService {
 
     return this.http.request(new Request({
       method: RequestMethod.Post,
-      url: 'http://test.farkpage.com',
-      body: this.makeNepQ(method, 'test', ns, param, retrieve),
+      url: this.server,
+      body: body,
       headers: headers
     })).map(x => x.json());
   }
 
-  private makeNepQ(method: string, namespace: string, name: string, param: any, retrieve: string) {
-    let ns = namespace && namespace !== '' ? ` ${namespace}.${name}` : ` ${name}`;
+  login(param: any) {
+    return this.request(`login ${this.db}(${JSON.stringify(param)})`);
+  }
+
+  refresh() {
+    return this.request(`refresh`);
+  }
+
+  private makeNepQ(method: string, ns: string, param: any, retrieve: string) {
     let p = param ? `(${JSON.stringify(param)})` : '';
     let ret = retrieve ? `{${retrieve}}` : '';
     let r = `${method}${ns}${p}${ret}`;
