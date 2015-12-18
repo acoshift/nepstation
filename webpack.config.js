@@ -52,7 +52,8 @@ module.exports = {
       { test: /\.json$/,  loader: 'json' },
 
       // CSS
-      { test: /\.css$/,   loader: 'style!css' },
+      //{ test: /\.css$/,   loader: 'style!css' },
+      { test: /\.css$/,   loader: 'raw' },
 
       // html as raw text
       { test: /\.html$/,  loader: 'raw' },

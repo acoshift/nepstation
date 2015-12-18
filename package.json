@@ -37,6 +37,7 @@
     "ng2-bootstrap": "^0.48.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-alpha.14",
+    "semantic-ui-css": "^2.1.6",
     "tether": "^1.1.1",
     "zone.js": "0.5.8"
   },

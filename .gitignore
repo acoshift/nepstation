@@ -43,6 +43,8 @@ Thumbs.db
 /dist
 /public/__build__/
 /src/*/__build__/
+/src/public/img/
+/src/public/fonts/
 __build__/**
 .webpack.json
 

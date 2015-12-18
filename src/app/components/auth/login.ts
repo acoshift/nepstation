@@ -22,6 +22,7 @@ import {
 @View({
   directives: [FORM_DIRECTIVES],
   template: require('./login.html'),
+  styles: [ require('./login.css') ],
 })
 export class LoginComponent {
   form: ControlGroup;

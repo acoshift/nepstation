@@ -1,9 +1,15 @@
 /* Webpack require */
-require('tether/dist/css/tether.min.css');
-require('bootstrap/dist/css/bootstrap.min.css');
-require('script!jquery/dist/jquery.min.js');
-require('script!tether/dist/js/tether.min.js');
-require('script!bootstrap/dist/js/bootstrap.min.js');
+//require('tether/dist/css/tether.min.css');
+//require('bootstrap/dist/css/bootstrap.min.css');
+//require('!style!css!semantic-ui-css/semantic.min.css');
+//require('script!jquery/dist/jquery.min.js');
+//require('script!tether/dist/js/tether.min.js');
+//require('script!bootstrap/dist/js/bootstrap.min.js');
+//require('script!semantic-ui-css/semantic.min.js');
+
+require('!style!css!semantic-ui-css/semantic.min.css');
+require('!style!css!semantic-ui-css/components/icon.min.css');
+require('!style!css!./style.css');
 
 import {
   Component,
@@ -50,6 +56,7 @@ import {
 @Component({
   selector: 'app',
   template: `<header></header><router-outlet></router-outlet><footer></footer>`,
+  styles: [ ],
   directives: [
     ROUTER_DIRECTIVES,
     HeaderComponent,
