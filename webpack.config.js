@@ -24,7 +24,7 @@ module.exports = {
     'lib': [
       'core-js',
       'rxjs',
-      'zone.js',
+      //'zone.js',
       'reflect-metadata',
       'angular2/bootstrap',
       'angular2/common',
