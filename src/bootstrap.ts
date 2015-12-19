@@ -45,7 +45,7 @@ import {
 
 @Component({
   selector: 'app',
-  template: `<header></header><router-outlet></router-outlet><footer></footer>`,
+  template: `<router-outlet></router-outlet>`,
   styles: [ ],
   directives: [
     ROUTER_DIRECTIVES,

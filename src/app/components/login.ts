@@ -23,11 +23,17 @@ import {
   AuthService,
 } from '../services';
 
+import { FooterComponent } from './footer';
+
 declare var $: any;
 
 @Component({})
 @View({
-  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES],
+  directives: [
+    CORE_DIRECTIVES,
+    FORM_DIRECTIVES,
+    FooterComponent,
+  ],
   template: require('./login.html'),
   styles: [ require('./login.css') ],
 })

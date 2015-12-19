@@ -1,11 +1,12 @@
 .grid {
   height: 100%;
-}
-
-.image {
-  margin-top: -100px;
+  margin-top: -60px;
 }
 
 .column {
   max-width: 450px;
+}
+
+footer {
+  margin-top: 50px;
 }
