@@ -1,12 +1,3 @@
-/* Webpack require */
-//require('tether/dist/css/tether.min.css');
-//require('bootstrap/dist/css/bootstrap.min.css');
-//require('!style!css!semantic-ui-css/semantic.min.css');
-//require('script!jquery/dist/jquery.min.js');
-//require('script!tether/dist/js/tether.min.js');
-//require('script!bootstrap/dist/js/bootstrap.min.js');
-//require('script!semantic-ui-css/semantic.min.js');
-
 require('!style!css!./app/style.css');
 
 import {

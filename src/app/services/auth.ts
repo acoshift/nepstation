@@ -17,7 +17,6 @@ export class AuthService {
               private db: DbService) {
     let token = this.token();
     if (localStorage.getItem('token')) this.remember = true;
-    if (token) this.refresh();
   }
 
   public check() {
@@ -32,16 +31,16 @@ export class AuthService {
     return this.token() != null;
   }
 
-  login(user: string, pwd: string, remember: boolean) {
+  login(user: string, pwd: string, remember: boolean, cb: (success: boolean) => void) {
     this.remember = remember;
-    this.db.login({ user: user, pwd: pwd })
+    this.db.login({ name: user, pwd: pwd })
       .subscribe(
         r => {
-          if (r.error) return this.loginFailed(r.error);
+          if (r.error) return cb(false);
           this.setToken(r.token);
-          this.router.navigate(['/Home']);
+          cb(true);
         },
-        err => this.loginFailed(err));
+        err => cb(false));
   }
 
   logout() {
@@ -50,24 +49,12 @@ export class AuthService {
     this.router.navigate(['/Auth.Login']);
   }
 
-  refresh() {
-    this.db.refresh()
-      .subscribe(r => this.setToken(r.token));
-  }
-
-
-
   private setToken(token: string) {
     if (this.remember) {
       localStorage.setItem('token', token);
     } else {
       sessionStorage.setItem('token', token);
     }
-  }
-
-  private loginFailed(err) {
-    // TODO:
-    console.log('login failed!');
   }
 
   private token() {

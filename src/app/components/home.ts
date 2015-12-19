@@ -4,19 +4,26 @@ import {
 } from 'angular2/core';
 
 import {
-  Router
+  Router,
 } from 'angular2/router';
 
 import {
-  AuthService
+  NavbarComponent,
+} from './navbar';
+
+import {
+  AuthService,
 } from '../services';
 
 @Component({
 
 })
 @View({
-  directives: [],
+  directives: [
+    NavbarComponent,
+  ],
   template: require('./home.html'),
+  styles: [ require('./home.css') ]
 })
 export class HomeComponent {
   constructor(private router: Router,

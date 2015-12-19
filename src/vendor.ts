@@ -17,9 +17,10 @@ import 'angular2/http';
 // RxJS
 import 'rxjs';
 
-// Other vendors
-import 'lodash';
-
 // Styles
 require('!style!css!semantic-ui-css/semantic.min.css');
-require('!style!css!semantic-ui-css/components/icon.min.css');
+
+// Other vendors
+import 'lodash';
+require('script!jquery/dist/jquery.min.js');
+require('script!semantic-ui-css/semantic.min.js');

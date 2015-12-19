@@ -6,30 +6,24 @@
         Log-in to your account
       </div>
     </h2>
-    <form class="ui large form" [ngFormModel]="form">
+    <form class="ui large form" [ngFormModel]="loginForm">
       <div class="ui stacked segment">
-        <div class="field">
+        <div class="field" [ngClass]="{ error: loginForm.controls['user'].touched && !loginForm.controls['user'].valid }">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input [ngFormControl]="form.controls['user']" type="text" placeholder="Username">
+            <input ngControl="user" type="text" placeholder="Username">
           </div>
         </div>
-        <div class="field">
+        <div class="field" [ngClass]="{ error: loginForm.controls['pwd'].touched && !loginForm.controls['pwd'].valid }">
           <div class="ui left icon input">
             <i class="lock icon"></i>
-            <input [ngFormControl]="form.controls['pwd']" type="password" placeholder="Password">
+            <input ngControl="pwd" type="password" placeholder="Password">
           </div>
         </div>
         <div class="field">
-          <div class="ui input">
-            <select>
-              <option value="" disabled selected hidden>Select expiration time</option>
-              <option value="1 hr">1 hr</option>
-              <option value="8 hrs">8 hrs</option>
-              <option value="1 day">1 day</option>
-              <option value="7 days">7 days</option>
-              <option value="30 days">30 days</option>
-            </select>
+          <div class="ui checkbox">
+            <input ngControl="remember" type="checkbox" class="hidden">
+            <label>Remember Me</label>
           </div>
         </div>
         <div class="ui fluid large teal submit button" (click)="login()">Log in</div>
@@ -38,6 +32,11 @@
     </form>
     <div class="ui message">
       New to us? <a href="#">Sign Up</a>
+    </div>
+    <div class="ui modal">
+      <div class="ui active dimmer">
+        <div class="ui large text loader">Loading</div>
+      </div>
     </div>
   </div>
 </div>

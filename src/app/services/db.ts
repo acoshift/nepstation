@@ -37,10 +37,6 @@ export class DbService {
     return this.request(`login ${this.db}(${JSON.stringify(param)})`);
   }
 
-  refresh() {
-    return this.request(`refresh`);
-  }
-
   private makeNepQ(method: string, ns: string, param: any, retrieve: string) {
     let p = param ? `(${JSON.stringify(param)})` : '';
     let ret = retrieve ? `{${retrieve}}` : '';

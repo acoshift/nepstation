@@ -7,7 +7,7 @@ import {
   selector: 'footer'
 })
 @View({
-  template: 'Copyright &copy; Moon Rhythm 2015'
+  template: require('./footer.html')
 })
 export class FooterComponent {
   constructor() {

@@ -1,10 +1,11 @@
 export * from './components/home';
-export * from './components/auth/login';
+export * from './components/login';
 export * from './components/header';
 export * from './components/footer';
+export * from './components/navbar';
 
 import { HomeComponent } from './components/home';
-import { LoginComponent } from './components/auth/login';
+import { LoginComponent } from './components/login';
 
 export var AppRoutes = [
   { path: '/home', as: 'Home', component: HomeComponent },
