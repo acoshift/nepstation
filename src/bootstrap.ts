@@ -7,9 +7,7 @@
 //require('script!bootstrap/dist/js/bootstrap.min.js');
 //require('script!semantic-ui-css/semantic.min.js');
 
-require('!style!css!semantic-ui-css/semantic.min.css');
-require('!style!css!semantic-ui-css/components/icon.min.css');
-require('!style!css!./style.css');
+require('!style!css!./app/style.css');
 
 import {
   Component,
@@ -46,12 +44,12 @@ import {
   AppRoutes,
   HeaderComponent,
   FooterComponent,
-} from './components';
+} from './app/components';
 
 import {
   AuthService,
   AppServices,
-} from './services';
+} from './app/services';
 
 @Component({
   selector: 'app',

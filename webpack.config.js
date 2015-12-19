@@ -21,18 +21,8 @@ module.exports = {
   },
 
   entry: {
-    'lib': [
-      'core-js',
-      'rxjs',
-      //'zone.js',
-      'reflect-metadata',
-      'angular2/bootstrap',
-      'angular2/common',
-      'angular2/core',
-      'angular2/router',
-      'angular2/http',
-    ],
-    'app': './src/app/bootstrap'
+    'vendor': './src/vendor.ts',
+    'app': './src/bootstrap'
   },
 
   output: {
@@ -47,16 +37,16 @@ module.exports = {
   },
 
   module: {
+    preLoaders: [ { test: /\.ts$/, loader: 'tslint-loader' } ],
     loaders: [
       // Support for *.json files.
-      { test: /\.json$/,  loader: 'json' },
+      { test: /\.json$/,  loader: 'json-loader' },
 
-      // CSS
-      //{ test: /\.css$/,   loader: 'style!css' },
-      { test: /\.css$/,   loader: 'raw' },
+      // CSS as raw text
+      { test: /\.css$/,   loader: 'raw-loader' },
 
       // html as raw text
-      { test: /\.html$/,  loader: 'raw' },
+      { test: /\.html$/,  loader: 'raw-loader' },
 
       // Fonts
       { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9\.\=]+)?$/, loader: 'file?name=./fonts/[hash].[ext]' },
@@ -68,28 +58,40 @@ module.exports = {
       {
         test: /\.ts$/,
         loader: 'ts',
-        query: { 'ignoreDiagnostics': [ 2403 ] }, // 2403 -> Subsequent variable declarations
-        exclude: [ /\.spec\.ts$/, /\.e2e\.ts$/ ] // /node_modules/
+        query: {
+          'ignoreDiagnostics': [
+            2403, // 2403 -> Subsequent variable declarations
+            2300, // 2300 -> Duplicate identifier
+            2374, // 2374 -> Duplicate number index signature
+            2375  // 2375 -> Duplicate string index signature
+          ]
+        },
+        exclude: [ /\.(spec|e2e)\.ts$/, /node_modules/ ]
       }
-    ]
+    ],
+    noParse: [ /.+zone\.js\/dist\/.+/, /.+angular2\/bundles\/.+/ ]
   },
 
   plugins: [
-    new CommonsChunkPlugin({ name: 'lib', filename: 'lib.js', minChunks: Infinity, chunks: ['app'] }),
-    //new CommonsChunkPlugin({ name: 'common',   filename: 'common.js' }),
-    new DedupePlugin(),
+    new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
+    new CommonsChunkPlugin({ name: 'common', filename: 'common.js', minChunks: 2, chunks: ['app', 'vendor'] }),
     //new UglifyJsPlugin({ minimize: true, comments: false }),
-  ]
+  ],
+
+  tslint: {
+    emitErrors: false,
+    failOnHint: false
+  },
 };
 
 // Helper functions
 
 function root(args) {
-  args = sliceArgs(arguments, 0);
+  args = Array.prototype.slice.call(arguments, 0);
   return path.join.apply(path, [__dirname].concat(args));
 }
 
 function rootNode(args) {
-  args = sliceArgs(arguments, 0);
+  args = Array.prototype.slice.call(arguments, 0);
   return root.apply(path, ['node_modules'].concat(args));
 }

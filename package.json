@@ -31,14 +31,15 @@
   "homepage": "https://github.com/acoshift/nepstation#readme",
   "dependencies": {
     "angular2": "^2.0.0-beta.0",
-    "bootstrap": "^4.0.0-alpha.2",
     "core-js": "^1.2.6",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.34.0",
+    "es7-reflect-metadata": "^1.2.0",
     "jquery": "^2.1.4",
-    "ng2-bootstrap": "^0.48.1",
+    "lodash": "^3.10.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "^5.0.0-beta.0",
     "semantic-ui-css": "^2.1.6",
-    "tether": "^1.1.1",
     "zone.js": "^0.5.10"
   },
   "devDependencies": {
@@ -64,6 +65,8 @@
     "style-loader": "^0.13.0",
     "ts-loader": "^0.7.2",
     "tsconfig-lint": "^0.2.0",
+    "tslint": "^3.2.1",
+    "tslint-loader": "^2.1.0",
     "typedoc": "^0.3.12",
     "typescript": "^1.7.3",
     "url-loader": "^0.5.6",

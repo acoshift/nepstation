@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "es5",
     "module": "commonjs",
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true
   },
-  "buildOnSave": false,
-  "compileOnSave": false,
   "files": [
-    "src/app/bootstrap.ts",
+    "src/bootstrap.ts",
+    "src/vendor.ts",
     "src/app/services.ts",
     "src/app/components.ts",
     "src/app/components/home.ts",
@@ -19,12 +18,5 @@
     "src/app/components/auth/login.ts",
     "src/app/services/auth.ts",
     "src/app/services/db.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "public"
-  ],
-  "atom": {
-    "rewriteTsconfig": false
-  }
+  ]
 }
