@@ -10,5 +10,7 @@ import {
   template: 'Copyright &copy; Moon Rhythm 2015'
 })
 export class FooterComponent {
-  constructor() { }
+  constructor() {
+    //
+  }
 }

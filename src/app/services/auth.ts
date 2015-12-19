@@ -11,17 +11,13 @@ import { DbService } from './db';
 
 @Injectable()
 export class AuthService {
+  private remember = false;
+
   constructor(private router: Router,
               private db: DbService) {
     let token = this.token();
     if (localStorage.getItem('token')) this.remember = true;
     if (token) this.refresh();
-  }
-
-  private remember = false;
-
-  private token() {
-    return sessionStorage.getItem('token') || localStorage.getItem('token') || null;
   }
 
   public check() {
@@ -59,13 +55,22 @@ export class AuthService {
       .subscribe(r => this.setToken(r.token));
   }
 
+
+
   private setToken(token: string) {
-    if (this.remember) localStorage.setItem('token', token);
-    else sessionStorage.setItem('token', token);
+    if (this.remember) {
+      localStorage.setItem('token', token);
+    } else {
+      sessionStorage.setItem('token', token);
+    }
   }
 
   private loginFailed(err) {
     // TODO:
     console.log('login failed!');
+  }
+
+  private token() {
+    return sessionStorage.getItem('token') || localStorage.getItem('token') || null;
   }
 }

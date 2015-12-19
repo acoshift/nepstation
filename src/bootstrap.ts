@@ -12,6 +12,7 @@ require('!style!css!./app/style.css');
 import {
   Component,
   provide,
+  enableProdMode,
 } from 'angular2/core';
 
 import {
@@ -69,11 +70,12 @@ class App {
   }
 }
 
+// enableProdMode() // include for production builds
 bootstrap(App, [
   FORM_PROVIDERS,
   ROUTER_PROVIDERS,
   HTTP_PROVIDERS,
-  ELEMENT_PROBE_PROVIDERS,
+  ELEMENT_PROBE_PROVIDERS, // remove in production
   provide(LocationStrategy, { useClass: PathLocationStrategy }),
   provide(ROUTER_PRIMARY_COMPONENT, { useValue: App }),
   AppServices,
