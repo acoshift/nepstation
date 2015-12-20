@@ -21,7 +21,7 @@ export class AuthService {
 
   public check() {
     if (!this.token()) {
-      this.router.navigate(['/Auth.Login']);
+      this.router.navigate(['/Auth/Login']);
       return false;
     }
     return true;
@@ -46,7 +46,6 @@ export class AuthService {
   logout() {
     sessionStorage.removeItem('token');
     localStorage.removeItem('token');
-    this.router.navigate(['/Auth.Login']);
   }
 
   private setToken(token: string) {

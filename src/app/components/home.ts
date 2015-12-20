@@ -27,9 +27,12 @@ import {
 })
 export class HomeComponent {
   constructor(private router: Router,
-              private auth: AuthService) { }
+              private auth: AuthService) {
+    if (!auth.check()) return;
+  }
 
   logout() {
     this.auth.logout();
+    this.router.navigate(['/Auth']);
   }
 }

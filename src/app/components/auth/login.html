@@ -2,7 +2,7 @@
   <div class="column">
     <img src="img/moonlogo_tran_300.png" class="image">
     <h2 class="ui teal image header">
-      <div class="content">
+      <div class="ui grey inverted header">
         Log-in to your account
       </div>
     </h2>
@@ -26,13 +26,23 @@
             <label>Remember Me</label>
           </div>
         </div>
-        <div class="ui fluid large teal submit button" (click)="login()">Log in</div>
+        <!--div class="field ui grid">
+          <div class="two column row">
+            <div class="column">
+
+            </div>
+            <div class="column">
+              <a>Forget password</a>
+            </div>
+          </div>
+        </div-->
+        <button class="ui fluid large grey submit button" (click)="login()">Log in</button>
       </div>
       <div class="ui error message"></div>
     </form>
-    <!--div class="ui message">
-      New to us? <a href="#">Sign Up</a>
-    </div-->
+    <div class="ui message">
+      Forgot <a [routerLink]="['ForgotUsername']">username</a> / <a [routerLink]="['ForgotPassword']">password</a> ?
+    </div>
     <div class="ui modal">
       <div class="ui active dimmer">
         <div class="ui large text loader">Loading</div>
@@ -40,4 +50,3 @@
     </div>
   </div>
 </div>
-<footer></footer>

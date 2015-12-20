@@ -16,14 +16,13 @@ import {
 } from 'angular2/common';
 
 import {
-  Router
+  Router,
+  RouterLink,
 } from 'angular2/router';
 
 import {
   AuthService,
-} from '../services';
-
-import { FooterComponent } from './footer';
+} from '../../services';
 
 declare var $: any;
 
@@ -32,7 +31,7 @@ declare var $: any;
   directives: [
     CORE_DIRECTIVES,
     FORM_DIRECTIVES,
-    FooterComponent,
+    RouterLink,
   ],
   template: require('./login.html'),
   styles: [ require('./login.css') ],
@@ -66,7 +65,11 @@ export class LoginComponent {
     $('.ui.modal').modal('show');
     this.auth.login(user, pwd, remember, success => {
       $('.ui.modal').modal('hide');
-      this.router.navigate(['/Home']);
+      if (success) {
+        this.router.navigate(['/Home']);
+      } else {
+        // TODO: login failed
+      }
     });
   }
 

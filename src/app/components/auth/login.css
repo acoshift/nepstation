@@ -1,0 +1,15 @@
+.grid {
+  height: 100%;
+  margin-top: -60px;
+}
+
+.column {
+  max-width: 450px;
+}
+
+.field.forget.link {
+  text-align: right;
+  margin-top: -10px;
+  height: 10px;
+  font-size: 0.9em;
+}

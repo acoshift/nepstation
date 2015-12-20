@@ -22,7 +22,7 @@ import {
   RouteConfig,
   LocationStrategy,
   PathLocationStrategy,
-  ROUTER_DIRECTIVES,
+  RouterOutlet,
   ROUTER_PROVIDERS,
   ROUTER_PRIMARY_COMPONENT,
   Router,
@@ -33,33 +33,25 @@ import {
 } from 'angular2/http';
 
 import {
-  AppRoutes,
-  HeaderComponent,
-  FooterComponent,
-} from './app/components';
-
-import {
   AuthService,
   AppServices,
 } from './app/services';
 
+import { HomeComponent } from './app/components';
+import { AuthRouter } from './app/components/auth/router';
+
 @Component({
   selector: 'app',
   template: `<router-outlet></router-outlet>`,
-  styles: [ ],
   directives: [
-    ROUTER_DIRECTIVES,
-    HeaderComponent,
-    FooterComponent,
+    RouterOutlet,
   ],
 })
-@RouteConfig(AppRoutes)
-class App {
-  constructor(private router: Router,
-              private auth: AuthService) {
-    if (!auth.check()) return;
-  }
-}
+@RouteConfig([
+  { path: '/', name: 'Home', component: HomeComponent, useAsDefault: true },
+  { path: '/auth/...', name: 'Auth', component: AuthRouter },
+])
+class App {}
 
 // enableProdMode() // include for production builds
 bootstrap(App, [

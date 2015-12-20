@@ -16,8 +16,11 @@
     "src/app/components/home.ts",
     "src/app/components/header.ts",
     "src/app/components/footer.ts",
-    "src/app/components/login.ts",
     "src/app/components/navbar.ts",
+    "src/app/components/auth/router.ts",
+    "src/app/components/auth/login.ts",
+    "src/app/components/auth/forgot/username.ts",
+    "src/app/components/auth/forgot/password.ts",
     "src/app/services/auth.ts",
     "src/app/services/db.ts"
   ]
