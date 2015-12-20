@@ -39,6 +39,7 @@ import {
 
 import { HomeComponent } from './app/components';
 import { AuthRouter } from './app/components/auth/router';
+import { AdminRouter } from './app/components/admin/router';
 
 @Component({
   selector: 'app',
@@ -50,6 +51,7 @@ import { AuthRouter } from './app/components/auth/router';
 @RouteConfig([
   { path: '/', name: 'Home', component: HomeComponent, useAsDefault: true },
   { path: '/auth/...', name: 'Auth', component: AuthRouter },
+  { path: '/admin/...', name: 'Admin', component: AdminRouter },
 ])
 class App {}
 

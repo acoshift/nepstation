@@ -12,16 +12,22 @@
     "src/bootstrap.ts",
     "src/vendor.ts",
     "src/app/services.ts",
+    "src/app/services/auth.ts",
+    "src/app/services/db.ts",
     "src/app/components.ts",
     "src/app/components/home.ts",
     "src/app/components/header.ts",
     "src/app/components/footer.ts",
     "src/app/components/navbar.ts",
+
     "src/app/components/auth/router.ts",
     "src/app/components/auth/login.ts",
     "src/app/components/auth/forgot/username.ts",
     "src/app/components/auth/forgot/password.ts",
-    "src/app/services/auth.ts",
-    "src/app/services/db.ts"
+
+    "src/app/components/admin/router.ts",
+    "src/app/components/admin/logs.ts",
+    "src/app/components/admin/roles.ts",
+    "src/app/components/admin/users.ts"
   ]
 }
