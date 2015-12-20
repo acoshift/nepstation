@@ -1,7 +1,6 @@
 import {
   Component,
   View,
-  ElementRef,
 } from 'angular2/core';
 
 import {
