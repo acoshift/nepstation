@@ -18,7 +18,10 @@ import {
 
 import {
   AuthService,
+  DbService,
 } from '../../services';
+
+import { Timestamp } from '../../pipes/id';
 
 declare var $: any;
 
@@ -29,16 +32,31 @@ declare var $: any;
     FORM_DIRECTIVES,
     RouterLink,
   ],
-  template: '',
+  template: require('./logs.html'),
   styles: [ '' ],
+  pipes: [ Timestamp ]
 })
 export class LogsComponent {
-  loginForm: ControlGroup;
+  table: any[];
 
   constructor(private router: Router,
               private auth: AuthService,
-              fb: FormBuilder) {
-
+              private db: DbService) {
+    //
+    if (!auth.check()) return;
+    this.load();
   }
 
+  load() {
+    this.db.nepq('query', 'db.logs', null, '_id,q{method,name},t{payload{sub}}')
+      .subscribe(
+        r => {
+          console.log(r);
+          this.table = r;
+        },
+        err => {
+          console.log(err);
+        }
+      );
+  }
 }

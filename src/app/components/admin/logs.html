@@ -1,0 +1,18 @@
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>user</th>
+      <th>method</th>
+      <th>name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="#t of table">
+      <td>{{t._id.substr(0, 8) | timestamp | date:'yy/MM/dd HH:mm:ss' }}</td>
+      <td>{{t.t.payload.sub.split('/')[0]}}</td>
+      <td>{{t.q.method}}</td>
+      <td>{{t.q.name}}</td>
+    </tr>
+  </tbody>
+</table>

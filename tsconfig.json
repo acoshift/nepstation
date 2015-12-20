@@ -11,9 +11,13 @@
     "typings/tsd.d.ts",
     "src/bootstrap.ts",
     "src/vendor.ts",
+
     "src/app/services.ts",
     "src/app/services/auth.ts",
     "src/app/services/db.ts",
+
+    "src/app/pipes/id.ts",
+
     "src/app/components.ts",
     "src/app/components/home.ts",
     "src/app/components/header.ts",

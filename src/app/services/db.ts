@@ -33,14 +33,19 @@ export class DbService {
     })).map(x => x.json());
   }
 
-  login(param: any) {
-    return this.request(`login ${this.db}(${JSON.stringify(param)})`);
+  login(params: any) {
+    return this.request(`login ${this.db}(${JSON.stringify(params)})`);
   }
 
-  private makeNepQ(method: string, ns: string, param: any, retrieve: string) {
-    let p = param ? `(${JSON.stringify(param)})` : '';
+  nepq(method: string, ns: string, params: any, retrieve: string) {
+    return this.request(this.makeNepQ(method, ns, params, retrieve));
+  }
+
+  private makeNepQ(method: string, ns: string, params: any, retrieve: string) {
+    let p = params ? `(${JSON.stringify(params)})` : '';
     let ret = retrieve ? `{${retrieve}}` : '';
-    let r = `${method}${ns}${p}${ret}`;
+    let n = ns ? ` ${this.db}.${ns}` : '';
+    let r = `${method}${n}${p}${ret}`;
     console.log('make request: ' + r);
     return r;
   }
