@@ -6,13 +6,9 @@ import {
 import {
   FORM_DIRECTIVES,
   CORE_DIRECTIVES,
-  FORM_BINDINGS,
   ControlGroup,
   FormBuilder,
   Validators,
-  Control,
-  AbstractControl,
-  NgClass,
 } from 'angular2/common';
 
 import {
