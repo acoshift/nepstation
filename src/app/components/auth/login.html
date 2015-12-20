@@ -26,27 +26,42 @@
             <label>Remember Me</label>
           </div>
         </div>
-        <!--div class="field ui grid">
-          <div class="two column row">
-            <div class="column">
-
-            </div>
-            <div class="column">
-              <a>Forget password</a>
-            </div>
-          </div>
-        </div-->
         <button class="ui fluid large grey submit button" (click)="login()">Log in</button>
       </div>
-      <div class="ui error message"></div>
     </form>
     <div class="ui message">
       Forgot <a [routerLink]="['ForgotUsername']">username</a> / <a [routerLink]="['ForgotPassword']">password</a> ?
     </div>
-    <div class="ui modal">
-      <div class="ui active dimmer">
-        <div class="ui large text loader">Loading</div>
-      </div>
+  </div>
+</div>
+<div class="ui modal" id="loading">
+  <div class="ui active dimmer">
+    <div class="ui large text loader">Loading</div>
+  </div>
+</div>
+<div class="ui small modal" id="wrong">
+  <div class="header">Error</div>
+  <div class="content">
+    <div class="description">
+      Wrong username or password.
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui grey right approve button">
+      OK
+    </div>
+  </div>
+</div>
+<div class="ui small modal" id="invalid">
+  <div class="header">Error</div>
+  <div class="content">
+    <div class="description">
+      Please input username and password.
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui grey right approve button">
+      OK
     </div>
   </div>
 </div>

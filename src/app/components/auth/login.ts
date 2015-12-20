@@ -1,6 +1,7 @@
 import {
   Component,
   View,
+  ElementRef,
 } from 'angular2/core';
 
 import {
@@ -44,6 +45,7 @@ export class LoginComponent {
               fb: FormBuilder) {
     // init semantic-ui
     $('.ui.checkbox').checkbox();
+    $('.modal').modal({ closable: false, allowMultiple: false });
 
     // init model
     this.loginForm = fb.group({
@@ -60,20 +62,21 @@ export class LoginComponent {
   }
 
   login() {
-    if (!this.loginForm.valid) return this.invalidInput();
+    if (!this.loginForm.valid) {
+      $('#invalid').modal('show');
+      return;
+    }
     let { user, pwd, remember } = this.loginForm.value;
-    $('.ui.modal').modal('show');
+    $('#loading').modal('show');
     this.auth.login(user, pwd, remember, success => {
-      $('.ui.modal').modal('hide');
       if (success) {
+        $('#loading').modal('hide');
         this.router.navigate(['/Home']);
       } else {
-        // TODO: login failed
+        $('#wrong').modal({
+          onHide: () => { $('#loading').modal('hide'); }
+        }).modal('show');
       }
     });
-  }
-
-  invalidInput() {
-    // TODO: show invalid input to user
   }
 }
