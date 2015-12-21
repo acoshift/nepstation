@@ -1,0 +1,46 @@
+.ui.middle.aligned.center.aligned.grid
+  .column
+    img.image(src="../../images/moonlogo_tran_300.png")
+    h2.ui.teal.image.header
+      .ui.grey.inverted.header
+        | Log-in to your account
+    form.ui.large.form([ngFormModel]='loginForm')
+      .ui.stacked.segment
+        .field([ngClass]="{ error: loginForm.controls['user'].touched && !loginForm.controls['user'].valid }")
+          .ui.left.icon.input
+            i.user.icon
+            input(ngControl='user', type='text', placeholder='Username')
+        .field([ngClass]="{ error: loginForm.controls['pwd'].touched && !loginForm.controls['pwd'].valid }")
+          .ui.left.icon.input
+            i.lock.icon
+            input(ngControl='pwd', type='password', placeholder='Password')
+        .field
+          .ui.checkbox
+            input.hidden(ngControl='remember', type='checkbox')
+            label Remember me
+        button.ui.fluid.large.grey.submit.button((click)='login()') Log in
+    .ui.message
+      | Forgot
+      a([routerLink]="['ForgotUsername']") username
+      |  /
+      a([routerLink]="['ForgotPassword']") password
+      |  ?
+#loading.ui.modal
+  .ui.active.dimmer
+    .ui.large.text.loader Loading
+#wrong.ui.small.modal
+  .header Error
+  .content
+    .description
+      | Wrong username or password.
+  .actions
+    .ui.grey.right.approve.button
+      | OK
+#invalid.ui.small.modal
+  .header Error
+  .content
+    .description
+      | Please input username and password.
+  .actions
+    .ui.grey.right.approve.button
+      | OK

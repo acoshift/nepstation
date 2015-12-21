@@ -28,7 +28,7 @@ import { AdminRouter } from './admin/router';
     NavbarComponent,
     RouterOutlet,
   ],
-  template: require('./router.html'),
+  template: require('./router.jade'),
   styles: [ require('./router.css') ]
 })
 @RouteConfig([

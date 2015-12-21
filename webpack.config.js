@@ -33,7 +33,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['','.ts','.js','.json', '.css', '.html']
+    extensions: ['', '.ts', '.js', '.json', '.css', '.html', '.jade']
   },
 
   module: {
@@ -43,10 +43,13 @@ module.exports = {
       { test: /\.json$/,  loader: 'json-loader' },
 
       // CSS as raw text
-      { test: /\.css$/,   loader: 'raw-loader' },
+      { test: /\.css$/,   loader: 'to-string-loader!css-loader' },
 
       // html as raw text
-      { test: /\.html$/,  loader: 'raw-loader' },
+      { test: /\.html$/,  loader: 'html-loader?minimize=false' },
+
+      // jade
+      { test: /\.jade$/, loader: 'html-loader?minimize=false!jade-html-loader' },
 
       // Fonts
       { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9\.\=]+)?$/, loader: 'file?name=./fonts/[hash].[ext]' },
@@ -75,7 +78,17 @@ module.exports = {
   plugins: [
     new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
     //new CommonsChunkPlugin({ name: 'common', filename: 'common.js', minChunks: 2, chunks: ['app', 'vendor'] }),
-    // new UglifyJsPlugin({ minimize: true, comments: false }),
+    new DedupePlugin(),
+    /*new UglifyJsPlugin({
+      minimize: true,
+      comments: false,
+      compress: {
+        warnings: false
+      },
+      mangle: {
+        except: []
+      }
+    }),*/
   ],
 
   tslint: {

@@ -33,7 +33,7 @@ declare var $: any;
     FORM_DIRECTIVES,
     RouterLink,
   ],
-  template: require('./logs.html'),
+  template: require('./logs.jade'),
   styles: [ '' ],
   pipes: [ Timestamp ]
 })

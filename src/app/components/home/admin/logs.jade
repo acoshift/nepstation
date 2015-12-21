@@ -1,0 +1,13 @@
+table.ui.celled.table
+  thead
+    tr
+      th id
+      th user
+      th method
+      th name
+  tbody
+    tr(*ngFor="#t of table")
+      td {{t._id.substr(0, 8) | timestamp | date:'yy/MM/dd HH:mm:ss' }}
+      td {{t.t.payload.sub.split('/')[0]}}
+      td {{t.q.method}}
+      td {{t.q.name}}

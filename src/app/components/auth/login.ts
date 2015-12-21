@@ -29,7 +29,7 @@ declare var $: any;
     FORM_DIRECTIVES,
     RouterLink,
   ],
-  template: require('./login.html'),
+  template: require('./login.jade'),
   styles: [ require('./login.css') ],
 })
 export class LoginComponent {
