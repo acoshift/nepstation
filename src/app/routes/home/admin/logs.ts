@@ -30,13 +30,13 @@ declare var $: any;
 
 @Component({})
 @View({
+  template: require('./logs.jade'),
+  styles: [ '' ],
   directives: [
     CORE_DIRECTIVES,
     FORM_DIRECTIVES,
     RouterLink,
   ],
-  template: require('./logs.jade'),
-  styles: [ '' ],
   pipes: [
     TimestampPipe,
     MomentPipe,
