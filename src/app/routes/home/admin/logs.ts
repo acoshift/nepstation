@@ -46,6 +46,7 @@ declare var $: any;
 })
 export class LogsRoute {
   table: any[];
+  keyword: string;
 
   constructor(private router: Router,
               private auth: AuthService,
@@ -54,6 +55,7 @@ export class LogsRoute {
     //
     if (!auth.check()) return;
     navbar.active('admin/logs');
+    $('.ui.dropdown').dropdown();
     this.load();
   }
 
@@ -70,6 +72,7 @@ export class LogsRoute {
   }
 
   filter(x) {
-    return x.q.name === 'test.product';
+    if (!this.keyword) return true;
+    return x.q.name === this.keyword;
   }
 }

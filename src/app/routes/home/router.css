@@ -1,4 +1,10 @@
+.main {
+  background-color: #ffffff;
+  min-height: 100%;
+}
+
 .content {
-  padding-top: 45px;
-  padding-left: 210px;
+  padding-top: 70px;
+  padding-left: 230px;
+  padding-right: 30px;
 }
