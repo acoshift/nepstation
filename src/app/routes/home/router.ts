@@ -11,13 +11,13 @@ import {
 
 import {
   NavbarComponent,
-} from './navbar';
+} from '../../components/navbar';
 
 import {
   AuthService,
 } from '../../services';
 
-import { IndexComponent } from './index';
+import { IndexRoute } from './index';
 import { AdminRouter } from './admin/router';
 
 @Component({
@@ -32,7 +32,7 @@ import { AdminRouter } from './admin/router';
   styles: [ require('./router.css') ]
 })
 @RouteConfig([
-  { path: '/', name: 'Index', component: IndexComponent, useAsDefault: true },
+  { path: '/', name: 'Index', component: IndexRoute, useAsDefault: true },
   { path: '/admin/...', name: 'Admin', component: AdminRouter },
 ])
 export class HomeRouter {

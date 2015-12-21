@@ -7,6 +7,6 @@ import {
 @View({
   template: ''
 })
-export class IndexComponent {
+export class IndexRoute {
 
 }

@@ -37,8 +37,8 @@ import {
   AppServices,
 } from './app/services';
 
-import { AuthRouter } from './app/components/auth/router';
-import { HomeRouter } from './app/components/home/router';
+import { AuthRouter } from './app/routes/auth/router';
+import { HomeRouter } from './app/routes/home/router';
 
 @Component({
   selector: 'app',

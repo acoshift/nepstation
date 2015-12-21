@@ -15,7 +15,7 @@ import {
 import {
   AuthService,
   NavbarService,
-} from '../../services';
+} from '../services';
 
 declare var $: any;
 
@@ -27,7 +27,7 @@ declare var $: any;
     CORE_DIRECTIVES,
     RouterLink
   ],
-  template: require('./navbar.html'),
+  template: require('./navbar.jade'),
   styles: [ require('./navbar.css') ]
 })
 export class NavbarComponent {

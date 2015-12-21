@@ -36,7 +36,7 @@ declare var $: any;
   template: '',
   styles: [ ],
 })
-export class UsernameComponent {
+export class PasswordRoute {
 
   constructor(private router: Router,
               private auth: AuthService,

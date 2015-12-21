@@ -44,7 +44,7 @@ declare var $: any;
     FilterPipe,
   ]
 })
-export class LogsComponent {
+export class LogsRoute {
   table: any[];
 
   constructor(private router: Router,
@@ -61,7 +61,6 @@ export class LogsComponent {
     this.db.nepq('query', 'db.logs', null, '_id,q{method,name},t{payload{sub}}')
       .subscribe(
         r => {
-          console.log(r);
           this.table = r;
         },
         err => {
@@ -71,7 +70,6 @@ export class LogsComponent {
   }
 
   filter(x) {
-    console.log(x);
     return x.q.name === 'test.product';
   }
 }

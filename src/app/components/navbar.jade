@@ -1,0 +1,12 @@
+.ui.left.fixed.vertical.menu
+  .item
+    .header Admin
+    .menu
+      a.item([ngClass]="{ active: isActive('admin/logs') }", [routerLink]="['./Admin/Logs']") Logs
+
+.ui.top.fixed.menu
+  .item
+    img(src="../images/moonlogo_tranb_300.png")
+  a.item Features
+  a.item Testimonials
+  a.item((click)="logout()") Log out

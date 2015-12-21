@@ -32,7 +32,7 @@ declare var $: any;
   template: require('./login.jade'),
   styles: [ require('./login.css') ],
 })
-export class LoginComponent {
+export class LoginRoute {
   loginForm: ControlGroup;
 
   constructor(private router: Router,
