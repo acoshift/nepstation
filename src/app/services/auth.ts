@@ -22,7 +22,7 @@ export class AuthService {
     if (localStorage.getItem('token')) this.remember = true;
   }
 
-  public check(route?: any) {
+  public check() {
     if (!this.token()) {
       this.lastLocation = this.location.path();
       this.router.navigate(['/Auth/Login']);
