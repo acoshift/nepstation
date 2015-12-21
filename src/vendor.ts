@@ -22,5 +22,6 @@ require('!style!css!semantic-ui-css/semantic.min.css');
 
 // Other vendors
 import 'lodash';
+import 'moment';
 require('script!jquery/dist/jquery.min.js');
 require('script!semantic-ui-css/semantic.min.js');
