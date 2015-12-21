@@ -37,9 +37,8 @@ import {
   AppServices,
 } from './app/services';
 
-import { HomeComponent } from './app/components';
 import { AuthRouter } from './app/components/auth/router';
-import { AdminRouter } from './app/components/admin/router';
+import { HomeRouter } from './app/components/home/router';
 
 @Component({
   selector: 'app',
@@ -49,9 +48,9 @@ import { AdminRouter } from './app/components/admin/router';
   ],
 })
 @RouteConfig([
-  { path: '/', name: 'Home', component: HomeComponent, useAsDefault: true },
   { path: '/auth/...', name: 'Auth', component: AuthRouter },
-  { path: '/admin/...', name: 'Admin', component: AdminRouter },
+  { path: '/home/...', name: 'Home', component: HomeRouter, useAsDefault: true },
+  { path: '**', redirectTo: ['/Home'] }
 ])
 class App {}
 

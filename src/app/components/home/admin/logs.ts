@@ -19,9 +19,9 @@ import {
 import {
   AuthService,
   DbService,
-} from '../../services';
+} from '../../../services';
 
-import { Timestamp } from '../../pipes/id';
+import { Timestamp } from '../../../pipes/id';
 
 declare var $: any;
 

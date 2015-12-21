@@ -1,11 +1,12 @@
 import {
   Pipe,
+  PipeTransform,
 } from 'angular2/core';
 
 // MongoDB's ObjectID to Timestamp
 @Pipe({ name: 'timestamp' })
-export class Timestamp {
-  transform(value: string) {
+export class Timestamp implements PipeTransform {
+  transform(value: string): number {
     return parseInt(value.substr(0, 8), 16) * 1000;
   }
 }

@@ -9,7 +9,7 @@ import {
 
 import {
   AuthService
-} from '../services';
+} from '../../services';
 
 declare var $: any;
 

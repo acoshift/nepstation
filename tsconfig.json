@@ -18,20 +18,21 @@
 
     "src/app/pipes/id.ts",
 
-    "src/app/components.ts",
-    "src/app/components/home.ts",
-    "src/app/components/header.ts",
-    "src/app/components/footer.ts",
-    "src/app/components/navbar.ts",
-
     "src/app/components/auth/router.ts",
     "src/app/components/auth/login.ts",
     "src/app/components/auth/forgot/username.ts",
     "src/app/components/auth/forgot/password.ts",
 
-    "src/app/components/admin/router.ts",
-    "src/app/components/admin/logs.ts",
-    "src/app/components/admin/roles.ts",
-    "src/app/components/admin/users.ts"
+
+    "src/app/components/home/router.ts",
+    "src/app/components/home/index.ts",
+    "src/app/components/home/header.ts",
+    "src/app/components/home/footer.ts",
+    "src/app/components/home/navbar.ts",
+
+    "src/app/components/home/admin/router.ts",
+    "src/app/components/home/admin/logs.ts",
+    "src/app/components/home/admin/roles.ts",
+    "src/app/components/home/admin/users.ts"
   ]
 }
