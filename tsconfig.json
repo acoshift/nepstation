@@ -18,6 +18,7 @@
     "src/app/services/navbar.ts",
 
     "src/app/pipes/id.ts",
+    "src/app/pipes/moment.ts",
 
     "src/app/components/auth/router.ts",
     "src/app/components/auth/login.ts",

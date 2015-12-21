@@ -5,7 +5,7 @@ import {
 
 // MongoDB's ObjectID to Timestamp
 @Pipe({ name: 'timestamp' })
-export class Timestamp implements PipeTransform {
+export class TimestampPipe implements PipeTransform {
   transform(value: string): number {
     return parseInt(value.substr(0, 8), 16) * 1000;
   }

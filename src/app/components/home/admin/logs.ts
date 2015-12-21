@@ -22,7 +22,8 @@ import {
   NavbarService,
 } from '../../../services';
 
-import { Timestamp } from '../../../pipes/id';
+import { TimestampPipe } from '../../../pipes/id';
+import { MomentPipe } from '../../../pipes/moment';
 
 declare var $: any;
 
@@ -35,7 +36,7 @@ declare var $: any;
   ],
   template: require('./logs.jade'),
   styles: [ '' ],
-  pipes: [ Timestamp ]
+  pipes: [ TimestampPipe, MomentPipe ]
 })
 export class LogsComponent {
   table: any[];
