@@ -6,7 +6,7 @@ table.ui.celled.table
       th Method
       th Collection
   tbody
-    tr(*ngFor="#t of table")
+    tr(*ngFor="#t of table | reverse | filter:filter")
       td {{t._id.substr(0, 8) | timestamp | moment:'YYYY-MM-DD HH:mm:ss' }}
       td {{t.t.payload.sub.split('/')[0]}}
       td {{t.q.method}}

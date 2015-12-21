@@ -24,6 +24,7 @@ import {
 
 import { TimestampPipe } from '../../../pipes/id';
 import { MomentPipe } from '../../../pipes/moment';
+import { ReversePipe, FilterPipe } from '../../../pipes/collection';
 
 declare var $: any;
 
@@ -36,7 +37,12 @@ declare var $: any;
   ],
   template: require('./logs.jade'),
   styles: [ '' ],
-  pipes: [ TimestampPipe, MomentPipe ]
+  pipes: [
+    TimestampPipe,
+    MomentPipe,
+    ReversePipe,
+    FilterPipe,
+  ]
 })
 export class LogsComponent {
   table: any[];
@@ -62,5 +68,10 @@ export class LogsComponent {
           console.log(err);
         }
       );
+  }
+
+  filter(x) {
+    console.log(x);
+    return x.q.name === 'test.product';
   }
 }
