@@ -19,6 +19,7 @@ import {
 import {
   AuthService,
   DbService,
+  NavbarService,
 } from '../../../services';
 
 import { Timestamp } from '../../../pipes/id';
@@ -41,9 +42,11 @@ export class LogsComponent {
 
   constructor(private router: Router,
               private auth: AuthService,
-              private db: DbService) {
+              private db: DbService,
+              private navbar: NavbarService) {
     //
     if (!auth.check()) return;
+    navbar.active('admin/logs');
     this.load();
   }
 
