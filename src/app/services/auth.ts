@@ -4,23 +4,27 @@ import {
 } from 'angular2/core';
 
 import {
-  Router
+  Router,
+  Location,
 } from 'angular2/router';
 
 import { DbService } from './db';
 
 @Injectable()
 export class AuthService {
-  private remember = false;
+  remember = false;
+  lastLocation = null;
 
   constructor(private router: Router,
+              private location: Location,
               private db: DbService) {
     let token = this.token();
     if (localStorage.getItem('token')) this.remember = true;
   }
 
-  public check() {
+  public check(route?: any) {
     if (!this.token()) {
+      this.lastLocation = this.location.path();
       this.router.navigate(['/Auth/Login']);
       return false;
     }
@@ -31,16 +35,17 @@ export class AuthService {
     return this.token() != null;
   }
 
-  login(user: string, pwd: string, remember: boolean, cb: (success: boolean) => void) {
+  login(user: string, pwd: string, remember: boolean, cb: (ok: boolean, lastLocation: string) => void) {
     this.remember = remember;
     this.db.login({ name: user, pwd: pwd })
       .subscribe(
         r => {
-          if (r.error) return cb(false);
+          if (r.error) return cb(false, null);
           this.setToken(r.token);
-          cb(true);
+          cb(true, this.lastLocation);
+          this.lastLocation = null;
         },
-        err => cb(false));
+        err => cb(false, null));
   }
 
   logout() {

@@ -63,10 +63,14 @@ export class LoginComponent {
     }
     let { user, pwd, remember } = this.loginForm.value;
     $('#loading').modal('show');
-    this.auth.login(user, pwd, remember, success => {
-      if (success) {
+    this.auth.login(user, pwd, remember, (ok, location) => {
+      if (ok) {
         $('#loading').modal('hide');
-        this.router.navigate(['/Home']);
+        if (location) {
+          this.router.navigateByUrl(location);
+        } else {
+          this.router.navigate(['/Home']);
+        }
       } else {
         $('#wrong').modal({
           onHide: () => { $('#loading').modal('hide'); }

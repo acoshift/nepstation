@@ -39,11 +39,5 @@ export class HomeRouter {
   constructor(private router: Router,
               private auth: AuthService) {
     if (!auth.check()) return;
-    console.log('home');
-  }
-
-  logout() {
-    this.auth.logout();
-    this.router.navigate(['/Auth']);
   }
 }
