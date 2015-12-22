@@ -52,6 +52,7 @@ export class LogsRoute {
   table: Log[];
   keyword: string;
   field: string;
+  loading: boolean;
 
   constructor(private router: Router,
               private auth: AuthService,
@@ -63,6 +64,7 @@ export class LogsRoute {
     $('.ui.dropdown').dropdown();
 
     this.field = 'all';
+    this.loading = true;
 
     logs.observable().subscribe(() => this.refresh());
 
@@ -77,6 +79,7 @@ export class LogsRoute {
         .filter(x => this.filter(x))
         .reverse()
         .value();
+      this.loading = false;
     });
   }
 

@@ -6,7 +6,6 @@
     i.dropdown.icon
     .menu
       .item((click)="refresh(null, 'all')") All
-      .item((click)="refresh(null, 'date')") Date
       .item((click)="refresh(null, 'user')") User
       .item((click)="refresh(null, 'method')") Method
       .item((click)="refresh(null, 'collection')") Collection
@@ -24,3 +23,5 @@ table.ui.celled.table
       td {{t.t.payload.sub.split('/')[0]}}
       td {{t.q.method}}
       td {{t.q.name}}
+
+.ui.active.centered.large.inline.loader(*ngIf="loading")
