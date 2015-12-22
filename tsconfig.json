@@ -12,10 +12,18 @@
     "src/bootstrap.ts",
     "src/vendor.ts",
 
+    "src/app/models/services.ts",
+    "src/app/models/readonlymodelservice.ts",
+    "src/app/models/modelservice.ts",
+    "src/app/models/admin.ts",
+    "src/app/models/admin/log.ts",
+
     "src/app/services.ts",
     "src/app/services/auth.ts",
     "src/app/services/db.ts",
     "src/app/services/navbar.ts",
+    "src/app/services/admin.ts",
+    "src/app/services/admin/logs.ts",
 
     "src/app/pipes/id.ts",
     "src/app/pipes/moment.ts",

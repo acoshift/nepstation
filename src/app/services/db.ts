@@ -9,6 +9,8 @@ import {
   Headers,
 } from 'angular2/http';
 
+import _ = require('lodash');
+
 @Injectable()
 export class DbService {
   constructor(private http: Http) { }
@@ -37,14 +39,25 @@ export class DbService {
     return this.request(`login ${this.db}(${JSON.stringify(params)})`);
   }
 
-  nepq(method: string, ns: string, params: any, retrieve: string) {
-    return this.request(this.makeNepQ(method, ns, params, retrieve));
+  nepq(method: string, ns: string, params: any, retrieves: any) {
+    return this.request(this.makeNepQ(method, ns, params, retrieves));
   }
 
-  private makeNepQ(method: string, ns: string, params: any, retrieve: string) {
-    let p = params ? `(${JSON.stringify(params)})` : '';
-    let ret = retrieve ? `{${retrieve}}` : '';
-    let n = ns ? ` ${this.db}.${ns}` : '';
+  retrieves(rets: any) {
+    let ret = '';
+    _.forOwn(rets, (v, k) => {
+      if (v !== 1 && !_.isPlainObject(v)) return;
+      ret += k;
+      if (_.isPlainObject(v)) ret += `{${this.retrieves(v)}}`;
+      ret += ',';
+    });
+    return ret.substr(0, ret.length - 1);
+  }
+
+  private makeNepQ(method: string, ns: string, params: any, retrieves: any) {
+    let p = params && `(${JSON.stringify(params)})` || '';
+    let ret = retrieves && `{${this.retrieves(retrieves)}}` || '';
+    let n = ns && ` ${this.db}.${ns}` || '';
     let r = `${method}${n}${p}${ret}`;
     console.log('make request: ' + r);
     return r;

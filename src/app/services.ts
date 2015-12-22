@@ -5,9 +5,11 @@ export * from './services/navbar';
 import { DbService } from './services/db';
 import { AuthService } from './services/auth';
 import { NavbarService } from './services/navbar';
+import { Services as AdminServices } from './services/admin';
 
-export var AppServices = [
+export var Services = [
   DbService,
   AuthService,
   NavbarService,
+  AdminServices,
 ];

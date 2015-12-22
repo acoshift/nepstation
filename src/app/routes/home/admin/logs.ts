@@ -22,6 +22,8 @@ import {
   NavbarService,
 } from '../../../services';
 
+import { LogsService } from '../../../services/admin';
+
 import { TimestampPipe } from '../../../pipes/id';
 import { MomentPipe } from '../../../pipes/moment';
 import { ReversePipe, FilterPipe } from '../../../pipes/collection';
@@ -51,7 +53,8 @@ export class LogsRoute {
   constructor(private router: Router,
               private auth: AuthService,
               private db: DbService,
-              private navbar: NavbarService) {
+              private navbar: NavbarService,
+              private logs: LogsService) {
     //
     if (!auth.check()) return;
     navbar.active('admin/logs');
@@ -60,19 +63,11 @@ export class LogsRoute {
   }
 
   load() {
-    this.db.nepq('query', 'db.logs', null, '_id,q{method,name},t{payload{sub}}')
-      .subscribe(
-        r => {
-          this.table = r;
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    this.logs.refresh();
   }
 
-  filter(x) {
-    if (!this.keyword) return true;
-    return x.q.name === this.keyword;
+  filter(x, keyword) {
+    if (!keyword) return true;
+    return x.q.name === keyword;
   }
 }

@@ -34,7 +34,7 @@ import {
 
 import {
   AuthService,
-  AppServices,
+  Services,
 } from './app/services';
 
 import { AuthRouter } from './app/routes/auth/router';
@@ -62,5 +62,5 @@ bootstrap(App, [
   ELEMENT_PROBE_PROVIDERS, // remove in production
   provide(LocationStrategy, { useClass: PathLocationStrategy }),
   provide(ROUTER_PRIMARY_COMPONENT, { useValue: App }),
-  AppServices,
+  Services,
 ]);
