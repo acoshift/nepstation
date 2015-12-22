@@ -22,7 +22,11 @@ import {
   NavbarService,
 } from '../../../services';
 
+import _ = require('lodash');
+
 import { LogsService } from '../../../services/admin';
+
+import { Log } from '../../../models/admin';
 
 import { TimestampPipe } from '../../../pipes/id';
 import { MomentPipe } from '../../../pipes/moment';
@@ -42,32 +46,54 @@ declare var $: any;
   pipes: [
     TimestampPipe,
     MomentPipe,
-    ReversePipe,
-    FilterPipe,
   ]
 })
 export class LogsRoute {
-  table: any[];
+  table: Log[];
   keyword: string;
+  field: string;
 
   constructor(private router: Router,
               private auth: AuthService,
               private db: DbService,
               private navbar: NavbarService,
               private logs: LogsService) {
-    //
     if (!auth.check()) return;
     navbar.active('admin/logs');
     $('.ui.dropdown').dropdown();
-    this.load();
+
+    this.field = 'all';
+
+    logs.observable().subscribe(() => this.refresh());
+
+    logs.refresh();
   }
 
-  load() {
-    this.logs.refresh();
+  refresh(keyword?: string, field?: string) {
+    if (typeof keyword !== 'undefined' && keyword !== null) this.keyword = keyword;
+    if (typeof field !== 'undefined' && field !== null) this.field = field;
+    setTimeout(() => {
+      this.table = _(this.logs.data())
+        .filter(x => this.filter(x))
+        .reverse()
+        .value();
+    });
   }
 
-  filter(x, keyword) {
-    if (!keyword) return true;
-    return x.q.name === keyword;
+  filter(x) {
+    if (!this.keyword) return true;
+    switch (this.field) {
+      case 'all':
+        return x.t.payload.sub.split('/')[0].indexOf(this.keyword) !== -1 ||
+          x.q.method.indexOf(this.keyword) !== -1 ||
+          x.q.name.indexOf(this.keyword) !== -1;
+      case 'user':
+        return x.t.payload.sub.split('/')[0].indexOf(this.keyword) !== -1;
+      case 'method':
+        return x.q.method.indexOf(this.keyword) !== -1;
+      case 'collection':
+        return x.q.name.indexOf(this.keyword) !== -1;
+    }
+    return false;
   }
 }

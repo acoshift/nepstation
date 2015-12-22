@@ -1,15 +1,15 @@
 .ui.right.action.left.icon.input
   i.search.icon
-  input(type="text", placeholder="Search", [(ngModel)]="keyword")
+  input(type="text", placeholder="Search", (input)="refresh($event.target.value)")
   .ui.basic.floating.dropdown.button
     .text Select field
     i.dropdown.icon
     .menu
-      .item All
-      .item Date
-      .item User
-      .item Method
-      .item Collection
+      .item((click)="refresh(null, 'all')") All
+      .item((click)="refresh(null, 'date')") Date
+      .item((click)="refresh(null, 'user')") User
+      .item((click)="refresh(null, 'method')") Method
+      .item((click)="refresh(null, 'collection')") Collection
 
 table.ui.celled.table
   thead
@@ -19,7 +19,7 @@ table.ui.celled.table
       th Method
       th Collection
   tbody
-    tr(*ngFor="#t of logs.data() | reverse | filter:filter:keyword")
+    tr(*ngFor="#t of table")
       td {{t._id.substr(0, 8) | timestamp | moment:'YYYY-MM-DD HH:mm:ss' }}
       td {{t.t.payload.sub.split('/')[0]}}
       td {{t.q.method}}
