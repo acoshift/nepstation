@@ -21,6 +21,7 @@
     "src/app/services.ts",
     "src/app/services/auth.ts",
     "src/app/services/db.ts",
+    "src/app/services/cache.ts",
     "src/app/services/navbar.ts",
     "src/app/services/admin.ts",
     "src/app/services/admin/logs.ts",

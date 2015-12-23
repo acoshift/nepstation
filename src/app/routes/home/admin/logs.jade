@@ -1,16 +1,27 @@
-.ui.right.action.left.icon.input
-  i.search.icon
-  input(type="text", placeholder="Search", (input)="refresh($event.target.value)")
-  .ui.basic.floating.dropdown.button
-    .text Select field
-    i.dropdown.icon
-    .menu
-      .item((click)="refresh(null, 'all')") All
-      .item((click)="refresh(null, 'user')") User
-      .item((click)="refresh(null, 'method')") Method
-      .item((click)="refresh(null, 'collection')") Collection
+.ui.form
+  .fields
+    .field
+      .ui.right.action.left.icon.input
+        i.search.icon
+        input(type="text", placeholder="Search", (input)="setKeyword($event.target.value)")
+        .ui.basic.floating.dropdown.button
+          .text Select field
+          i.dropdown.icon
+          .menu
+            .item((click)="setField('all')") All
+            .item((click)="setField('user')") User
+            .item((click)="setField('method')") Method
+            .item((click)="setField('collection')") Collection
+    .field
+      .ui.left.icon.input
+        i.calendar.icon
+        input(type="text", placeholder="Start: YYYY-MM-DD", (input)="setStartDate($event.target.value)")
+    .field
+      .ui.left.icon.input
+        i.calendar.icon
+        input(type="text", placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
 
-table.ui.celled.table
+table.ui.fixed.celled.table
   thead
     tr
       th Date
@@ -18,8 +29,8 @@ table.ui.celled.table
       th Method
       th Collection
   tbody
-    tr(*ngFor="#t of table")
-      td {{t._id.substr(0, 8) | timestamp | moment:'YYYY-MM-DD HH:mm:ss' }}
+    tr(*ngFor="#t of logs.observable() | reverse | repeat:repeater | filter:filter() | async")
+      td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.t.payload.sub.split('/')[0]}}
       td {{t.q.method}}
       td {{t.q.name}}

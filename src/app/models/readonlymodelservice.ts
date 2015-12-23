@@ -1,7 +1,6 @@
-import * as Rx from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface ReadOnlyModelService<T> {
   refresh(): void;
-  observable(): Rx.Observable<T[]>;
-  data(): T[];
+  observable(): Observable<T>;
 }

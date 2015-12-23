@@ -20,11 +20,11 @@
             label Remember me
         button.ui.fluid.large.grey.submit.button((click)='login()') Log in
     .ui.message
-      | Forgot
+      | Forgot&nbsp;
       a([routerLink]="['ForgotUsername']") username
-      |  /
+      | &nbsp;/&nbsp;
       a([routerLink]="['ForgotPassword']") password
-      |  ?
+      | &nbsp;?
 #loading.ui.modal
   .ui.active.dimmer
     .ui.large.text.loader Loading
