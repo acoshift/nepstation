@@ -16,8 +16,8 @@ import { Observable, Subject } from 'rxjs';
 import _ = require('lodash');
 
 /**
- * The `reverse` pipe return an observer which reverse emitted values
- * from an input observer.
+ * The `reverse` pipe return an observable which reverse emitted values
+ * from an input observable.
  */
 @Pipe({ name: 'reverse', pure: true })
 @Injectable()
@@ -40,8 +40,8 @@ export class ReversePipe implements PipeTransform, OnDestroy {
 }
 
 /**
- * The `filter` pipe return an observer which filter emitted values from
- * an input observer with input functions.
+ * The `filter` pipe return an observable which filter emitted values from
+ * an input observable with input functions.
  */
 @Pipe({ name: 'filter', pure: true })
 @Injectable()
@@ -86,8 +86,8 @@ export class FilterPipe implements PipeTransform, OnDestroy {
 }
 
 /**
- * The `repeat` pipe return an observer which re-emit latest value from an input observer
- * when an observer from argument emitted.
+ * The `repeat` pipe return an observable which re-emit latest value from an input observable
+ * when an observable from argument emitted.
  */
 @Pipe({ name: 'repeat', pure: true })
 @Injectable()
