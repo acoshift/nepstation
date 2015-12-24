@@ -35,6 +35,6 @@ table.ui.fixed.celled.table
       td {{t.q.method}}
       td {{t.q.name}}
 
-pagination(*ngIf="!loading", [(page)]="page", perPage=30, [count]="count")
+pagination(*ngIf="!loading", [(page)]="page", [perPage]="30", [count]="count")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")

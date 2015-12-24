@@ -89,7 +89,6 @@ export class LogsRoute {
 
     logs.observable().subscribe(r => {
       this.count = r && r.length || 0;
-      console.log(this.count);
       this.loading = r === null;
     });
 

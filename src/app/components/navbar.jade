@@ -2,8 +2,8 @@
   .item
     .header Admin
     .menu
-      a.item([ngClass]="{ active: isActive('admin/logs') }", [routerLink]="['./Admin/Logs']") Logs
-      a.item([ngClass]="{ active: isActive('admin/users') }", [routerLink]="['./Admin/Users']") Users
+      a.item([class.active]="isActive('admin/logs')", [routerLink]="['./Admin/Logs']") Logs
+      a.item([class.active]="isActive('admin/users')", [routerLink]="['./Admin/Users']") Users
 
 .ui.top.fixed.menu
   .item
