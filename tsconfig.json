@@ -7,10 +7,15 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
-  "exclude": [
-    "node_modules",
-    "__build__",
-    "src/public"
+  "filesGlob": [
+    "**/*.ts",
+    "**/*.tsx",
+    "!node_modules/**",
+    "!__build__/**",
+    "!src/public/**"
   ],
-  "compileOnSave": false
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
 }
