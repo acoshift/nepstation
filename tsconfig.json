@@ -5,6 +5,7 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noEmitHelpers": false,
     "sourceMap": true
   },
   "filesGlob": [
@@ -14,7 +15,13 @@
     "!__build__/**",
     "!src/public/**"
   ],
+  "exclude": [
+    "node_modules",
+    "__build__",
+    "src/public"
+  ],
   "compileOnSave": false,
+  "buildOnSave": false,
   "atom": {
     "rewriteTsconfig": false
   }

@@ -1,5 +1,3 @@
-var sliceArgs = Function.prototype.call.bind(Array.prototype.slice);
-var toString  = Function.prototype.call.bind(Object.prototype.toString);
 var path = require('path');
 var webpack = require('webpack');
 // Webpack Plugins
@@ -12,7 +10,7 @@ var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
  */
 module.exports = {
   devtool: 'source-map', // for faster builds use 'eval'
-  debug: true,
+  debug: true, // remove in production
 
   devServer: {
     historyApiFallback: true,
@@ -22,7 +20,7 @@ module.exports = {
 
   entry: {
     'vendor': './src/vendor.ts',
-    'app': './src/bootstrap'
+    'app': './src/bootstrap.ts'
   },
 
   output: {
@@ -60,7 +58,7 @@ module.exports = {
       // Support for .ts files.
       {
         test: /\.ts$/,
-        loader: 'ts',
+        loader: 'ts-loader',
         query: {
           'ignoreDiagnostics': [
             2403, // 2403 -> Subsequent variable declarations
@@ -69,7 +67,7 @@ module.exports = {
             2375  // 2375 -> Duplicate string index signature
           ]
         },
-        exclude: [ /\.(spec|e2e)\.ts$/, /node_modules/ ]
+        exclude: [ /\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/ ]
       }
     ],
     noParse: [ /.+zone\.js\/dist\/.+/, /.+angular2\/bundles\/.+/ ]
