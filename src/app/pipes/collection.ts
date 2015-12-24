@@ -10,6 +10,7 @@ import {
   isPresent,
   isFunction,
   isNumber,
+  isArray,
 } from 'angular2/src/facade/lang';
 
 import { Observable, Subscriber } from 'rxjs';
@@ -158,5 +159,20 @@ export class PagePipe implements PipeTransform {
     if (!this._latestValue) return;
     let p = this._latestPage * this._latestPerPage;
     this._emitter.next(_.slice(this._latestValue, p, this._latestPerPage && p + this._latestPerPage || undefined));
+  }
+}
+
+@Pipe({ name: 'count', pure: true })
+@Injectable()
+export class CountPipe implements PipeTransform {
+  _obj: Observable<any[]> = null;
+  _observable: Observable<number> = null;
+
+  transform(obj: Observable<any[]>, args?: any[]) {
+    if (isBlank(this._obj) && isPresent(obj)) {
+      this._obj = obj;
+      this._observable = obj.map(x => isArray(x) && x.length || 0);
+    }
+    return this._observable;
   }
 }

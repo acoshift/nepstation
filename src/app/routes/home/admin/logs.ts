@@ -31,7 +31,7 @@ import { Log } from '../../../models/admin';
 import { TimestampPipe } from '../../../pipes/id';
 import { MomentPipe } from '../../../pipes/moment';
 
-import { ReversePipe, FilterPipe, RepeatPipe, PagePipe } from '../../../pipes/collection';
+import { ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes/collection';
 
 declare var $: any;
 
@@ -51,6 +51,7 @@ declare var $: any;
     FilterPipe,
     RepeatPipe,
     PagePipe,
+    CountPipe,
   ]
 })
 export class LogsRoute {
