@@ -9,6 +9,7 @@ import {
 } from 'angular2/router';
 
 import { LogsRoute } from './logs';
+import { UsersRoute } from './users';
 
 @Component({
   template: '<router-outlet></router-outlet>',
@@ -16,5 +17,6 @@ import { LogsRoute } from './logs';
 })
 @RouteConfig([
   { path: '/logs', name: 'Logs', component: LogsRoute },
+  { path: '/users', name: 'Users', component: UsersRoute },
 ])
 export class AdminRouter {}
