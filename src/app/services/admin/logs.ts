@@ -10,7 +10,7 @@ export class LogsService implements ReadOnlyModelService<Log[]> {
   private log: Subject<Log[]>;
 
   constructor(private db: DbService) {
-    this.log = new BehaviorSubject([]);
+    this.log = new BehaviorSubject(null);
     this.logs = this.log.share();
   }
 

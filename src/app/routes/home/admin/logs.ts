@@ -82,7 +82,7 @@ export class LogsRoute {
     this.repeater = new Subject();
     this.page = 0;
 
-    logs.observable().subscribe(() => this.loading = false);
+    logs.observable().subscribe(r => this.loading = r === null);
 
     logs.refresh();
   }
@@ -108,7 +108,6 @@ export class LogsRoute {
   }
 
   refresh() {
-    if (this.loading) this.loading = false;
     this.repeater.next(0);
   }
 
