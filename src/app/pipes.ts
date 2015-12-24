@@ -11,4 +11,4 @@ export var Pipes = [
   TimestampPipe,
   ReversePipe,
   RepeatPipe,
-]
+];
