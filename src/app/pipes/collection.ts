@@ -9,6 +9,7 @@ import {
   isBlank,
   isPresent,
   isFunction,
+  isNumber,
 } from 'angular2/src/facade/lang';
 
 import { Observable, Subject } from 'rxjs';
@@ -148,11 +149,11 @@ export class PagePipe implements PipeTransform, OnDestroy {
 
   transform(obj: Observable<any[]>, args?: any[]) {
     let emit = false;
-    if (args[0] && args[0] !== this._latestPage) {
+    if (isNumber(args[0]) && args[0] !== this._latestPage) {
       this._latestPage = args[0];
       emit = true;
     }
-    if (args[1] && args[1] !== this._latestPerPage) {
+    if (isNumber(args[1]) && args[1] !== this._latestPerPage) {
       this._latestPerPage = args[1];
       emit = true;
     }
