@@ -1,0 +1,40 @@
+.ui.form
+  .fields
+    .field
+      .ui.right.action.left.icon.input
+        i.search.icon
+        input(type="text", placeholder="Search", (input)="setKeyword($event.target.value)")
+        .ui.basic.floating.dropdown.button
+          .text Select field
+          i.dropdown.icon
+          .menu
+            .item((click)="setField('all')") All
+            .item((click)="setField('name')") Username
+            .item((click)="setField('enabled')") Enabled
+            .item((click)="setField('role')") Role
+    .field
+      .ui.left.icon.input
+        i.calendar.icon
+        input(type="text", placeholder="Start: YYYY-MM-DD", (input)="setStartDate($event.target.value)")
+    .field
+      .ui.left.icon.input
+        i.calendar.icon
+        input(type="text", placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
+
+table.ui.fixed.celled.table
+  thead
+    tr
+      th Date
+      th Username
+      th Enabled
+      th Role
+  tbody
+    tr(*ngFor="#t of users.observable() | reverse | repeat:repeater | filter:filterDate():filter() | page:page:30 | async")
+      td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
+      td {{t.name}}
+      td {{t.enabled}}
+      td {{t.role}}
+
+pagination(*ngIf="!loading", [(page)]="page", [perPage]="30", [count]="count")
+
+.ui.active.centered.large.inline.loader(*ngIf="loading")

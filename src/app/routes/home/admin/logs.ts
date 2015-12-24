@@ -12,11 +12,6 @@ import {
 } from 'angular2/common';
 
 import {
-  Router,
-  RouterLink,
-} from 'angular2/router';
-
-import {
   AuthService,
   DbService,
   NavbarService,
@@ -47,7 +42,6 @@ declare var $: any;
   directives: [
     CORE_DIRECTIVES,
     FORM_DIRECTIVES,
-    RouterLink,
     PaginationComponent,
   ],
   pipes: [
@@ -60,7 +54,6 @@ declare var $: any;
   ]
 })
 export class LogsRoute {
-  table: Log[];
   keyword: string;
   field: string;
   startDate: number;
@@ -70,8 +63,7 @@ export class LogsRoute {
   page: number;
   count: number;
 
-  constructor(private router: Router,
-              private auth: AuthService,
+  constructor(private auth: AuthService,
               private db: DbService,
               private navbar: NavbarService,
               private logs: LogsService,
@@ -146,14 +138,5 @@ export class LogsRoute {
       if (this.endDate && this.endDate < ts) r = false;
       return r;
     };
-  }
-
-  nextPage() {
-    ++this.page;
-  }
-
-  prevPage() {
-    if (this.page <= 0) return;
-    --this.page;
   }
 }

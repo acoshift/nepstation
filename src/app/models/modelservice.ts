@@ -1,3 +1,3 @@
-export interface ModelService {
+export interface ModelService<T> {
 
 }
