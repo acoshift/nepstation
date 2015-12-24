@@ -63,9 +63,7 @@ export class LogsRoute {
   page: number;
   count: number;
 
-  constructor(private auth: AuthService,
-              private db: DbService,
-              private navbar: NavbarService,
+  constructor(navbar: NavbarService,
               private logs: LogsService,
               private timestamp: TimestampPipe) {
 

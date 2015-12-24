@@ -55,9 +55,7 @@ export class UsersRoute {
   page: number;
   count: number;
 
-  constructor(auth: AuthService,
-              private db: DbService,
-              navbar: NavbarService,
+  constructor(navbar: NavbarService,
               private users: UsersService,
               private timestamp: TimestampPipe) {
 
