@@ -34,11 +34,7 @@ table.ui.fixed.celled.table
       td {{t.t.payload.sub.split('/')[0]}}
       td {{t.q.method}}
       td {{t.q.name}}
-{{page}}
-.ui.buttons
-  button.ui.icon.button((click)="prevPage()")
-    i.left.chevron.icon
-  button.ui.icon.button((click)="nextPage()")
-    i.right.chevron.icon
+
+pagination(*ngIf="!loading", [(page)]="page", perPage=30, [count]="count")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")

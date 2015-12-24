@@ -24,6 +24,8 @@ import {
 
 import { Subject } from 'rxjs';
 
+import { PaginationComponent } from '../../../components';
+
 import _ = require('lodash');
 import moment = require('moment');
 
@@ -46,6 +48,7 @@ declare var $: any;
     CORE_DIRECTIVES,
     FORM_DIRECTIVES,
     RouterLink,
+    PaginationComponent,
   ],
   pipes: [
     TimestampPipe,
@@ -65,6 +68,7 @@ export class LogsRoute {
   loading: boolean;
   repeater: Subject<any>;
   page: number;
+  count: number;
 
   constructor(private router: Router,
               private auth: AuthService,
@@ -81,8 +85,13 @@ export class LogsRoute {
     this.loading = true;
     this.repeater = new Subject();
     this.page = 0;
+    this.count = 0;
 
-    logs.observable().subscribe(r => this.loading = r === null);
+    logs.observable().subscribe(r => {
+      this.count = r && r.length || 0;
+      console.log(this.count);
+      this.loading = r === null;
+    });
 
     logs.refresh();
   }
