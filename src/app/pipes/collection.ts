@@ -12,7 +12,7 @@ import {
   isNumber,
 } from 'angular2/src/facade/lang';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 
 import _ = require('lodash');
 
@@ -22,14 +22,9 @@ import _ = require('lodash');
  */
 @Pipe({ name: 'reverse', pure: true })
 @Injectable()
-export class ReversePipe implements PipeTransform, OnDestroy {
+export class ReversePipe implements PipeTransform {
   _obj: Observable<any[]> = null;
   _observable: Observable<any[]> = null;
-
-  ngOnDestroy() {
-    this._obj = null;
-    this._observable = null;
-  }
 
   transform(obj: Observable<any[]>, args?: any[]): Observable<any[]> {
     if (isBlank(this._obj) && isPresent(obj)) {
@@ -44,21 +39,19 @@ export class ReversePipe implements PipeTransform, OnDestroy {
  * The `filter` pipe return an observable which filter emitted values from
  * an input observable with input functions.
  */
-@Pipe({ name: 'filter', pure: true })
+@Pipe({ name: 'filter', pure: false })
 @Injectable()
-export class FilterPipe implements PipeTransform, OnDestroy {
+export class FilterPipe implements PipeTransform {
   _obj: Observable<any[]> = null;
+  _emitter: Subscriber<any[]> = null;
   _observable: Observable<any[]> = null;
-  _emitter: Subject<any[]> = null;
   _latestValue: any[] = null;
   _filters: Function[] = null;
 
-  ngOnDestroy() {
-    this._obj = null;
-    this._observable = null;
-    this._emitter = null;
-    this._latestValue = null;
-    this._filters = null;
+  constructor() {
+    this._observable = Observable.create(subscriber => {
+      this._emitter = subscriber;
+    });
   }
 
   transform(obj: Observable<any[]>, args?: Function[]): Observable<any[]> {
@@ -68,8 +61,6 @@ export class FilterPipe implements PipeTransform, OnDestroy {
     }
     if (isBlank(this._obj) && isPresent(obj)) {
       this._obj = obj;
-      this._emitter = new Subject();
-      this._observable = this._emitter.share();
       obj.subscribe(x => {
         this._latestValue = x;
         this._do();
@@ -92,19 +83,17 @@ export class FilterPipe implements PipeTransform, OnDestroy {
  */
 @Pipe({ name: 'repeat', pure: true })
 @Injectable()
-export class RepeatPipe implements PipeTransform, OnDestroy {
+export class RepeatPipe implements PipeTransform {
   _obj: Observable<any> = null;
   _receiver: Observable<void> = null;
+  _emitter: Subscriber<any> = null;
   _observable: Observable<any> = null;
-  _emitter: Subject<any> = null;
   _latestValue: any = null;
 
-  ngOnDestroy() {
-    this._obj = null;
-    this._receiver = null;
-    this._observable = null;
-    this._emitter = null;
-    this._latestValue = null;
+  constructor() {
+    this._observable = Observable.create(subscriber => {
+      this._emitter = subscriber;
+    });
   }
 
   transform(obj: Observable<any>, args?: any[]): Observable<any[]> {
@@ -114,8 +103,6 @@ export class RepeatPipe implements PipeTransform, OnDestroy {
     }
     if (isBlank(this._obj) && isPresent(obj)) {
       this._obj = obj;
-      this._emitter = new Subject();
-      this._observable = this._emitter.share();
       obj.subscribe(x => {
         this._latestValue = x;
         this._emit();
@@ -132,19 +119,18 @@ export class RepeatPipe implements PipeTransform, OnDestroy {
 
 @Pipe({ name: 'page', pure: false })
 @Injectable()
-export class PagePipe implements PipeTransform, OnDestroy {
+export class PagePipe implements PipeTransform {
   _obj: Observable<any[]> = null;
+  _emitter: Subscriber<any[]> = null;
   _observable: Observable<any[]> = null;
-  _emitter: Subject<any[]> = null;
   _latestValue: any[] = null;
   _latestPage: number = 0;
   _latestPerPage: number = 0;
 
-  ngOnDestroy() {
-    this._obj = null;
-    this._observable = null;
-    this._emitter = null;
-    this._latestValue = null;
+  constructor() {
+    this._observable = Observable.create(subscriber => {
+      this._emitter = subscriber;
+    });
   }
 
   transform(obj: Observable<any[]>, args?: any[]) {
@@ -159,12 +145,10 @@ export class PagePipe implements PipeTransform, OnDestroy {
     }
     if (isBlank(this._obj) && isPresent(obj)) {
       this._obj = obj;
-      this._emitter = new Subject();
       obj.subscribe(x => {
         this._latestValue = x;
         this._emit();
       });
-      this._observable = this._emitter.share();
     }
     if (emit) this._emit();
     return this._observable;

@@ -15,7 +15,7 @@ export class LogsService implements ReadOnlyModelService<Log[]> {
   }
 
   refresh() {
-    this.db.nepq('query', 'db.logs', [{}, {limit: 0}], {
+    this.db.nepq('query', 'db.logs', null, {
       _id: 1,
       q: { method: 1, name: 1 },
       t: { payload: { sub: 1 } } })
