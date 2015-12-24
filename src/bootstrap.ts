@@ -37,6 +37,8 @@ import {
   Services,
 } from './app/services';
 
+import { Pipes } from './app/pipes';
+
 import { AuthRouter } from './app/routes/auth/router';
 import { HomeRouter } from './app/routes/home/router';
 
@@ -63,4 +65,5 @@ bootstrap(App, [
   provide(LocationStrategy, { useClass: PathLocationStrategy }),
   provide(ROUTER_PRIMARY_COMPONENT, { useValue: App }),
   Services,
+  Pipes,
 ]);
