@@ -29,7 +29,7 @@ export class ReversePipe implements PipeTransform {
   transform(obj: Observable<any[]>, args?: any[]): Observable<any[]> {
     if (isBlank(this._obj) && isPresent(obj)) {
       this._obj = obj;
-      this._observable = obj.map(x => _(x).reverse().value());
+      this._observable = obj.map(x => _.clone(x).reverse());
     }
     return this._observable;
   }
