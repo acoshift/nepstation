@@ -128,3 +128,50 @@ export class RepeatPipe implements PipeTransform, OnDestroy {
     this._emitter.next(this._latestValue);
   }
 }
+
+@Pipe({ name: 'page', pure: false })
+@Injectable()
+export class PagePipe implements PipeTransform, OnDestroy {
+  _obj: Observable<any[]> = null;
+  _observable: Observable<any[]> = null;
+  _emitter: Subject<any[]> = null;
+  _latestValue: any[] = null;
+  _latestPage: number = 0;
+  _latestPerPage: number = 0;
+
+  ngOnDestroy() {
+    this._obj = null;
+    this._observable = null;
+    this._emitter = null;
+    this._latestValue = null;
+  }
+
+  transform(obj: Observable<any[]>, args?: any[]) {
+    let emit = false;
+    if (args[0] && args[0] !== this._latestPage) {
+      this._latestPage = args[0];
+      emit = true;
+    }
+    if (args[1] && args[1] !== this._latestPerPage) {
+      this._latestPerPage = args[1];
+      emit = true;
+    }
+    if (isBlank(this._obj) && isPresent(obj)) {
+      this._obj = obj;
+      this._emitter = new Subject();
+      obj.subscribe(x => {
+        this._latestValue = x;
+        this._emit();
+      });
+      this._observable = this._emitter.share();
+    }
+    if (emit) this._emit();
+    return this._observable;
+  }
+
+  _emit() {
+    if (!this._latestValue) return;
+    let p = this._latestPage * this._latestPerPage;
+    this._emitter.next(_.slice(this._latestValue, p, this._latestPerPage && p + this._latestPerPage || undefined));
+  }
+}
