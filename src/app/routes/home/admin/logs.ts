@@ -112,7 +112,7 @@ export class LogsRoute {
   }
 
   filter() {
-    return (x) => {
+    return x => {
       if (!this.keyword) return true;
       switch (this.field) {
         case 'all':
@@ -131,7 +131,7 @@ export class LogsRoute {
   }
 
   filterDate() {
-    return (x) => {
+    return x => {
       let r = true;
       let ts = this.timestamp.transform(x._id);
       if (this.startDate && this.startDate > ts) r = false;
