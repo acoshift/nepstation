@@ -68,7 +68,7 @@ export class LogsRoute {
               private navbar: NavbarService,
               private logs: LogsService,
               private timestamp: TimestampPipe) {
-    if (!auth.check()) return;
+
     navbar.active('admin/logs');
 
     $('.ui.dropdown').dropdown();

@@ -25,7 +25,9 @@ export class AuthService {
   public check() {
     if (!this.token()) {
       this.lastLocation = this.location.path();
-      this.router.navigate(['/Auth/Login']);
+      setTimeout(() => {
+        this.router.navigate(['/Auth']);
+      });
       return false;
     }
     return true;

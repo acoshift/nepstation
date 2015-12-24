@@ -60,7 +60,7 @@ export class UsersRoute {
               navbar: NavbarService,
               private users: UsersService,
               private timestamp: TimestampPipe) {
-    if (!auth.check()) return;
+
     navbar.active('admin/users');
 
     $('.ui.dropdown').dropdown();
