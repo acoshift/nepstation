@@ -34,7 +34,7 @@ import { Log } from '../../../models/admin';
 import { TimestampPipe } from '../../../pipes/id';
 import { MomentPipe } from '../../../pipes/moment';
 
-import { ReversePipe, FilterPipe, RepeatPipe } from '../../../pipes/collection';
+import { ReversePipe, FilterPipe, RepeatPipe, PagePipe } from '../../../pipes/collection';
 
 declare var $: any;
 
@@ -53,6 +53,7 @@ declare var $: any;
     ReversePipe,
     FilterPipe,
     RepeatPipe,
+    PagePipe,
   ]
 })
 export class LogsRoute {
@@ -63,6 +64,7 @@ export class LogsRoute {
   endDate: number;
   loading: boolean;
   repeater: Subject<any>;
+  page: number;
 
   constructor(private router: Router,
               private auth: AuthService,
@@ -78,6 +80,9 @@ export class LogsRoute {
     this.field = 'all';
     this.loading = true;
     this.repeater = new Subject();
+    this.page = 0;
+
+    logs.observable().subscribe(() => this.loading = false);
 
     logs.refresh();
   }
@@ -134,5 +139,14 @@ export class LogsRoute {
       if (this.endDate && this.endDate < ts) r = false;
       return r;
     };
+  }
+
+  nextPage() {
+    ++this.page;
+  }
+
+  prevPage() {
+    if (this.page <= 0) return;
+    --this.page;
   }
 }
