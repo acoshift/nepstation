@@ -68,7 +68,8 @@ export class LogsRoute {
               private auth: AuthService,
               private db: DbService,
               private navbar: NavbarService,
-              private logs: LogsService) {
+              private logs: LogsService,
+              private timestamp: TimestampPipe) {
     if (!auth.check()) return;
     navbar.active('admin/logs');
 
@@ -78,18 +79,16 @@ export class LogsRoute {
     this.loading = true;
     this.repeater = new Subject();
 
-    logs.observable().subscribe(() => this.refresh());
-
     logs.refresh();
   }
 
   setStartDate(date: string) {
-    this.startDate = moment(date, 'YYYY-MM-DD').utc().unix();
+    this.startDate = moment(date, 'YYYY-MM-DD').utc().unix() * 1000;
     this.refresh();
   }
 
   setEndDate(date: string) {
-    this.endDate = moment(date, 'YYYY-MM-DD').utc().unix();
+    this.endDate = moment(date, 'YYYY-MM-DD').utc().unix() * 1000 + 24 * 60 * 60 * 1000 - 1;
     this.refresh();
   }
 
@@ -127,10 +126,13 @@ export class LogsRoute {
     };
   }
 
-  filterDate(x) {
-    let r = true;
-    //if (this.startDate && x._id)
-
-    return r;
+  filterDate() {
+    return (x) => {
+      let r = true;
+      let ts = this.timestamp.transform(x._id);
+      if (this.startDate && this.startDate > ts) r = false;
+      if (this.endDate && this.endDate < ts) r = false;
+      return r;
+    };
   }
 }
