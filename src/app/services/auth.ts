@@ -1,13 +1,5 @@
-import {
-  Component,
-  Injectable,
-} from 'angular2/core';
-
-import {
-  Router,
-  Location,
-} from 'angular2/router';
-
+import { Component, Injectable } from 'angular2/core';
+import { Router, Location } from 'angular2/router';
 import { DbService } from './db';
 
 @Injectable()
@@ -22,7 +14,7 @@ export class AuthService {
     if (localStorage.getItem('token')) this.remember = true;
   }
 
-  public check() {
+  check() {
     if (!this.token()) {
       this.lastLocation = this.location.path();
       setTimeout(() => {
@@ -33,7 +25,7 @@ export class AuthService {
     return true;
   }
 
-  public isLoggedIn() {
+  isLoggedIn() {
     return this.token() != null;
   }
 

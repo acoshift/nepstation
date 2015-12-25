@@ -1,22 +1,6 @@
-import {
-  Component,
-  View,
-} from 'angular2/core';
-
-import {
-  CORE_DIRECTIVES,
-} from 'angular2/common';
-
-import {
-  Router,
-  RouterLink,
-} from 'angular2/router';
-
-import {
-  AuthService,
-  NavbarService,
-} from '../services';
-
+import { Component, View } from 'angular2/core';
+import { Router, RouterLink } from 'angular2/router';
+import { AuthService, NavbarService } from '../services';
 declare var $: any;
 
 @Component({
@@ -24,19 +8,17 @@ declare var $: any;
 })
 @View({
   directives: [
-    CORE_DIRECTIVES,
     RouterLink
   ],
   template: require('./navbar.jade'),
   styles: [ require('./navbar.css') ]
 })
 export class NavbarComponent {
-  activated: string;
+  activated: string = '';
 
   constructor(private router: Router,
               private auth: AuthService,
               private navbar: NavbarService) {
-    this.activated = '';
     navbar.onActive(x => this.change(x));
   }
 
