@@ -46,7 +46,7 @@ export class UsersRoute extends TableComponent {
     return x => {
       if (!this.search.keyword) return true;
       switch (this.search.field) {
-        case 'all':
+        case '':
           return x.name.indexOf(this.search.keyword) !== -1 ||
             x.enabled.toString().indexOf(this.search.keyword) !== -1 ||
             x.role.indexOf(this.search.keyword) !== -1;
