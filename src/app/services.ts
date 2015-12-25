@@ -2,6 +2,7 @@ export * from './services/db';
 export * from './services/auth';
 export * from './services/navbar';
 export * from './services/cache';
+export * from './services/admin';
 
 import { DbService } from './services/db';
 import { AuthService } from './services/auth';

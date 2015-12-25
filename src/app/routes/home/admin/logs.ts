@@ -1,35 +1,11 @@
-import {
-  Component,
-  View,
-} from 'angular2/core';
-
-import {
-  FORM_DIRECTIVES,
-  CORE_DIRECTIVES,
-  ControlGroup,
-  FormBuilder,
-  Validators,
-} from 'angular2/common';
-
-import {
-  AuthService,
-  DbService,
-  NavbarService,
-} from '../../../services';
-
+import { Component, View } from 'angular2/core';
 import { Subject, Subscriber } from 'rxjs';
-
+import { NavbarService, LogsService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
-
+import { Log } from '../../../models';
 import _ = require('lodash');
 import moment = require('moment');
-
-import { LogsService } from '../../../services/admin';
-
-import { Log } from '../../../models/admin';
-
 import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
-
 declare var $: any;
 
 @Component({})
@@ -37,8 +13,6 @@ declare var $: any;
   template: require('./logs.jade'),
   styles: [ ],
   directives: [
-    CORE_DIRECTIVES,
-    FORM_DIRECTIVES,
     PaginationComponent,
   ],
   pipes: [
@@ -60,7 +34,7 @@ export class LogsRoute extends TableComponent {
 
     $('.ui.dropdown').dropdown();
 
-    logs.observable().subscribe(r => {
+    logs.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;
       this.loading = r === null;
     });

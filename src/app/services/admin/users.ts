@@ -1,18 +1,14 @@
 import { Injectable } from 'angular2/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { DbService } from '../db';
-import { ModelService } from '../../models/services';
-import { User } from '../../models/admin';
+import { ModelService, User } from '../../models';
 
 @Injectable()
-export class UsersService implements ModelService<User[]> {
-  private users: Observable<User[]>;
-  private user: Subject<User[]>;
+export class UsersService implements ModelService<User> {
+  private user: Subject<User[]> = new BehaviorSubject(null);
+  private users: Observable<User[]> = this.user.share();
 
-  constructor(private db: DbService) {
-    this.user = new BehaviorSubject(null);
-    this.users = this.user.share();
-  }
+  constructor(private db: DbService) { }
 
   refresh() {
     this.db.nepq('query', 'db.users', null, {
@@ -27,7 +23,13 @@ export class UsersService implements ModelService<User[]> {
     );
   }
 
-  observable() {
+  list() {
     return this.users;
+  }
+
+  read(id: string): Observable<User> {
+    return this.db.nepq('query', 'db.users', id, {
+      _id: 1, name: 1, enabled: 1, role: 1
+    });
   }
 }

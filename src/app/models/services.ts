@@ -1,2 +1,2 @@
-export * from './modelservice';
-export * from './readonlymodelservice';
+export * from './services/modelservice';
+export * from './services/readonlymodelservice';

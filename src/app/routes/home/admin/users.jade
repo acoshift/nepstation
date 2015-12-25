@@ -8,7 +8,7 @@
           .text Select field
           i.dropdown.icon
           .menu
-            .item((click)="setField('all')") All
+            .item((click)="setField('')") All
             .item((click)="setField('name')") Username
             .item((click)="setField('enabled')") Enabled
             .item((click)="setField('role')") Role
@@ -29,12 +29,12 @@ table.ui.fixed.celled.table
       th Enabled
       th Role
   tbody
-    tr(*ngFor="#t of users.observable() | reverse | repeat:repeater | filter:filterDate():filter() | page:page:30 | async")
+    tr(*ngFor="#t of users.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.name}}
       td {{t.enabled}}
       td {{t.role}}
 
-pagination(*ngIf="!loading", [(page)]="page", [perPage]="30", [count]="count")
+pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")

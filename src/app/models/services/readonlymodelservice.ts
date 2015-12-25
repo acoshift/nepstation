@@ -2,5 +2,6 @@ import { Observable } from 'rxjs';
 
 export interface ReadOnlyModelService<T> {
   refresh(): void;
-  observable(): Observable<T>;
+  list(): Observable<T[]>;
+  read(id: string): Observable<T>;
 }
