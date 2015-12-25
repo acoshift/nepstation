@@ -1,5 +1,4 @@
 import { Injectable } from 'angular2/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { DbService } from '../db';
 import { ReadOnlyModelService } from '../readonlymodel';
 import { Log } from '../../models';

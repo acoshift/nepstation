@@ -1,5 +1,4 @@
 import { Injectable } from 'angular2/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { DbService } from '../db';
 import { ModelService } from '../model';
 import { User } from '../../models';
