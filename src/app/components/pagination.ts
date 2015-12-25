@@ -33,10 +33,15 @@ export class PaginationComponent implements OnInit {
 
   _refresh() {
     this.page.total = Math.abs(this.page.itemCount / this.page.itemPerPage);
-    this.pages = _.range(0, this.page.total);
+    let r = [];
+    if (this.page.current - 2 > 0) r = [-1];
+    r = r.concat(_.range(Math.max(this.page.current - 2, 0), Math.min(this.page.current + 3, this.page.total)));
+    if (this.page.current + 3 < this.page.total) r = r.concat([-1]);
+    this.pages = r;
   }
 
   goto(page: number) {
+    if (page < 0) return;
     this.page.current = page;
     this.pageChange.emit(this.page);
   }
