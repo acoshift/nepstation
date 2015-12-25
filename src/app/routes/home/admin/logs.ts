@@ -27,21 +27,19 @@ declare var $: any;
 })
 export class LogsRoute extends TableComponent {
   constructor(navbar: NavbarService,
-              logs: LogsService,
+              service: LogsService,
               private timestamp: TimestampPipe) {
-    super();
+    super(service);
     navbar.active('admin/logs');
 
     $('.ui.dropdown').dropdown();
 
-    this.service = logs;
-
-    logs.list().subscribe(r => {
+    service.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;
       this.loading = r === null;
     });
 
-    logs.refresh();
+    service.refresh();
   }
 
   filter() {

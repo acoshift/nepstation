@@ -25,9 +25,9 @@ export abstract class TableComponent {
 
   protected loading = true;
 
-  protected service: any;
-
   private _repeater: Subscriber<void>;
+
+  constructor(protected service: any) { }
 
   refresh() {
     this._repeater.next();

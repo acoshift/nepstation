@@ -27,21 +27,19 @@ declare var $: any;
 })
 export class UsersRoute extends TableComponent {
   constructor(navbar: NavbarService,
-              users: UsersService,
+              service: UsersService,
               private timestamp: TimestampPipe) {
-    super();
+    super(service);
     navbar.active('admin/users');
 
     $('.ui.dropdown').dropdown();
 
-    this.service = users;
-
-    users.list().subscribe(r => {
+    service.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;
       this.loading = r === null;
     });
 
-    users.refresh();
+    service.refresh();
   }
 
   filter() {
