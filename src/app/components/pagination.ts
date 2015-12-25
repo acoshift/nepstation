@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from 'angular2/core';
-
+import { Observable } from 'rxjs';
+import { Page } from '../models';
 import _ = require('lodash');
 
 @Component({
@@ -10,36 +11,43 @@ export class PaginationComponent implements OnInit {
   pages: number[];
 
   @Input()
-  page: number;
+  page: Page;
 
   @Input()
-  perPage: number;
-
-  @Input()
-  count: number;
-
-  pageCount: number;
+  refresh: Observable<void>;
 
   @Output()
   pageChange = new EventEmitter();
 
   ngOnInit() {
-    this.pageCount = Math.abs(this.count / this.perPage);
-    this.pages = _.range(0, this.pageCount);
+    this.pageChange.subscribe(r => {
+      this.page = r;
+      this._refresh();
+    });
+    this.refresh.subscribe(() => {
+      this.page.current = 0;
+      this._refresh();
+    });
+    this._refresh();
   }
 
-  goto(page) {
-    this.page = page;
-    this.pageChange.emit(page);
+  _refresh() {
+    this.page.total = Math.abs(this.page.itemCount / this.page.itemPerPage);
+    this.pages = _.range(0, this.page.total);
+  }
+
+  goto(page: number) {
+    this.page.current = page;
+    this.pageChange.emit(this.page);
   }
 
   next() {
-    if (this.page < this.pageCount - 1)
-      this.goto(this.page + 1);
+    if (this.page.current < this.page.total - 1)
+      this.goto(this.page.current + 1);
   }
 
   prev() {
-    if (this.page > 0)
-      this.goto(this.page - 1);
+    if (this.page.current > 0)
+      this.goto(this.page.current - 1);
   }
 }

@@ -64,7 +64,7 @@ export class LogsRoute extends TableComponent {
     $('.ui.dropdown').dropdown();
 
     logs.observable().subscribe(r => {
-      this.itemCount = r && r.length || 0;
+      this.page.itemCount = r && r.length || 0;
       this.loading = r === null;
     });
 

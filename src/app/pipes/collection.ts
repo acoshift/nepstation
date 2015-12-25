@@ -15,6 +15,8 @@ import {
 
 import { Observable, Subscriber } from 'rxjs';
 
+import { Page } from '../models';
+
 import _ = require('lodash');
 
 /**
@@ -52,7 +54,7 @@ export class FilterPipe implements PipeTransform {
   constructor() {
     this._observable = Observable.create(subscriber => {
       this._emitter = subscriber;
-    });
+    }).share();
   }
 
   transform(obj: Observable<any[]>, args?: Function[]): Observable<any[]> {
@@ -125,8 +127,8 @@ export class PagePipe implements PipeTransform {
   _emitter: Subscriber<any[]> = null;
   _observable: Observable<any[]> = null;
   _latestValue: any[] = null;
-  _latestPage: number = 0;
-  _latestPerPage: number = 0;
+  _page: Page = null;
+  _latestPage: Page = null;
 
   constructor() {
     this._observable = Observable.create(subscriber => {
@@ -136,12 +138,14 @@ export class PagePipe implements PipeTransform {
 
   transform(obj: Observable<any[]>, args?: any[]) {
     let emit = false;
-    if (isNumber(args[0]) && args[0] !== this._latestPage) {
-      this._latestPage = args[0];
+    if (isBlank(this._page) && isPresent(args[0])) {
+      this._page = args[0];
+      this._latestPage = _.cloneDeep(this._page);
       emit = true;
     }
-    if (isNumber(args[1]) && args[1] !== this._latestPerPage) {
-      this._latestPerPage = args[1];
+    if ((this._page.current !== this._latestPage.current) ||
+        (this._page.itemPerPage !== this._latestPage.itemPerPage)) {
+      this._latestPage = _.cloneDeep(this._page);
       emit = true;
     }
     if (isBlank(this._obj) && isPresent(obj)) {
@@ -157,8 +161,9 @@ export class PagePipe implements PipeTransform {
 
   _emit() {
     if (!this._latestValue) return;
-    let p = this._latestPage * this._latestPerPage;
-    this._emitter.next(_.slice(this._latestValue, p, this._latestPerPage && p + this._latestPerPage || undefined));
+    let p = this._page.current * this._page.itemPerPage;
+    let k = this._page.itemPerPage && p + this._page.itemPerPage || undefined;
+    this._emitter.next(_.slice(this._latestValue, p, k));
   }
 }
 
@@ -166,13 +171,16 @@ export class PagePipe implements PipeTransform {
 @Injectable()
 export class CountPipe implements PipeTransform {
   _obj: Observable<any[]> = null;
-  _observable: Observable<number> = null;
+  _page: Page = null;
 
   transform(obj: Observable<any[]>, args?: any[]) {
+    if (isBlank(this._page) && isPresent(args[0])) {
+      this._page = args[0];
+    }
     if (isBlank(this._obj) && isPresent(obj)) {
       this._obj = obj;
-      this._observable = obj.map(x => isArray(x) && x.length || 0);
+      obj.subscribe(x => this._page.itemCount = isArray(x) && x.length || 0);
     }
-    return this._observable;
+    return this._obj;
   }
 }

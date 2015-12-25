@@ -1,6 +1,6 @@
 .ui.pagination.menu
   a.item((click)="prev()")
     i.left.chevron.icon
-  a.item(*ngFor="#p of pages", (click)="goto(p)", [class.active]="p === page") {{p + 1}}
+  a.item(*ngFor="#p of pages", (click)="goto(p)", [class.active]="p === page.current") {{p + 1}}
   a.item((click)="next()")
     i.right.chevron.icon

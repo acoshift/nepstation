@@ -1,7 +1,6 @@
 import { Component } from 'angular2/core';
-
 import { Observable, Subscriber } from 'rxjs';
-
+import { Page } from '../models';
 import moment = require('moment');
 
 @Component({})
@@ -15,14 +14,14 @@ export abstract class TableComponent {
     }
   };
 
-  protected repeater: Observable<void> = Observable.create(subscriber => this._repeater = subscriber);
+  protected repeater: Observable<void> = Observable.create(subscriber => this._repeater = subscriber).share();
 
-  protected page = {
+  protected page: Page = {
     current: 0,
-    total: 0
+    total: 0,
+    itemCount: 0,
+    itemPerPage: 30,
   };
-
-  protected itemCount = 0;
 
   protected loading = true;
 
