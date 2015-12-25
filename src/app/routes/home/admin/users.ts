@@ -2,7 +2,6 @@ import { Component, View } from 'angular2/core';
 import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, UsersService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
-import { Log } from '../../../models';
 import _ = require('lodash');
 import moment = require('moment');
 import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';

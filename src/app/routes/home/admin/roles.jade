@@ -1,0 +1,41 @@
+.ui.form
+  .fields
+    .field
+      .ui.right.action.left.icon.input
+        i.search.icon
+        input(type="text", placeholder="Search", (input)="setKeyword($event.target.value)")
+        .ui.basic.floating.dropdown.button
+          .text Select field
+          i.dropdown.icon
+          .menu
+            .item((click)="setField('')") All
+            .item((click)="setField('name')") Name
+    .field
+      .ui.left.icon.input
+        i.calendar.icon
+        input(type="text", placeholder="Start: YYYY-MM-DD", (input)="setStartDate($event.target.value)")
+    .field
+      .ui.left.icon.input
+        i.calendar.icon
+        input(type="text", placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
+
+table.ui.fixed.celled.table
+  thead
+    tr
+      th Date
+      th Name
+      th
+  tbody
+    tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
+      td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
+      td {{t.name}}
+      td
+        button.ui.compact.icon.button((click)="edit(t)")
+          i.edit.icon
+        &nbsp;
+        button.ui.compact.icon.button((click)="remove(t)")
+          i.remove.icon
+
+pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
+
+.ui.active.centered.large.inline.loader(*ngIf="loading")
