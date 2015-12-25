@@ -11,7 +11,7 @@ export class UsersService implements ModelService<User> {
   constructor(private db: DbService) { }
 
   refresh() {
-    this.db.nepq('query', 'db.users', null, {
+    this.db.request('query', 'db.users', null, {
       _id: 1, name: 1, enabled: 1, role: 1
     })
     .subscribe(
@@ -28,7 +28,7 @@ export class UsersService implements ModelService<User> {
   }
 
   read(id: string): Observable<User> {
-    return this.db.nepq('query', 'db.users', id, {
+    return this.db.request('query', 'db.users', id, {
       _id: 1, name: 1, enabled: 1, role: 1
     });
   }

@@ -11,7 +11,7 @@ export class LogsService implements ReadOnlyModelService<Log> {
   constructor(private db: DbService) { }
 
   refresh() {
-    this.db.nepq('query', 'db.logs', null, {
+    this.db.request('query', 'db.logs', null, {
       _id: 1,
       q: { method: 1, name: 1 },
       t: { payload: { sub: 1 } } }
@@ -29,6 +29,6 @@ export class LogsService implements ReadOnlyModelService<Log> {
   }
 
   read(id: string): Observable<Log> {
-    return this.db.nepq('query', 'db.logs', id, null);
+    return this.db.request('query', 'db.logs', id, null);
   }
 }

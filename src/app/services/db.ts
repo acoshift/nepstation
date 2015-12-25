@@ -23,7 +23,8 @@ export class DbService {
 
   db = 'test';
 
-  request(body: string) {
+  request(method: string, ns?: string, params?: any, retrieves?: any, skipCache?: boolean) {
+    let body = this.makeNepQ(method, ns, params, retrieves);
     let headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/nepq'
@@ -59,11 +60,7 @@ export class DbService {
   }
 
   login(params: any) {
-    return this.request(`login ${this.db}(${JSON.stringify(params)})`);
-  }
-
-  nepq(method: string, ns: string, params: any, retrieves: any) {
-    return this.request(this.makeNepQ(method, ns, params, retrieves));
+    return this.request('login', '', params);
   }
 
   retrieves(rets: any) {
@@ -77,10 +74,11 @@ export class DbService {
     return ret.substr(0, ret.length - 1);
   }
 
-  private makeNepQ(method: string, ns: string, params: any, retrieves: any) {
+  private makeNepQ(method: string, ns?: string, params?: any, retrieves?: any) {
     let p = params && `(${JSON.stringify(params)})` || '';
     let ret = retrieves && `{${this.retrieves(retrieves)}}` || '';
     let n = ns && ` ${this.db}.${ns}` || '';
+    if (ns === '') n = ` ${this.db}`;
     let r = `${method}${n}${p}${ret}`;
     console.log('make request: ' + r);
     return r;
