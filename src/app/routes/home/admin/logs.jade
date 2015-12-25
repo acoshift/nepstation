@@ -31,9 +31,9 @@ table.ui.fixed.celled.table
   tbody
     tr(*ngFor="#t of logs.observable() | reverse | repeat:repeater | filter:filterDate():filter() | page:page:30 | async")
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
-      td {{t.t.payload.sub.split('/')[0]}}
-      td {{t.q.method}}
-      td {{t.q.name}}
+      td {{t.t?.payload?.sub?.split('/')[0]}}
+      td {{t.q?.method}}
+      td {{t.q?.name}}
 
 pagination(*ngIf="!loading", [(page)]="page", [perPage]="30", [count]="count")
 
