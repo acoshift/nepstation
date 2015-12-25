@@ -28,10 +28,7 @@ import { LogsService } from '../../../services/admin';
 
 import { Log } from '../../../models/admin';
 
-import { TimestampPipe } from '../../../pipes/id';
-import { MomentPipe } from '../../../pipes/moment';
-
-import { ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes/collection';
+import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
 
 declare var $: any;
 

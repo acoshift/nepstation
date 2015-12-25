@@ -20,10 +20,7 @@ import { UsersService } from '../../../services/admin';
 
 import { User } from '../../../models/admin';
 
-import { TimestampPipe } from '../../../pipes/id';
-import { MomentPipe } from '../../../pipes/moment';
-
-import { ReversePipe, FilterPipe, RepeatPipe, PagePipe } from '../../../pipes/collection';
+import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
 
 declare var $: any;
 

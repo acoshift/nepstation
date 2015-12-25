@@ -1,14 +1,27 @@
-export * from './pipes/moment';
-export * from './pipes/id';
-export * from './pipes/collection';
-
 import { MomentPipe } from './pipes/moment';
 import { TimestampPipe } from './pipes/id';
-import { ReversePipe, FilterPipe, RepeatPipe } from './pipes/collection';
+import { RepeatPipe } from './pipes/repeat';
+import { CountPipe } from './pipes/count';
+import { FilterPipe } from './pipes/filter';
+import { ReversePipe } from './pipes/reverse';
+import { PagePipe } from './pipes/page';
+
+export {
+  MomentPipe,
+  TimestampPipe,
+  RepeatPipe,
+  CountPipe,
+  FilterPipe,
+  ReversePipe,
+  PagePipe,
+};
 
 export var Pipes = [
   MomentPipe,
   TimestampPipe,
-  ReversePipe,
   RepeatPipe,
+  CountPipe,
+  FilterPipe,
+  ReversePipe,
+  PagePipe,
 ];
