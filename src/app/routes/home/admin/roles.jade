@@ -25,11 +25,11 @@ table.ui.definition.celled.table
           input(type="checkbox")
           label
       td {{t.name}}
-      td
-        .ui.fluid.teal.icon.button.can-popup((click)="edit(t)", data-content="Edit")
+      td.center.aligned
+        .ui.teal.icon.button.can-popup((click)="edit(t)", data-content="Edit")
           i.edit.icon
-      td
-        .ui.fluid.red.icon.button.can-popup((click)="remove(t)", data-content="Remove")
+      td.center.aligned
+        .ui.red.icon.button.can-popup((click)="remove(t)", data-content="Remove")
           i.remove.icon
   tfoot.full-width
     tr

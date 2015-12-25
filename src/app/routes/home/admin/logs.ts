@@ -33,6 +33,8 @@ export class LogsRoute extends TableComponent {
     super(service);
     navbar.active('admin/logs');
 
+    this.page.itemPerPage = 23;
+
     service.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;
       this.loading = r === null;
