@@ -1,6 +1,6 @@
 import { Component, View } from 'angular2/core';
 import { Subject, Subscriber } from 'rxjs';
-import { NavbarService, LogsService } from '../../../services';
+import { NavbarService, CustomersService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
 import { Log } from '../../../models';
 import _ = require('lodash');
@@ -27,21 +27,21 @@ declare var $: any;
 })
 export class CustomersRoute extends TableComponent {
   constructor(navbar: NavbarService,
-              logs: LogsService,
+              customers: CustomersService,
               private timestamp: TimestampPipe) {
     super();
     navbar.active('sale/customers');
 
     $('.ui.dropdown').dropdown();
 
-    this.service = logs;
+    this.service = customers;
 
-    logs.list().subscribe(r => {
+    customers.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;
       this.loading = r === null;
     });
 
-    logs.refresh();
+    customers.refresh();
   }
 
   filter() {
