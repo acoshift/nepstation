@@ -5,14 +5,14 @@ import { ModelService } from '../model';
 import { User } from '../../models';
 
 @Injectable()
-export class UsersService extends ModelService<User> {
+export class CustomersService extends ModelService<User> {
   constructor(db: DbService) {
-    super(db, 'db.users', {
+    super(db, 'sale.customers', {
       refresh: {
-        _id: 1, name: 1, enabled: 1, role: 1
+        _id: 1
       },
       read: {
-        _id: 1, name: 1, enabled: 1, role: 1
+        _id: 1
       }
     });
   }
