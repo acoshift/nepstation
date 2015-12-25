@@ -1,3 +1,2 @@
 export * from './components/pagination';
-
-import { PaginationComponent } from './components/pagination';
+export * from './components/table';
