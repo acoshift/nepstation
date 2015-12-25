@@ -20,7 +20,7 @@ export abstract class TableComponent {
     current: 0,
     total: 0,
     itemCount: 0,
-    itemPerPage: 30,
+    itemPerPage: 20,
   };
 
   protected loading = true;
