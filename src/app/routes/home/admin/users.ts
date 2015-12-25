@@ -92,7 +92,7 @@ export class UsersRoute extends TableComponent {
     (<Control>this.model.controls['enabled']).updateValue(false);
     (<Control>this.model.controls['role']).updateValue('');
 
-    $('#form').modal('setting', 'onApprove', () => this.isValid()).modal('show');
+    $('#userForm').modal('setting', 'onApprove', () => this.isValid()).modal('show');
   }
 
   edit(item: User) {
@@ -107,12 +107,11 @@ export class UsersRoute extends TableComponent {
     (<Control>this.model.controls['enabled']).updateValue(item.enabled);
     (<Control>this.model.controls['role']).updateValue(item.role);
 
-    $('#form').modal('setting', 'onApprove', () => this.isValid()).modal('show');
+    $('#userForm').modal('setting', 'onApprove', () => this.isValid()).modal('show');
   }
 
   submit() {
     if (!this.model.valid) return;
-    console.log(this.model.value);
     this.service.submit(this.model.value).subscribe(
       r => {
         this.service.refresh();
@@ -120,5 +119,18 @@ export class UsersRoute extends TableComponent {
       e => {
         $('#error').modal('show');
       });
+  }
+
+  delete(item: User) {
+    // TODO: show modal on approve delete
+    this.service.delete(item._id).subscribe(
+      r => {
+        // TODO: Show modal complete (create new directive)
+        this.service.refresh();
+      },
+      e => {
+
+      }
+    );
   }
 }

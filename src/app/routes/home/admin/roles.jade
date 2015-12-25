@@ -11,7 +11,7 @@
             .item((click)="setField('')") All
             .item((click)="setField('name')") Name
 
-table.ui.definition.celled.table
+table.ui.definition.compact.celled.table
   thead
     tr
       th
@@ -46,7 +46,7 @@ pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
 
-#form.ui.long.modal
+#roleForm.ui.long.modal
   .header {{header}}
   .content
     form.ui.form([ngFormModel]="model")

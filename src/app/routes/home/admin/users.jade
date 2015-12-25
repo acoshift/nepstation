@@ -37,7 +37,7 @@ table.ui.definition.compact.striped.celled.table
         .ui.teal.icon.button.can-popup((click)="edit(t)", data-content="Edit")
           i.edit.icon
       td.center.aligned
-        .ui.red.icon.button.can-popup((click)="remove(t)", data-content="Remove")
+        .ui.red.icon.button.can-popup((click)="delete(t)", data-content="Remove")
           i.remove.icon
   tfoot.full-width
     tr
@@ -54,7 +54,7 @@ pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
 
-#form.ui.long.modal
+#userForm.ui.long.modal
   .header {{header}}
   .content
     form.ui.form([ngFormModel]="model")

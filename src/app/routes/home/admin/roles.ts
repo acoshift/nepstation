@@ -72,7 +72,7 @@ export class RolesRoute extends TableComponent {
     (<Control>this.model.controls['_id']).updateValue('');
     (<Control>this.model.controls['name']).updateValue('');
 
-    $('#form').modal('show');
+    $('#roleForm').modal('show');
   }
 
   edit(item: Role) {
@@ -81,7 +81,7 @@ export class RolesRoute extends TableComponent {
     (<Control>this.model.controls['_id']).updateValue(item._id);
     (<Control>this.model.controls['name']).updateValue(item.name);
 
-    $('#form').modal('show');
+    $('#roleForm').modal('show');
     // this.service.edit(item);
   }
 
