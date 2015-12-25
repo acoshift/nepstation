@@ -1,7 +1,4 @@
-import {
-  Component,
-  View,
-} from 'angular2/core';
+import { Component, View } from 'angular2/core';
 
 import {
   FORM_DIRECTIVES,
@@ -11,14 +8,8 @@ import {
   Validators,
 } from 'angular2/common';
 
-import {
-  Router,
-  RouterLink,
-} from 'angular2/router';
-
-import {
-  AuthService,
-} from '../../services';
+import { Router, RouterLink } from 'angular2/router';
+import { AuthService } from '../../services';
 
 declare var $: any;
 

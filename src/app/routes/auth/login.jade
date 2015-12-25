@@ -4,21 +4,21 @@
     h2.ui.teal.image.header
       .ui.grey.inverted.header
         | Log-in to your account
-    form.ui.large.form([ngFormModel]='loginForm')
+    form.ui.large.form([ngFormModel]="loginForm")
       .ui.stacked.segment
-        .field([ngClass]="{ error: loginForm.controls['user'].touched && !loginForm.controls['user'].valid }")
+        .field([class.error]="loginForm.controls['user'].touched && !loginForm.controls['user'].valid")
           .ui.left.icon.input
             i.user.icon
-            input(ngControl='user', type='text', placeholder='Username')
-        .field([ngClass]="{ error: loginForm.controls['pwd'].touched && !loginForm.controls['pwd'].valid }")
+            input(ngControl="user", type="text", placeholder="Username")
+        .field([class.error]="loginForm.controls['pwd'].touched && !loginForm.controls['pwd'].valid")
           .ui.left.icon.input
             i.lock.icon
-            input(ngControl='pwd', type='password', placeholder='Password')
+            input(ngControl="pwd", type="password", placeholder="Password")
         .field
           .ui.checkbox
-            input.hidden(ngControl='remember', type='checkbox')
+            input.hidden(ngControl="remember", type="checkbox")
             label Remember me
-        button.ui.fluid.large.grey.submit.button((click)='login()') Log in
+        button.ui.fluid.large.grey.submit.button((click)="login()") Log in
     .ui.message
       | Forgot&nbsp;
       a([routerLink]="['ForgotUsername']") username

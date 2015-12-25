@@ -1,10 +1,12 @@
 import { Component, View } from 'angular2/core';
+import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
 import _ = require('lodash');
 import moment = require('moment');
 import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
+import { Role } from '../../../models';
 declare var $: any;
 
 @Component({})
@@ -25,13 +27,24 @@ declare var $: any;
   ]
 })
 export class RolesRoute extends TableComponent {
+  header: string = '';
+  model: ControlGroup;
+
   constructor(navbar: NavbarService,
               service: RolesService,
-              private timestamp: TimestampPipe) {
+              private timestamp: TimestampPipe,
+              private fb: FormBuilder) {
     super(service);
     navbar.active('admin/roles');
 
     $('.ui.dropdown').dropdown();
+    $('.modal').modal({ closable: false, allowMultiple: false });
+
+    this.model = this.fb.group({
+      _id: [''],
+      name: ['', Validators.required],
+      collections: ['', Validators.required]
+    });
 
     service.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;
@@ -54,7 +67,30 @@ export class RolesRoute extends TableComponent {
     };
   }
 
-  edit(item: any) {
-    this.service.edit(item);
+  add() {
+    this.header = 'New Role';
+
+    (<Control>this.model.controls['_id']).updateValue('');
+    (<Control>this.model.controls['name']).updateValue('');
+
+    $('#form').modal('show');
+  }
+
+  edit(item: Role) {
+    this.header = 'Edit Role: ' + item.name;
+
+    (<Control>this.model.controls['_id']).updateValue(item._id);
+    (<Control>this.model.controls['name']).updateValue(item.name);
+
+    $('#form').modal('show');
+    // this.service.edit(item);
+  }
+
+  changeRoleAutho(role: Role, name: string, action: string, value: boolean) {
+    //
+  }
+
+  submit() {
+    console.log(this.model.value);
   }
 }

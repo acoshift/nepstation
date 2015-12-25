@@ -11,21 +11,88 @@
             .item((click)="setField('')") All
             .item((click)="setField('name')") Name
 
-table.ui.fixed.celled.table
+table.ui.definition.celled.table
   thead
     tr
-      th Name
       th
+      th Name
+      th.two.wide
   tbody
     tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
+      td.collapsing
+        .ui.fitted.checkbox
+          input(type="checkbox")
+          label
       td {{t.name}}
-      td
-        button.ui.compact.icon.button((click)="edit(t)")
-          i.edit.icon
-        &nbsp;
-        button.ui.compact.icon.button((click)="remove(t)")
-          i.remove.icon
+      td.selectable
+        a((click)="edit(t)" href="javascript:;") Edit
+  tfoot.full-width
+    tr
+      th
+      th(colspan=2)
+        .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
+          i.users.icon
+          | Add Role
+        .ui.red.small.labeled.icon.button
+          i.erase.icon
+          | Delete Selected
 
 pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
+
+#form.ui.long.modal
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model")
+      .field([class.error]="model.controls['name'].touched && !model.controls['name'].valid")
+        label Name:
+        input(ngControl="name", type="text")
+      .field
+        label Collections:
+        input(type="text")
+      .field
+        table.ui.striped.celled.definition.table
+          thead
+            tr
+              th.one.wide
+              th Name
+              th.one.wide C
+              th.one.wide R
+              th.one.wide U
+              th.one.wide D
+              th.one.wide A
+          tbody
+            tr
+              td.collapsing
+                .ui.fitted.checkbox
+                  input(type="checkbox")
+                  label
+              td aa
+              td
+                .ui.fitted.checkbox
+                  input(type="checkbox")
+                  label
+              td
+                .ui.fitted.checkbox
+                  input(type="checkbox")
+                  label
+              td
+                .ui.fitted.checkbox
+                  input(type="checkbox")
+                  label
+              td
+                .ui.fitted.checkbox
+                  input(type="checkbox")
+                  label
+              td
+                .ui.fitted.checkbox
+                  input(type="checkbox")
+                  label
+  .actions
+    .negative.ui.button
+      i.remove.icon
+      | Cancel
+    .positive.ui.button((click)="submit()")
+      i.checkmark.icon
+      | OK
