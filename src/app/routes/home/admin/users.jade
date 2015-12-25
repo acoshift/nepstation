@@ -12,26 +12,16 @@
             .item((click)="setField('name')") Username
             .item((click)="setField('enabled')") Enabled
             .item((click)="setField('role')") Role
-    .field
-      .ui.left.icon.input
-        i.calendar.icon
-        input(type="text", placeholder="Start: YYYY-MM-DD", (input)="setStartDate($event.target.value)")
-    .field
-      .ui.left.icon.input
-        i.calendar.icon
-        input(type="text", placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
 
 table.ui.fixed.celled.table
   thead
     tr
-      th Date
       th Username
       th Enabled
       th Role
       th
   tbody
     tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
-      td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.name}}
       td {{t.enabled}}
       td {{t.role}}

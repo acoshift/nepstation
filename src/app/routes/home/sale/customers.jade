@@ -12,25 +12,15 @@
             .item((click)="setField('user')") User
             .item((click)="setField('method')") Method
             .item((click)="setField('collection')") Collection
-    .field
-      .ui.left.icon.input
-        i.calendar.icon
-        input(type="text", placeholder="Start: YYYY-MM-DD", (input)="setStartDate($event.target.value)")
-    .field
-      .ui.left.icon.input
-        i.calendar.icon
-        input(type="text", placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
 
 table.ui.fixed.celled.table
   thead
     tr
-      th Date
       th User
       th Method
       th Collection
   tbody
     tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
-      td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.t?.payload?.sub?.split('/')[0]}}
       td {{t.q?.method}}
       td {{t.q?.name}}
