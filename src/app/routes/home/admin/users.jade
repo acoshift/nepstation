@@ -28,12 +28,19 @@ table.ui.fixed.celled.table
       th Username
       th Enabled
       th Role
+      th
   tbody
-    tr(*ngFor="#t of users.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
+    tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.name}}
       td {{t.enabled}}
       td {{t.role}}
+      td
+        button.ui.compact.icon.button((click)="edit(t)")
+          i.edit.icon
+        &nbsp;
+        button.ui.compact.icon.button((click)="remove(t)")
+          i.remove.icon
 
 pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
 

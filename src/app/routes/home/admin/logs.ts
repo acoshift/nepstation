@@ -27,12 +27,14 @@ declare var $: any;
 })
 export class LogsRoute extends TableComponent {
   constructor(navbar: NavbarService,
-              private logs: LogsService,
+              logs: LogsService,
               private timestamp: TimestampPipe) {
     super();
     navbar.active('admin/logs');
 
     $('.ui.dropdown').dropdown();
+
+    this.service = logs;
 
     logs.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;

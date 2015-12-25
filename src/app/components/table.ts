@@ -25,6 +25,8 @@ export abstract class TableComponent {
 
   protected loading = true;
 
+  protected service: any;
+
   private _repeater: Subscriber<void>;
 
   refresh() {
@@ -50,6 +52,11 @@ export abstract class TableComponent {
 
   setKeyword(keyword: string): void {
     this.search.keyword = keyword;
+    this.refresh();
+  }
+
+  remove(item: any) {
+    this.service.remove(item);
     this.refresh();
   }
 
