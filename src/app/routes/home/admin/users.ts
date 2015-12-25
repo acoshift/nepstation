@@ -1,10 +1,13 @@
 import { Component, View } from 'angular2/core';
+import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, UsersService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
 import _ = require('lodash');
 import moment = require('moment');
 import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
+import { User } from '../../../models';
+import { Directives } from '../../../directives';
 declare var $: any;
 
 @Component({})
@@ -13,6 +16,7 @@ declare var $: any;
   styles: [ ],
   directives: [
     PaginationComponent,
+    Directives,
   ],
   pipes: [
     TimestampPipe,
@@ -25,13 +29,23 @@ declare var $: any;
   ]
 })
 export class UsersRoute extends TableComponent {
+  header: string = '';
+  model: ControlGroup;
+
   constructor(navbar: NavbarService,
               service: UsersService,
-              private timestamp: TimestampPipe) {
+              private timestamp: TimestampPipe,
+              private fb: FormBuilder) {
     super(service);
     navbar.active('admin/users');
 
-    $('.ui.dropdown').dropdown();
+    this.model = fb.group({
+      _id: [''],
+      name: ['', Validators.required],
+      pwd: ['', Validators.required],
+      enabled: [false],
+      role: ['']
+    });
 
     service.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;
@@ -60,7 +74,51 @@ export class UsersRoute extends TableComponent {
     };
   }
 
-  edit(item: any) {
-    this.service.edit(item);
+  isValid() {
+    this.model.controls['name'].markAsTouched();
+    this.model.controls['pwd'].markAsTouched();
+    return this.model.valid;
+  }
+
+  add() {
+    this.header = 'New User';
+
+    (<Control>this.model.controls['_id']).updateValue('');
+    (<Control>this.model.controls['name']).updateValue('');
+    (<any>this.model.controls['name'])._touched = false;
+    (<Control>this.model.controls['pwd']).validator = Validators.required;
+    (<Control>this.model.controls['pwd']).updateValue('');
+    (<any>this.model.controls['pwd'])._touched = false;
+    (<Control>this.model.controls['enabled']).updateValue(false);
+    (<Control>this.model.controls['role']).updateValue('');
+
+    $('#form').modal('setting', 'onApprove', () => this.isValid()).modal('show');
+  }
+
+  edit(item: User) {
+    this.header = 'Edit User: ' + item.name;
+
+    (<Control>this.model.controls['_id']).updateValue(item._id);
+    (<Control>this.model.controls['name']).updateValue(item.name);
+    (<any>this.model.controls['name'])._touched = false;
+    (<Control>this.model.controls['pwd']).validator = null;
+    (<Control>this.model.controls['pwd']).updateValue('');
+    (<any>this.model.controls['pwd'])._touched = false;
+    (<Control>this.model.controls['enabled']).updateValue(item.enabled);
+    (<Control>this.model.controls['role']).updateValue(item.role);
+
+    $('#form').modal('setting', 'onApprove', () => this.isValid()).modal('show');
+  }
+
+  submit() {
+    if (!this.model.valid) return;
+    console.log(this.model.value);
+    this.service.submit(this.model.value).subscribe(
+      r => {
+        this.service.refresh();
+      },
+      e => {
+        $('#error').modal('show');
+      });
   }
 }

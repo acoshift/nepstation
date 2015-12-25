@@ -28,4 +28,19 @@ export class ModelService<T> implements _ModelService<T> {
   read(id: string): Observable<T> {
     return this.db.request('query', this.namespace, id, this.retrieves.read);
   }
+
+  preSubmit(item: T) {
+    return item;
+  }
+
+  submit(item: T) {
+    item = this.preSubmit(item);
+    console.log(item);
+    if ((<any>item)._id !== '') {
+      return this.db.request('update', this.namespace, [(<any>item)._id, item], this.retrieves.read);
+    } else {
+      delete (<any>item)._id;
+      return this.db.request('create', this.namespace, item, this.retrieves.read);
+    }
+  }
 }

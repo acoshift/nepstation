@@ -15,4 +15,16 @@ export class UsersService extends ModelService<User> {
       }
     });
   }
+
+  preSubmit(item: User) {
+    if (item.pwd === '') {
+      delete item.pwd;
+    } else {
+      item['$bcrypt'] = {
+        pwd: item.pwd
+      };
+      delete item.pwd;
+    }
+    return item;
+  }
 }

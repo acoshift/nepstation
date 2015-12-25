@@ -6,6 +6,7 @@ import { Log } from '../../../models';
 import _ = require('lodash');
 import moment = require('moment');
 import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
+import { Directives } from '../../../directives';
 declare var $: any;
 
 @Component({})
@@ -14,6 +15,7 @@ declare var $: any;
   styles: [ ],
   directives: [
     PaginationComponent,
+    Directives,
   ],
   pipes: [
     TimestampPipe,
@@ -31,8 +33,6 @@ export class CustomersRoute extends TableComponent {
               private timestamp: TimestampPipe) {
     super(service);
     navbar.active('sale/customers');
-
-    $('.ui.dropdown').dropdown();
 
     service.list().subscribe(r => {
       this.page.itemCount = r && r.length || 0;

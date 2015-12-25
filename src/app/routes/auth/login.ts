@@ -8,6 +8,8 @@ import {
   Validators,
 } from 'angular2/common';
 
+import { Directives } from '../../directives';
+
 import { Router, RouterLink } from 'angular2/router';
 import { AuthService } from '../../services';
 
@@ -19,6 +21,7 @@ declare var $: any;
     CORE_DIRECTIVES,
     FORM_DIRECTIVES,
     RouterLink,
+    Directives,
   ],
   template: require('./login.jade'),
   styles: [ require('./login.css') ],
@@ -29,10 +32,6 @@ export class LoginRoute {
   constructor(private router: Router,
               private auth: AuthService,
               fb: FormBuilder) {
-    // init semantic-ui
-    $('.ui.checkbox').checkbox();
-    $('.modal').modal({ closable: false, allowMultiple: false });
-
     // init model
     this.loginForm = fb.group({
       user: ['', Validators.required],

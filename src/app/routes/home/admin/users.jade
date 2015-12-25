@@ -13,25 +13,73 @@
             .item((click)="setField('enabled')") Enabled
             .item((click)="setField('role')") Role
 
-table.ui.fixed.striped.celled.table
+table.ui.definition.striped.celled.table
   thead
     tr
+      th
       th Username
       th Enabled
       th Role
-      th
+      th.one.wide
+      th.one.wide
   tbody
     tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
+      td.collapsing
+        .ui.fitted.checkbox
+          input(type="checkbox")
+          label
       td {{t.name}}
       td {{t.enabled}}
       td {{t.role}}
       td
-        button.ui.compact.icon.button((click)="edit(t)")
+        .ui.fluid.teal.icon.button.can-popup((click)="edit(t)", data-content="Edit")
           i.edit.icon
-        &nbsp;
-        button.ui.compact.icon.button((click)="remove(t)")
+      td
+        .ui.fluid.red.icon.button.can-popup((click)="remove(t)", data-content="Remove")
           i.remove.icon
+  tfoot.full-width
+    tr
+      th
+      th(colspan=5)
+        .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
+          i.user.icon
+          | Add User
+        .ui.red.small.labeled.icon.button
+          i.erase.icon
+          | Delete Selected
 
 pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
+
+#form.ui.long.modal
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model")
+      .field([class.error]="model.controls['name'].touched && !model.controls['name'].valid")
+        label Name:
+        input(ngControl="name", type="text")
+      .field([class.error]="model.controls['pwd'].touched && !model.controls['pwd'].valid")
+        label Password:
+        input(ngControl="pwd", type="password", autocomplete="off")
+      .field
+        .ui.checkbox
+          input(ngControl="enabled", type="checkbox")
+          label Enabled
+      .field
+        label Role:
+        input(ngControl="role", type="text")
+  .actions
+    .negative.ui.button
+      i.remove.icon
+      | Cancel
+    .positive.ui.button((click)="submit()")
+      i.checkmark.icon
+      | OK
+
+#error.ui.small.modal
+  .header Error
+  .content
+    | Error
+  .actions
+    .ui.grey.right.ok.button OK

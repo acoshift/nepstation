@@ -7,6 +7,7 @@ import _ = require('lodash');
 import moment = require('moment');
 import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
 import { Role } from '../../../models';
+import { Directives } from '../../../directives';
 declare var $: any;
 
 @Component({})
@@ -15,6 +16,7 @@ declare var $: any;
   styles: [ ],
   directives: [
     PaginationComponent,
+    Directives,
   ],
   pipes: [
     TimestampPipe,
@@ -33,14 +35,11 @@ export class RolesRoute extends TableComponent {
   constructor(navbar: NavbarService,
               service: RolesService,
               private timestamp: TimestampPipe,
-              private fb: FormBuilder) {
+              fb: FormBuilder) {
     super(service);
     navbar.active('admin/roles');
 
-    $('.ui.dropdown').dropdown();
-    $('.modal').modal({ closable: false, allowMultiple: false });
-
-    this.model = this.fb.group({
+    this.model = fb.group({
       _id: [''],
       name: ['', Validators.required],
       collections: ['', Validators.required]
