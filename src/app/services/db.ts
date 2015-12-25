@@ -23,8 +23,9 @@ export class DbService {
 
   db = 'test';
 
-  request(method: string, ns?: string, params?: any, retrieves?: any, skipCache?: boolean) {
+  request(method: string, ns?: string, params?: any, retrieves?: any, appendCache?: boolean) {
     let body = this.makeNepQ(method, ns, params, retrieves);
+    let _body = body;
     let headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/nepq'
@@ -32,8 +33,15 @@ export class DbService {
     let token = sessionStorage.getItem('token') || localStorage.getItem('token');
     if (token) headers.append('Authorization', 'Bearer ' + token);
 
-    let etag = this.cache.etag(body);
-    if (etag) headers.append('If-None-Match', etag);
+    if (appendCache) {
+      let cached = this.cache.data(body);
+      if (cached && cached.length > 0) {
+        body = this.makeNepQ(method, ns, params, retrieves, { skip: cached.length });
+      }
+    } else {
+      let etag = this.cache.etag(body);
+      if (etag) headers.append('If-None-Match', etag);
+    }
 
     return this.http.request(new Request({
       method: RequestMethod.Post,
@@ -54,7 +62,15 @@ export class DbService {
         return this.cache.data(body);
       }
       let r = res.json();
-      if (!r.error) this.cache.cache(body, res.headers.get('etag'), r);
+      if (!r.error) {
+        if (body !== _body) {
+          let cached = this.cache.data(_body);
+          r = cached.concat(r);
+          this.cache.cache(_body, '', r);
+        } else {
+          this.cache.cache(body, res.headers.get('etag'), r);
+        }
+      }
       return r;
     });
   }
@@ -63,7 +79,7 @@ export class DbService {
     return this.request('login', '', params);
   }
 
-  retrieves(rets: any) {
+  private retrieves(rets: any) {
     let ret = '';
     _.forOwn(rets, (v, k) => {
       if (v !== 1 && !_.isPlainObject(v)) return;
@@ -74,8 +90,16 @@ export class DbService {
     return ret.substr(0, ret.length - 1);
   }
 
-  private makeNepQ(method: string, ns?: string, params?: any, retrieves?: any) {
-    let p = params && `(${JSON.stringify(params)})` || '';
+  private makeNepQ(method: string, ns?: string, params?: any, retrieves?: any, options?: any) {
+    let p = params && JSON.stringify(params) || '';
+    let opt = options && JSON.stringify(options) || '';
+    if (p !== '' && opt !== '') {
+      p = `(${p},${opt})`;
+    } else if (p !== '' && opt === '') {
+      p = `(${p})`;
+    } else if (p === '' && opt !== '') {
+      p = `({},${opt})`;
+    }
     let ret = retrieves && `{${this.retrieves(retrieves)}}` || '';
     let n = ns && ` ${this.db}.${ns}` || '';
     if (ns === '') n = ` ${this.db}`;

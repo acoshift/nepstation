@@ -14,8 +14,8 @@ export class LogsService implements ReadOnlyModelService<Log> {
     this.db.request('query', 'db.logs', null, {
       _id: 1,
       q: { method: 1, name: 1 },
-      t: { payload: { sub: 1 } } }
-    ).subscribe(
+      t: { payload: { sub: 1 } }
+    }, true).subscribe(
       r => {
         if (r.error) return this.log.error(r.error);
         this.log.next(r);
