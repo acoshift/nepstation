@@ -4,6 +4,10 @@
     .menu
       a.item([class.active]="isActive('admin/logs')", [routerLink]="['./Admin/Logs']") Logs
       a.item([class.active]="isActive('admin/users')", [routerLink]="['./Admin/Users']") Users
+  .item
+    .header Sale
+    .menu
+      a.item([class.active]="isActive('sale/customers')", [routerLink]="['./Sale/Customers']") Customers
 
 .ui.top.fixed.menu
   .item

@@ -1,28 +1,13 @@
-import {
-  Component,
-  View,
-} from 'angular2/core';
-
-import {
-  Router,
-  RouteConfig,
-  RouterOutlet,
-} from 'angular2/router';
-
-import {
-  NavbarComponent,
-} from '../../components/navbar';
-
-import {
-  AuthService,
-} from '../../services';
+import { Component, View } from 'angular2/core';
+import { Router, RouteConfig, RouterOutlet } from 'angular2/router';
+import { NavbarComponent } from '../../components';
+import { AuthService } from '../../services';
 
 import { IndexRoute } from './index';
 import { AdminRouter } from './admin/router';
+import { SaleRouter } from './sale/router';
 
-@Component({
-
-})
+@Component({})
 @View({
   directives: [
     NavbarComponent,
@@ -34,10 +19,10 @@ import { AdminRouter } from './admin/router';
 @RouteConfig([
   { path: '/', name: 'Index', component: IndexRoute, useAsDefault: true },
   { path: '/admin/...', name: 'Admin', component: AdminRouter },
+  { path: '/sale/...', name: 'Sale', component: SaleRouter },
 ])
 export class HomeRouter {
-  constructor(private router: Router,
-              private auth: AuthService) {
+  constructor(auth: AuthService) {
     if (!auth.check()) return;
   }
 }
