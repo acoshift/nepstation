@@ -29,7 +29,7 @@ table.ui.fixed.compact.striped.celled.table
       th Method
       th Collection
   tbody
-    tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
+    tr(*ngFor="#t of list | reverse | repeat:repeater | filter:dateFilter:filter | count:page | page:page | async")
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.t?.payload?.sub?.split('/')[0]}}
       td {{t.q?.method}}

@@ -23,7 +23,7 @@ table.ui.definition.compact.striped.celled.table
       th.one.wide
       th.one.wide
   tbody
-    tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
+    tr(*ngFor="#t of list | reverse | repeat:repeater | filter:dateFilter:filter | count:page | page:page | async")
       td.collapsing
         .ui.fitted.checkbox
           input(type="checkbox")

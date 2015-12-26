@@ -1,31 +1,41 @@
 import { Injectable } from 'angular2/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { DbService } from './db';
-import { ReadOnlyModelService as ModelService } from '../models';
+import { Event } from '../models';
+import { Service } from './service';
 
-export class ReadOnlyModelService<T> implements ModelService<T> {
-  private _emitter: Subject<T[]> = new BehaviorSubject(null);
-  private _observable: Observable<T[]> = this._emitter.share();
+export class ReadOnlyModelService<T> extends Service {
+  //private _emitter: Subject<T[]> = new BehaviorSubject(null);
+  //private _observable: Observable<T[]> = this._emitter.share();
 
-  constructor(protected db: DbService,
-              protected namespace: string,
-              protected retrieves: any) { }
+  constructor(
+    protected db: DbService,
+    protected namespace: string,
+    protected retrieves: any) { super(); }
 
-  refresh() {
+  onEvent(event: Event) {
+    switch (event.name) {
+      case 'refresh':
+        this._refresh();
+        break;
+    }
+  }
+
+  private _refresh() {
     this.db.request('query', this.namespace, null, this.retrieves.refresh, true)
     .subscribe(
       r => {
-        if (r.error) return this._emitter.error(r.error);
-        this._emitter.next(r);
+        if (r.error) return this.emitter.error(r.error);
+        this.emitter.next({ name: 'list', data: r });
       }
     );
   }
-
+/*
   list() {
     return this._observable;
   }
 
   read(id: string): Observable<T> {
     return this.db.request('query', this.namespace, id, this.retrieves.read);
-  }
+  }*/
 }

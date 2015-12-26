@@ -1,4 +1,4 @@
-import { Component, View } from 'angular2/core';
+import { Component, View, Directive } from 'angular2/core';
 
 import {
   FORM_DIRECTIVES,
@@ -7,6 +7,8 @@ import {
   FormBuilder,
   Validators,
 } from 'angular2/common';
+
+import { AlertComponent } from '../../components';
 
 import { Directives } from '../../directives';
 
@@ -22,6 +24,7 @@ declare var $: any;
     FORM_DIRECTIVES,
     RouterLink,
     Directives,
+    AlertComponent,
   ],
   template: require('./login.jade'),
   styles: [ require('./login.css') ],
@@ -48,7 +51,7 @@ export class LoginRoute {
 
   login() {
     if (!this.loginForm.valid) {
-      $('#invalid').modal('show');
+      $('.alert').modal('show');
       return;
     }
     let { user, pwd, remember } = this.loginForm.value;

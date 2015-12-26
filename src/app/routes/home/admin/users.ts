@@ -50,20 +50,14 @@ export class UsersRoute extends TableComponent {
       role: ['']
     });
 
-    service.list().subscribe(r => {
-      this.page.itemCount = r && r.length || 0;
-      this.loading = r === null;
+    roles.observable.subscribe(event => {
+      if (event.name === 'list') this.roles = event.data
     });
 
-    roles.list().subscribe(r => {
-      this.roles = r;
-    });
-
-    service.refresh();
-    roles.refresh();
+    roles.next({ name: 'refresh' });
   }
 
-  filter() {
+  get filter() {
     return x => {
       if (!this.search.keyword) return true;
       switch (this.search.field) {

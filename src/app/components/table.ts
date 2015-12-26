@@ -27,13 +27,25 @@ export abstract class TableComponent {
 
   private _repeater: Subscriber<void>;
 
-  constructor(protected service: any) { }
+  constructor(protected service: any) {
+    this.list.subscribe(r => {
+      this.page.itemCount = r && r.length || 0;
+      this.loading = r === null;
+    });
+    service.next({ name: 'refresh' });
+  }
 
   refresh() {
     this._repeater.next();
   }
 
-  abstract filter(): (any) => boolean;
+  get list() {
+    return this.service.observable
+      .filter(event => event.name === 'list')
+      .map(event => event.data);
+  }
+
+  filter: (any) => boolean;
 
   setStartDate(date: string): void {
     this.search.date.start = this._fromDate(date);
@@ -60,7 +72,7 @@ export abstract class TableComponent {
     this.refresh();
   }
 
-  dateFilter(): (item) => boolean {
+  get dateFilter(): (item) => boolean {
     return item => {
       return item._id && this._dateFilter(parseInt(item._id.substr(0, 8), 16) * 1000);
     };
@@ -68,12 +80,16 @@ export abstract class TableComponent {
 
   private _dateFilter(ts: number): boolean {
     let r = true;
-    if (this.search.date.start && this.search.date.start > ts) r = false;
-    if (r && this.search.date.end && this.search.date.end < ts) r = false;
+    if (!!this.search.date.start && this.search.date.start > ts) {
+      r = false;
+    } else if (!!this.search.date.end && this.search.date.end < ts) {
+      r = false;
+    }
     return r;
   }
 
   private _fromDate(date: string): number {
+    if (!date) return 0;
     return moment(date, 'YYYY-MM-DD').utc().unix() * 1000;
   }
 }

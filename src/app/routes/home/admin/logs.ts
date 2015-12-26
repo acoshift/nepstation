@@ -28,22 +28,14 @@ declare var $: any;
 })
 export class LogsRoute extends TableComponent {
   constructor(navbar: NavbarService,
-              service: LogsService,
-              private timestamp: TimestampPipe) {
+              service: LogsService) {
     super(service);
     navbar.active('admin/logs');
 
     this.page.itemPerPage = 23;
-
-    service.list().subscribe(r => {
-      this.page.itemCount = r && r.length || 0;
-      this.loading = r === null;
-    });
-
-    service.refresh();
   }
 
-  filter() {
+  get filter() {
     return x => {
       if (!this.search.keyword) return true;
       switch (this.search.field) {
