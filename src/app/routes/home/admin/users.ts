@@ -70,13 +70,13 @@ export class UsersRoute extends TableComponent {
         case '':
           return x.name.indexOf(this.search.keyword) !== -1 ||
             x.enabled.toString().indexOf(this.search.keyword) !== -1 ||
-            x.role.indexOf(this.search.keyword) !== -1;
+            this.getRole(x.role).indexOf(this.search.keyword) !== -1;
         case 'name':
           return x.name.indexOf(this.search.keyword) !== -1;
         case 'enabled':
           return x.enabled.toString().indexOf(this.search.keyword) !== -1;
         case 'role':
-          return x.role.indexOf(this.search.keyword) !== -1;
+          return this.getRole(x.role).indexOf(this.search.keyword) !== -1;
       }
       return false;
     };
@@ -137,7 +137,7 @@ export class UsersRoute extends TableComponent {
         this.service.refresh();
       },
       e => {
-        // Error
+        $('#error').modal('show');
       }
     );
   }
