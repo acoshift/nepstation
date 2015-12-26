@@ -1,12 +1,13 @@
 import { Component, View } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { Subject, Subscriber } from 'rxjs';
-import { NavbarService, UsersService } from '../../../services';
+import { NavbarService, UsersService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
+import { Observable } from 'rxjs';
 import _ = require('lodash');
 import moment = require('moment');
 import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
-import { User } from '../../../models';
+import { User, Role } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
 
@@ -31,9 +32,11 @@ declare var $: any;
 export class UsersRoute extends TableComponent {
   header: string = '';
   model: ControlGroup;
+  roles: Role[];
 
   constructor(navbar: NavbarService,
               service: UsersService,
+              roles: RolesService,
               private timestamp: TimestampPipe,
               private fb: FormBuilder) {
     super(service);
@@ -52,7 +55,12 @@ export class UsersRoute extends TableComponent {
       this.loading = r === null;
     });
 
+    roles.list().subscribe(r => {
+      this.roles = r;
+    });
+
     service.refresh();
+    roles.refresh();
   }
 
   filter() {
@@ -129,8 +137,18 @@ export class UsersRoute extends TableComponent {
         this.service.refresh();
       },
       e => {
-
+        // Error
       }
     );
+  }
+
+  getRole(id: string) {
+    let r: any = _.find(this.roles, x => x._id === id);
+    if (r) {
+      r = r.name;
+    } else {
+      r = id;
+    }
+    return r;
   }
 }

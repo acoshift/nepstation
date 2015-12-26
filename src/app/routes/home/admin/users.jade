@@ -32,7 +32,7 @@ table.ui.definition.compact.striped.celled.table
       td
         i.green.checkmark.icon(*ngIf="t.enabled")
         i.red.remove.icon(*ngIf="!t.enabled")
-      td {{t.role}}
+      td {{getRole(t.role)}}
       td.center.aligned
         .ui.teal.icon.button.can-popup((click)="edit(t)", data-content="Edit")
           i.edit.icon
@@ -70,7 +70,9 @@ pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
           label Enabled
       .field
         label Role:
-        input(ngControl="role", type="text")
+        select(ngControl="role")
+          option(value="") Select Role
+          option(*ngFor="#role of roles", value="{{role._id}}") {{role.name}}
   .actions
     .negative.ui.button
       i.remove.icon
