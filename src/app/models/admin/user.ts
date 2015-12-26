@@ -4,4 +4,5 @@ export interface User {
   pwd: string;
   enabled: boolean;
   role: string;
+  $id;
 }
