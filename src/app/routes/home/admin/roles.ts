@@ -44,16 +44,9 @@ export class RolesRoute extends TableComponent {
       name: ['', Validators.required],
       collections: ['', Validators.required]
     });
-
-    service.list().subscribe(r => {
-      this.page.itemCount = r && r.length || 0;
-      this.loading = r === null;
-    });
-
-    service.refresh();
   }
 
-  filter() {
+  get filter() {
     return x => {
       if (!this.search.keyword) return true;
       switch (this.search.field) {

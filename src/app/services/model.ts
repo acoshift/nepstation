@@ -27,7 +27,7 @@ export class ModelService<T> extends Service {
     .subscribe(
       r => {
         if (r.error) return this.emitter.error(r.error);
-        this.emitter.next(r);
+        this.emitter.next({ name: 'list', data: r });
       }
     );
   }
