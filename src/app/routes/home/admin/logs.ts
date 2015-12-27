@@ -1,6 +1,6 @@
 import { Component, View } from 'angular2/core';
 import { NavbarService, LogsService } from '../../../services';
-import { PaginationComponent, TableComponent } from '../../../components';
+import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
 import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { Directives } from '../../../directives';
 
@@ -10,6 +10,7 @@ import { Directives } from '../../../directives';
   styles: [ ],
   directives: [
     PaginationComponent,
+    AlertComponent,
     Directives,
   ],
   pipes: [
