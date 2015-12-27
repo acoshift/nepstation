@@ -22,7 +22,21 @@ export class TrashService extends ReadOnlyModelService<Trash> {
     }
   }
 
-  private _restore(id: string) {
+  protected _refresh() {
+    this.db.request('query', this.namespace, null, this.retrieves.refresh)
+    .subscribe(
+      r => {
+        if (r.error) {
+          this.emitter.next({ name: 'error', data: r.error });
+        } else {
+          this.emitter.next({ name: 'list', data: r });
+        }
+      },
+      e => this.emitter.next({ name: 'error', data: e })
+    );
+  }
+
+  protected _restore(id: string) {
     this.db.request('restore', '', id, this.retrieves.restore)
       .subscribe(
         r => {

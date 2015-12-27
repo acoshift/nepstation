@@ -30,7 +30,7 @@ export abstract class ModelService<T> extends EventHandler {
     return item;
   }
 
-  private _refresh() {
+  protected _refresh() {
     this.db.request('query', this.namespace, null, this.retrieves.refresh)
       .subscribe(
         r => {
@@ -44,7 +44,7 @@ export abstract class ModelService<T> extends EventHandler {
       );
   }
 
-  private _read(id: string): void {
+  protected _read(id: string): void {
     this.db.request('read', this.namespace, id, this.retrieves.read)
       .subscribe(
         r => {
@@ -58,7 +58,7 @@ export abstract class ModelService<T> extends EventHandler {
       );
   }
 
-  private _submit(item: T): void {
+  protected _submit(item: T): void {
     item = this.preSubmit(item);
     if ((<any>item)._id !== '') {
       this.db.request('update', this.namespace, [(<any>item)._id, item], this.retrieves.read)
@@ -88,7 +88,7 @@ export abstract class ModelService<T> extends EventHandler {
     }
   }
 
-  private _delete(id: string): void {
+  protected _delete(id: string): void {
     if (!id) this.emitter.error(new Error());
     this.db.request('delete', this.namespace, id, this.retrieves.delete)
       .subscribe(

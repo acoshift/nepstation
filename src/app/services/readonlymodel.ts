@@ -20,7 +20,7 @@ export class ReadOnlyModelService<T> extends EventHandler {
     }
   }
 
-  private _refresh() {
+  protected _refresh() {
     this.db.request('query', this.namespace, null, this.retrieves.refresh, true)
     .subscribe(
       r => {
@@ -34,7 +34,7 @@ export class ReadOnlyModelService<T> extends EventHandler {
     );
   }
 
-  private _read(id: string) {
+  protected _read(id: string) {
     this.db.request('read', this.namespace, id, this.retrieves.read)
       .subscribe(
         r => {
