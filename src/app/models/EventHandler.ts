@@ -1,7 +1,7 @@
+import { Event } from './event';
 import { Observable, Subject } from 'rxjs';
-import { Event } from '../models';
 
-export abstract class Service {
+export abstract class EventHandler {
   protected emitter: Subject<Event>;
   private _observable: Observable<Event>;
 

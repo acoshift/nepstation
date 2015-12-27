@@ -22,6 +22,8 @@ export class RepeatPipe implements PipeTransform {
   }
 
   transform(obj: Observable<any>, args?: any[]): Observable<any[]> {
+    console.log(obj);
+    console.log(args[0]);
     if (isBlank(this._receiver) && isPresent(args[0])) {
       this._receiver = args[0];
       this._receiver.subscribe(() => this._emit());

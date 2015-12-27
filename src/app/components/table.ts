@@ -1,10 +1,11 @@
 import { Component } from 'angular2/core';
-import { Observable, Subscriber } from 'rxjs';
-import { Page } from '../models';
+import { Observable, Subject } from 'rxjs';
+import { Page, Id, Event, EventHandler } from '../models';
 import moment = require('moment');
 
-@Component({})
-export abstract class TableComponent {
+declare var $: any;
+
+export abstract class TableComponent extends EventHandler {
   protected search = {
     keyword: '',
     field: '',
@@ -13,8 +14,6 @@ export abstract class TableComponent {
       end: 0,
     }
   };
-
-  protected repeater: Observable<void> = Observable.create(subscriber => this._repeater = subscriber).share();
 
   protected page: Page = {
     current: 0,
@@ -25,27 +24,76 @@ export abstract class TableComponent {
 
   protected loading = true;
 
-  private _repeater: Subscriber<void>;
+  protected filter: (any) => boolean;
 
-  constructor(protected service: any) {
+  private _list: Observable<any>;
+
+  constructor(protected service: EventHandler) {
+    super();
+    service.observable.subscribe(
+      event => {
+        switch (event.name) {
+          case 'delete':
+            service.next({ name: 'refresh' });
+            break;
+        }
+      },
+      error => {
+        $('#error').modal('show');
+      }
+    );
+
+    this._list = this.service.observable
+        .filter(event => event.name === 'list')
+        .map(event => event.data)
+        .map(xs => _.clone(xs).reverse())
+        .flatMap<any>(x => Observable.create(emitter => {
+          emitter.next(x);
+          this.observable
+            .filter(event => event.name === 'repeatFilter')
+            .subscribe(() => emitter.next(x));
+        }))
+        .map(x => _.filter(x, y => this.dateFilter(y)))
+        .map(x => _.filter(x, y => this.filter(y)))
+        .map(x => {
+          this.page.itemCount = _.isArray(x) && x.length || 0;
+          this.emitter.next({ name: 'refreshPage' });
+          return x;
+        })
+        .flatMap<any>(x => Observable.create(emitter => {
+          emitter.next(x);
+          this.observable
+            .filter(event => event.name === 'repeatPage')
+            .subscribe(() => emitter.next(x))
+        }))
+        .map(x => {
+          let p = this.page.current * this.page.itemPerPage;
+          let k = this.page.itemPerPage && p + this.page.itemPerPage || undefined;
+          return _.slice(x, p, k);
+        })
+        .share();
+
     this.list.subscribe(r => {
-      this.page.itemCount = r && r.length || 0;
       this.loading = r === null;
     });
     service.next({ name: 'refresh' });
   }
 
+  onEvent(event: Event) {
+    switch (event.name) {
+      case 'gotoPage':
+        this.emitter.next({ name: 'repeatPage' });
+        break;
+    }
+  }
+
   refresh() {
-    this._repeater.next();
+    this.emitter.next({ name: 'repeatFilter' });
   }
 
   get list() {
-    return this.service.observable
-      .filter(event => event.name === 'list')
-      .map(event => event.data);
+    return this._list;
   }
-
-  filter: (any) => boolean;
 
   setStartDate(date: string): void {
     this.search.date.start = this._fromDate(date);
@@ -67,9 +115,9 @@ export abstract class TableComponent {
     this.refresh();
   }
 
-  remove(item: any) {
-    this.service.remove(item);
-    this.refresh();
+  delete(item: Id) {
+    // TODO: show modal on approve delete
+    this.service.next({ name: 'delete', data: item._id });
   }
 
   get dateFilter(): (item) => boolean {

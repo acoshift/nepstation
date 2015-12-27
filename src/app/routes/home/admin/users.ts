@@ -11,7 +11,9 @@ import { User, Role } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
 
-@Component({})
+@Component({
+  providers: [ RepeatPipe ]
+})
 @View({
   template: require('./users.jade'),
   styles: [ ],
@@ -34,12 +36,14 @@ export class UsersRoute extends TableComponent {
   model: ControlGroup;
   roles: Role[];
 
-  constructor(navbar: NavbarService,
-              service: UsersService,
-              roles: RolesService,
-              private timestamp: TimestampPipe,
-              private fb: FormBuilder) {
-    super(service);
+  constructor(
+    navbar: NavbarService,
+    service: UsersService,
+    roles: RolesService,
+    private timestamp: TimestampPipe,
+    private fb: FormBuilder,
+    repeat: RepeatPipe) {
+    super(service, repeat);
     navbar.active('admin/users');
 
     this.model = fb.group({
@@ -51,7 +55,7 @@ export class UsersRoute extends TableComponent {
     });
 
     roles.observable.subscribe(event => {
-      if (event.name === 'list') this.roles = event.data
+      if (event.name === 'list') this.roles = event.data;
     });
 
     roles.next({ name: 'refresh' });
@@ -114,26 +118,13 @@ export class UsersRoute extends TableComponent {
 
   submit() {
     if (!this.model.valid) return;
-    this.service.submit(this.model.value).subscribe(
+    /*this.service.submit(this.model.value).subscribe(
       r => {
         this.service.refresh();
       },
       e => {
         $('#error').modal('show');
-      });
-  }
-
-  delete(item: User) {
-    // TODO: show modal on approve delete
-    this.service.delete(item._id).subscribe(
-      r => {
-        // TODO: Show modal complete (create new directive)
-        this.service.refresh();
-      },
-      e => {
-        $('#error').modal('show');
-      }
-    );
+      });*/
   }
 
   getRole(id: string) {

@@ -1,58 +1,51 @@
-import { Component, OnInit, Input, Output, EventEmitter } from 'angular2/core';
-import { Observable } from 'rxjs';
-import { Page } from '../models';
+import { Component } from 'angular2/core';
+import { Page, Event } from '../models';
+import { EventComponent } from './event';
 import _ = require('lodash');
 
 @Component({
   selector: 'pagination',
   template: require('./pagination.jade')
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent extends EventComponent {
   pages: number[];
-
-  @Input()
-  page: Page;
-
-  @Input()
-  refresh: Observable<void>;
-
-  @Output()
-  pageChange = new EventEmitter();
+  data: Page;
 
   ngOnInit() {
-    this.pageChange.subscribe(r => {
-      this.page = r;
-      this._refresh();
-    });
-    this.refresh.subscribe(() => {
-      this.page.current = 0;
-      this._refresh();
-    });
+    super.ngOnInit();
     this._refresh();
   }
 
-  _refresh() {
-    this.page.total = Math.ceil(this.page.itemCount / this.page.itemPerPage);
+  onEvent(event: Event) {
+    if (event.name === 'refreshPage') {
+      this.data.current = 0;
+      this._refresh();
+    }
+  }
+
+  private _refresh() {
+    this.data.total = Math.ceil(this.data.itemCount / this.data.itemPerPage);
     let r = [];
-    if (this.page.current - 2 > 0) r = [0, -1];
-    r = r.concat(_.range(Math.max(this.page.current - 2, 0), Math.min(this.page.current + 3, this.page.total)));
-    if (this.page.current + 3 < this.page.total) r = r.concat([-1, this.page.total - 1]);
+    if (this.data.current - 2 > 0) r = [0, -1];
+    r = r.concat(_.range(Math.max(this.data.current - 2, 0), Math.min(this.data.current + 3, this.data.total)));
+    if (this.data.current + 3 < this.data.total) r = r.concat([-1, this.data.total - 1]);
     this.pages = r;
   }
 
-  goto(page: number) {
+  private _gotoPage(page: number) {
     if (page < 0) return;
-    this.page.current = page;
-    this.pageChange.emit(this.page);
+    this.data.current = page;
+    this.next.emit({ name: 'gotoPage' });
+    this._refresh();
   }
 
-  next() {
-    if (this.page.current < this.page.total - 1)
-      this.goto(this.page.current + 1);
+  private _nextPage() {
+    if (this.data.current < this.data.total - 1)
+      this._gotoPage(this.data.current + 1);
   }
 
-  prev() {
-    if (this.page.current > 0)
-      this.goto(this.page.current - 1);
+  private _prevPage() {
+    if (this.data.current > 0)
+      this._gotoPage(this.data.current - 1);
   }
 }

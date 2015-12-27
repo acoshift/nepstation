@@ -4,7 +4,7 @@ import { NavbarService, LogsService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
 import _ = require('lodash');
 import moment = require('moment');
-import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
+import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { Directives } from '../../../directives';
 declare var $: any;
 
@@ -19,11 +19,6 @@ declare var $: any;
   pipes: [
     TimestampPipe,
     MomentPipe,
-    ReversePipe,
-    FilterPipe,
-    RepeatPipe,
-    PagePipe,
-    CountPipe,
   ]
 })
 export class LogsRoute extends TableComponent {

@@ -32,10 +32,11 @@ export class RolesRoute extends TableComponent {
   header: string = '';
   model: ControlGroup;
 
-  constructor(navbar: NavbarService,
-              service: RolesService,
-              private timestamp: TimestampPipe,
-              fb: FormBuilder) {
+  constructor(
+    navbar: NavbarService,
+    service: RolesService,
+    private timestamp: TimestampPipe,
+    fb: FormBuilder) {
     super(service);
     navbar.active('admin/roles');
 

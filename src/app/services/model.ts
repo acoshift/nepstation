@@ -1,14 +1,9 @@
 import { Injectable } from 'angular2/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { DbService } from './db';
-import { Event } from '../models';
-import { Service } from './service';
-import { ModelService as _ModelService } from '../models';
+import { Event, EventHandler } from '../models';
 
-export class ModelService<T> extends Service {
-  /*private _emitter: Subject<T[]> = new BehaviorSubject(null);
-  private _observable: Observable<T[]> = this._emitter.share();*/
-
+export class ModelService<T> extends EventHandler {
   constructor(
     protected db: DbService,
     protected namespace: string,
@@ -19,41 +14,77 @@ export class ModelService<T> extends Service {
       case 'refresh':
         this._refresh();
         break;
+      case 'read':
+        this._read(event.data);
+        break;
+      case 'delete':
+        this._delete(event.data);
+        break;
+      case 'submit':
+        this._submit(event.data);
+        break;
     }
+  }
+
+  protected preSubmit(item: T) {
+    return item;
   }
 
   private _refresh() {
     this.db.request('query', this.namespace, null, this.retrieves.refresh)
-    .subscribe(
-      r => {
-        if (r.error) return this.emitter.error(r.error);
-        this.emitter.next({ name: 'list', data: r });
-      }
-    );
+      .subscribe(
+        r => {
+          if (r.error) {
+            this.emitter.error(r.error);
+          } else {
+            this.emitter.next({ name: 'list', data: r });
+          }
+        },
+        e => this.emitter.error(e)
+      );
   }
 
-  read(id: string): Observable<T> {
-    return this.db.request('query', this.namespace, id, this.retrieves.read);
+  private _read(id: string): void {
+    this.db.request('query', this.namespace, id, this.retrieves.read)
+      .subscribe(
+        r => this.emitter.next({ name: 'read', data: r }),
+        e => this.emitter.error(e)
+      );
   }
 
-  preSubmit(item: T) {
-    return item;
-  }
-
-  submit(item: T) {
+  private _submit(item: T): void {
     item = this.preSubmit(item);
     if ((<any>item)._id !== '') {
-      return this.db.request('update', this.namespace, [(<any>item)._id, item], this.retrieves.read);
+      this.db.request('update', this.namespace, [(<any>item)._id, item], this.retrieves.read)
+        .subscribe(
+          r => {
+            if (r.error) return this.emitter.error(r.error);
+            this.emitter.next({ name: 'submit', data: r });
+          },
+          e => this.emitter.error(e)
+        );
     } else {
       delete (<any>item)._id;
-      return this.db.request('create', this.namespace, item, this.retrieves.read);
+      this.db.request('create', this.namespace, item, this.retrieves.read)
+        .subscribe(
+          r => {
+            if (r.error) return this.emitter.error(r.error);
+            this.emitter.next({ name: 'submit', data: r });
+          },
+          e => this.emitter.error(e)
+        );
     }
   }
 
-  delete(id: string) {
-    if (!id) return Observable.create(subscriber => {
-      subscriber.error(new Error());
-    });
-    return this.db.request('delete', this.namespace, id, this.retrieves.delete);
+  private _delete(id: string): void {
+    if (!id) this.emitter.error(new Error());
+    this.db.request('delete', this.namespace, id, this.retrieves.delete)
+      .subscribe(
+        r => {
+          if (r.error) return this.emitter.error(r.error);
+          this.emitter.next({ name: 'delete', data: r });
+        },
+        e => this.emitter.error(e)
+      );
   }
 }

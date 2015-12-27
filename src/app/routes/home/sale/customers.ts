@@ -33,16 +33,9 @@ export class CustomersRoute extends TableComponent {
               private timestamp: TimestampPipe) {
     super(service);
     navbar.active('sale/customers');
-
-    service.list().subscribe(r => {
-      this.page.itemCount = r && r.length || 0;
-      this.loading = r === null;
-    });
-
-    service.refresh();
   }
 
-  filter() {
+  get filter() {
     return x => {
       if (!this.search.keyword) return true;
       switch (this.search.field) {

@@ -29,12 +29,13 @@ table.ui.fixed.compact.striped.celled.table
       th Method
       th Collection
   tbody
-    tr(*ngFor="#t of list | reverse | repeat:repeater | filter:dateFilter:filter | count:page | page:page | async")
+    tr(*ngFor="#t of list | async")
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.t?.payload?.sub?.split('/')[0]}}
       td {{t.q?.method}}
       td {{t.q?.name}}
 
-pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
+.ui.right.aligned.grid
+  pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")

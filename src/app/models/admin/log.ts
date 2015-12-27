@@ -1,5 +1,6 @@
-export interface Log {
-  _id: string;
+import { Id } from '../id';
+
+export interface Log extends Id {
   t: {
     header: {
       typ: string;

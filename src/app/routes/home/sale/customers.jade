@@ -20,7 +20,7 @@ table.ui.fixed.striped.celled.table
       th Method
       th Collection
   tbody
-    tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
+    tr(*ngFor="#t of list | reverse | repeat:repeater | filter:dateFilter:filter | count:page | page:page | async")
       td {{t.t?.payload?.sub?.split('/')[0]}}
       td {{t.q?.method}}
       td {{t.q?.name}}
