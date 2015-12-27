@@ -1,6 +1,4 @@
-import {
-  Injectable,
-} from 'angular2/core';
+import { Injectable } from 'angular2/core';
 
 import {
   Http,
@@ -17,14 +15,13 @@ import _ = require('lodash');
 
 @Injectable()
 export class DbService {
+  private _server = 'https://farkpage.com/nepdb';
+  private _db = 'test';
+
   constructor(private http: Http, private cache: CacheService) { }
 
-  server = 'https://farkpage.com/nepdb';
-
-  db = 'test';
-
   request(method: string, ns?: string, params?: any, retrieves?: any, appendCache?: boolean) {
-    let body = this.makeNepQ(method, ns, params, retrieves);
+    let body = this._makeNepQ(method, ns, params, retrieves);
     let _body = body;
     let headers = new Headers({
       'Accept': 'application/json',
@@ -36,7 +33,7 @@ export class DbService {
     if (appendCache) {
       let cached = this.cache.data(body);
       if (cached && cached.length > 0) {
-        body = this.makeNepQ(method, ns, params, retrieves, { skip: cached.length });
+        body = this._makeNepQ(method, ns, params, retrieves, { skip: cached.length });
       }
     } else {
       let etag = this.cache.etag(body);
@@ -45,7 +42,7 @@ export class DbService {
 
     return this.http.request(new Request({
       method: RequestMethod.Post,
-      url: this.server,
+      url: this._server,
       body: body,
       headers: headers
     })).catch(err => {
@@ -79,18 +76,18 @@ export class DbService {
     return this.request('login', '', params);
   }
 
-  private retrieves(rets: any) {
+  private _retrieves(rets: any) {
     let ret = '';
     _.forOwn(rets, (v, k) => {
       if (v !== 1 && !_.isPlainObject(v)) return;
       ret += k;
-      if (_.isPlainObject(v)) ret += `{${this.retrieves(v)}}`;
+      if (_.isPlainObject(v)) ret += `{${this._retrieves(v)}}`;
       ret += ',';
     });
     return ret.substr(0, ret.length - 1);
   }
 
-  private makeNepQ(method: string, ns?: string, params?: any, retrieves?: any, options?: any) {
+  private _makeNepQ(method: string, ns?: string, params?: any, retrieves?: any, options?: any) {
     let p = params && JSON.stringify(params) || '';
     let opt = options && JSON.stringify(options) || '';
     if (p !== '' && opt !== '') {
@@ -100,9 +97,9 @@ export class DbService {
     } else if (p === '' && opt !== '') {
       p = `({},${opt})`;
     }
-    let ret = retrieves && `{${this.retrieves(retrieves)}}` || '';
-    let n = ns && ` ${this.db}.${ns}` || '';
-    if (ns === '') n = ` ${this.db}`;
+    let ret = retrieves && `{${this._retrieves(retrieves)}}` || '';
+    let n = ns && ` ${this._db}.${ns}` || '';
+    if (ns === '') n = ` ${this._db}`;
     let r = `${method}${n}${p}${ret}`;
     console.log('make request: ' + r);
     return r;
