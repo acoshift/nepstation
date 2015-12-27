@@ -39,3 +39,5 @@ table.ui.fixed.compact.striped.celled.table
   pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
+
+.alert([subscribeTo]="observable", (next)="next($event)")
