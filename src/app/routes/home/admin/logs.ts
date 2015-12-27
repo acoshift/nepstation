@@ -55,7 +55,7 @@ export class LogsRoute extends TableComponent {
         this.emitter.next({
           name: 'alert',
           data: {
-            title: `Restore "${item._id}"?`,
+            title: `Log: "${item._id}"`,
             code: JSON.stringify(item, null, 4),
             buttons: [ 'ok' ]
           }
