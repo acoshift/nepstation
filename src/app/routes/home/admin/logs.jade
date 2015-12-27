@@ -28,12 +28,16 @@ table.ui.fixed.compact.striped.celled.table
       th User
       th Method
       th Collection
+      th.one.wide
   tbody
     tr(*ngFor="#t of list | async")
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.t?.payload?.name}}
       td {{t.q?.method}}
       td {{t.q?.name}}
+      td.center.aligned
+        .ui.blue.icon.button((click)="view(t)")
+          i.zoom.icon
 
 .ui.right.aligned.grid
   pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")

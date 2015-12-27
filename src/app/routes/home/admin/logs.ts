@@ -3,6 +3,7 @@ import { NavbarService, LogsService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
 import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { Directives } from '../../../directives';
+import { Event, Log } from '../../../models';
 
 @Component({})
 @View({
@@ -44,5 +45,26 @@ export class LogsRoute extends TableComponent {
       }
       return false;
     };
+  }
+
+  onEvent(event: Event) {
+    super.onEvent(event);
+    switch (event.name) {
+      case 'read':
+        let item: Log = event.data;
+        this.emitter.next({
+          name: 'alert',
+          data: {
+            title: `Restore "${item._id}"?`,
+            code: JSON.stringify(item, null, 4),
+            buttons: [ 'ok' ]
+          }
+        });
+        break;
+    }
+  }
+
+  view(item: Log) {
+    this.service.next({ name: 'read', data: item._id });
   }
 }

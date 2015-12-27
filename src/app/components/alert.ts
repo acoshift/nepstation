@@ -6,7 +6,7 @@ declare var $: any;
 @Component({
   selector: '.alert',
   host: {
-    class: 'ui small modal'
+    class: 'ui long modal'
   },
   template: require('./alert.jade')
 })
@@ -30,6 +30,8 @@ export class AlertComponent extends EventComponent {
         .modal({
           closable: event.data.closable || false,
           allowMultiple: event.data.allowMultiple || true,
+          observeChanges: true,
+          offset: event.data.offset || Number.POSITIVE_INFINITY,
           transition: event.data.transition,
           duration: event.data.duration,
           onShow: event.data.onShow,
