@@ -19,7 +19,7 @@ table.ui.definition.compact.celled.table
       th.one.wide
       th.one.wide
   tbody
-    tr(*ngFor="#t of service.list() | reverse | repeat:repeater | filter:dateFilter():filter() | count:page | page:page | async")
+    tr(*ngFor="#t of list | async")
       td.collapsing
         .ui.fitted.checkbox
           input(type="checkbox")
@@ -42,7 +42,8 @@ table.ui.definition.compact.celled.table
           i.erase.icon
           | Delete Selected
 
-pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
+.ui.right.aligned.grid
+  pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
 

@@ -1,12 +1,8 @@
 import { Component, View } from 'angular2/core';
-import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, LogsService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
-import _ = require('lodash');
-import moment = require('moment');
 import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { Directives } from '../../../directives';
-declare var $: any;
 
 @Component({})
 @View({
@@ -22,11 +18,11 @@ declare var $: any;
   ]
 })
 export class LogsRoute extends TableComponent {
-  constructor(navbar: NavbarService,
-              service: LogsService) {
+  constructor(
+    navbar: NavbarService,
+    service: LogsService) {
     super(service);
     navbar.active('admin/logs');
-
     this.page.itemPerPage = 23;
   }
 
@@ -36,8 +32,8 @@ export class LogsRoute extends TableComponent {
       switch (this.search.field) {
         case '':
           return x.t.payload.sub.split('/')[0].indexOf(this.search.keyword) !== -1 ||
-            x.q.method.indexOf(this.search.keyword) !== -1 ||
-            x.q.name.indexOf(this.search.keyword) !== -1;
+                 x.q.method.indexOf(this.search.keyword) !== -1 ||
+                 x.q.name.indexOf(this.search.keyword) !== -1;
         case 'user':
           return x.t.payload.sub.split('/')[0].indexOf(this.search.keyword) !== -1;
         case 'method':

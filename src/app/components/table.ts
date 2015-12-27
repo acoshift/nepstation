@@ -43,33 +43,33 @@ export abstract class TableComponent extends EventHandler {
       }
     );
 
-    this._list = this.service.observable
+    this._list = service.observable
         .filter(event => event.name === 'list')
         .map(event => event.data)
         .map(xs => _.clone(xs).reverse())
-        .flatMap<any>(x => Observable.create(emitter => {
-          emitter.next(x);
+        .flatMap<any>(xs => Observable.create(emitter => {
+          emitter.next(xs);
           this.observable
             .filter(event => event.name === 'repeatFilter')
-            .subscribe(() => emitter.next(x));
+            .subscribe(() => emitter.next(xs));
         }))
-        .map(x => _.filter(x, y => this.dateFilter(y)))
-        .map(x => _.filter(x, y => this.filter(y)))
-        .map(x => {
-          this.page.itemCount = _.isArray(x) && x.length || 0;
+        .map(xs => _.filter(xs, x => this.dateFilter(x)))
+        .map(xs => _.filter(xs, x => this.filter(x)))
+        .map(xs => {
+          this.page.itemCount = _.isArray(xs) && xs.length || 0;
           this.emitter.next({ name: 'refreshPage' });
-          return x;
+          return xs;
         })
-        .flatMap<any>(x => Observable.create(emitter => {
-          emitter.next(x);
+        .flatMap<any>(xs => Observable.create(emitter => {
+          emitter.next(xs);
           this.observable
             .filter(event => event.name === 'repeatPage')
-            .subscribe(() => emitter.next(x))
+            .subscribe(() => emitter.next(xs));
         }))
-        .map(x => {
+        .map(xs => {
           let p = this.page.current * this.page.itemPerPage;
           let k = this.page.itemPerPage && p + this.page.itemPerPage || undefined;
-          return _.slice(x, p, k);
+          return _.slice(xs, p, k);
         })
         .share();
 

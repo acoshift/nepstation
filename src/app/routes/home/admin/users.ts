@@ -6,14 +6,12 @@ import { PaginationComponent, TableComponent } from '../../../components';
 import { Observable } from 'rxjs';
 import _ = require('lodash');
 import moment = require('moment');
-import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
+import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { User, Role } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
 
-@Component({
-  providers: [ RepeatPipe ]
-})
+@Component({})
 @View({
   template: require('./users.jade'),
   styles: [ ],
@@ -24,11 +22,6 @@ declare var $: any;
   pipes: [
     TimestampPipe,
     MomentPipe,
-    ReversePipe,
-    FilterPipe,
-    RepeatPipe,
-    PagePipe,
-    CountPipe,
   ]
 })
 export class UsersRoute extends TableComponent {
@@ -40,10 +33,8 @@ export class UsersRoute extends TableComponent {
     navbar: NavbarService,
     service: UsersService,
     roles: RolesService,
-    private timestamp: TimestampPipe,
-    private fb: FormBuilder,
-    repeat: RepeatPipe) {
-    super(service, repeat);
+    private fb: FormBuilder) {
+    super(service);
     navbar.active('admin/users');
 
     this.model = fb.group({

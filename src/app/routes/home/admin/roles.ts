@@ -3,9 +3,7 @@ import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common'
 import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
-import _ = require('lodash');
-import moment = require('moment');
-import { TimestampPipe, MomentPipe, ReversePipe, FilterPipe, RepeatPipe, PagePipe, CountPipe } from '../../../pipes';
+import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { Role } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
@@ -21,11 +19,6 @@ declare var $: any;
   pipes: [
     TimestampPipe,
     MomentPipe,
-    ReversePipe,
-    FilterPipe,
-    RepeatPipe,
-    PagePipe,
-    CountPipe,
   ]
 })
 export class RolesRoute extends TableComponent {

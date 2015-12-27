@@ -50,7 +50,8 @@ table.ui.definition.compact.striped.celled.table
           i.erase.icon
           | Delete Selected
 
-pagination(*ngIf="!loading", [(page)]="page", [refresh]="repeater")
+.ui.right.aligned.grid
+  pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
 

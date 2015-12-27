@@ -1,5 +1,3 @@
-import { Injectable } from 'angular2/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { DbService } from './db';
 import { Event, EventHandler } from '../models';
 
@@ -27,20 +25,26 @@ export class ReadOnlyModelService<T> extends EventHandler {
     .subscribe(
       r => {
         if (r.error) {
-          this.emitter.error(r.error);
+          this.emitter.next({ name: 'error', data: r.error });
         } else {
           this.emitter.next({ name: 'list', data: r });
         }
       },
-      e => this.emitter.error(e)
+      e => this.emitter.next({ name: 'error', data: e })
     );
   }
 
   private _read(id: string) {
     this.db.request('query', this.namespace, id, this.retrieves.read)
       .subscribe(
-        r => this.emitter.next({ name: 'read', data: r}),
-        e => this.emitter.error(e)
+        r => {
+          if (r.error) {
+            this.emitter.next({ name: 'error', data: r.error });
+          } else {
+            this.emitter.next({ name: 'read', data: r });
+          }
+        },
+        e => this.emitter.next({ name: 'error', data: e })
       );
   }
 }

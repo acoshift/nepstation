@@ -1,13 +1,13 @@
-import { Injectable } from 'angular2/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { DbService } from './db';
 import { Event, EventHandler } from '../models';
 
-export class ModelService<T> extends EventHandler {
+export abstract class ModelService<T> extends EventHandler {
   constructor(
     protected db: DbService,
     protected namespace: string,
-    protected retrieves: any) { super(); }
+    protected retrieves: any) {
+    super();
+  }
 
   onEvent(event: Event) {
     switch (event.name) {
@@ -35,20 +35,26 @@ export class ModelService<T> extends EventHandler {
       .subscribe(
         r => {
           if (r.error) {
-            this.emitter.error(r.error);
+            this.emitter.next({ name: 'error', data: r.error });
           } else {
             this.emitter.next({ name: 'list', data: r });
           }
         },
-        e => this.emitter.error(e)
+        e => this.emitter.next({ name: 'error', data: e })
       );
   }
 
   private _read(id: string): void {
     this.db.request('query', this.namespace, id, this.retrieves.read)
       .subscribe(
-        r => this.emitter.next({ name: 'read', data: r }),
-        e => this.emitter.error(e)
+        r => {
+          if (r.error) {
+            this.emitter.next({ name: 'error', data: r.error });
+          } else {
+            this.emitter.next({ name: 'read', data: r });
+          }
+        },
+        e => this.emitter.next({ name: 'error', data: e })
       );
   }
 
@@ -58,20 +64,26 @@ export class ModelService<T> extends EventHandler {
       this.db.request('update', this.namespace, [(<any>item)._id, item], this.retrieves.read)
         .subscribe(
           r => {
-            if (r.error) return this.emitter.error(r.error);
-            this.emitter.next({ name: 'submit', data: r });
+            if (r.error) {
+              this.emitter.next({ name: 'error', data: r.error });
+            } else {
+              this.emitter.next({ name: 'submit', data: r });
+            }
           },
-          e => this.emitter.error(e)
+          e => this.emitter.next({ name: 'error', data: e })
         );
     } else {
       delete (<any>item)._id;
       this.db.request('create', this.namespace, item, this.retrieves.read)
         .subscribe(
           r => {
-            if (r.error) return this.emitter.error(r.error);
-            this.emitter.next({ name: 'submit', data: r });
+            if (r.error) {
+              this.emitter.next({ name: 'error', data: r.error });
+            } else {
+              this.emitter.next({ name: 'submit', data: r });
+            }
           },
-          e => this.emitter.error(e)
+          e => this.emitter.next({ name: 'error', data: e })
         );
     }
   }
@@ -81,10 +93,13 @@ export class ModelService<T> extends EventHandler {
     this.db.request('delete', this.namespace, id, this.retrieves.delete)
       .subscribe(
         r => {
-          if (r.error) return this.emitter.error(r.error);
-          this.emitter.next({ name: 'delete', data: r });
+          if (r.error) {
+            this.emitter.next({ name: 'error', data: r.error });
+          } else {
+            this.emitter.next({ name: 'delete', data: r });
+          }
         },
-        e => this.emitter.error(e)
+        e => this.emitter.next({ name: 'error', data: e })
       );
   }
 }
