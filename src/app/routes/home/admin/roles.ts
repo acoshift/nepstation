@@ -2,7 +2,7 @@ import { Component, View } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, RolesService } from '../../../services';
-import { PaginationComponent, TableComponent } from '../../../components';
+import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
 import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { Role } from '../../../models';
 import { Directives } from '../../../directives';
@@ -14,6 +14,7 @@ declare var $: any;
   styles: [ ],
   directives: [
     PaginationComponent,
+    AlertComponent,
     Directives,
   ],
   pipes: [

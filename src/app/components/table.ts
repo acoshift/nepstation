@@ -36,10 +36,30 @@ export abstract class TableComponent extends EventHandler {
           case 'delete':
             service.next({ name: 'refresh' });
             break;
+          case 'submit':
+            service.next({ name: 'refresh' });
+            break;
+          case 'error':
+            this.emitter.next({
+              name: 'alert',
+              data: {
+                title: '',
+                content: event.data,
+                buttons: [ 'ok' ]
+              }
+            });
+            break;
         }
       },
       error => {
-        $('#error').modal('show');
+        this.emitter.next({
+          name: 'alert',
+          data: {
+            title: '',
+            content: error,
+            buttons: [ 'ok' ]
+          }
+        });
       }
     );
 
@@ -83,6 +103,16 @@ export abstract class TableComponent extends EventHandler {
       case 'gotoPage':
         this.emitter.next({ name: 'repeatPage' });
         break;
+      case 'error':
+        this.emitter.next({
+          name: 'alert',
+          data: {
+            title: '',
+            content: event.data,
+            buttons: [ 'ok' ]
+          }
+        });
+        break;
     }
   }
 
@@ -92,6 +122,22 @@ export abstract class TableComponent extends EventHandler {
 
   get list() {
     return this._list;
+  }
+
+  getName(item) {
+    return item.name;
+  }
+
+  delete(item) {
+    this.emitter.next({
+      name: 'alert',
+      data: {
+        title: '',
+        content: `Are you sure you want to delete "${this.getName(item)}"?`,
+        buttons: [ 'delete', 'cancel.primary' ],
+        onApprove: () => this.service.next({ name: 'delete', data: item._id })
+      }
+    });
   }
 
   setStartDate(date: string): void {
@@ -112,11 +158,6 @@ export abstract class TableComponent extends EventHandler {
   setKeyword(keyword: string): void {
     this.search.keyword = keyword;
     this.refresh();
-  }
-
-  delete(item: Id) {
-    // TODO: show modal on approve delete
-    this.service.next({ name: 'delete', data: item._id });
   }
 
   get dateFilter(): (item) => boolean {

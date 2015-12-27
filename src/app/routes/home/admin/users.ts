@@ -1,8 +1,7 @@
 import { Component, View } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { NavbarService, UsersService, RolesService } from '../../../services';
-import { PaginationComponent, TableComponent } from '../../../components';
-import { Observable } from 'rxjs';
+import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
 import _ = require('lodash');
 import { User, Role } from '../../../models';
 import { Directives } from '../../../directives';
@@ -14,6 +13,7 @@ declare var $: any;
   styles: [ ],
   directives: [
     PaginationComponent,
+    AlertComponent,
     Directives,
   ]
 })
@@ -102,13 +102,7 @@ export class UsersRoute extends TableComponent {
 
   submit() {
     if (!this.model.valid) return;
-    /*this.service.submit(this.model.value).subscribe(
-      r => {
-        this.service.refresh();
-      },
-      e => {
-        $('#error').modal('show');
-      });*/
+    this.service.next({ name: 'submit', data: this.model.value });
   }
 
   getRole(id: string) {

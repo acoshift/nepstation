@@ -26,10 +26,10 @@ table.ui.definition.compact.celled.table
           label
       td {{t.name}}
       td.center.aligned
-        .ui.teal.icon.button.can-popup((click)="edit(t)", data-content="Edit")
+        .ui.teal.icon.button((click)="edit(t)")
           i.edit.icon
       td.center.aligned
-        .ui.red.icon.button.can-popup((click)="remove(t)", data-content="Remove")
+        .ui.red.icon.button((click)="delete(t)")
           i.remove.icon
   tfoot.full-width
     tr
@@ -102,3 +102,5 @@ table.ui.definition.compact.celled.table
     .positive.ui.button((click)="submit()")
       i.checkmark.icon
       | OK
+      
+.alert([subscribeTo]="observable", (next)="next($event)")

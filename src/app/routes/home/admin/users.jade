@@ -34,10 +34,10 @@ table.ui.definition.compact.striped.celled.table
         i.red.remove.icon(*ngIf="!t.enabled")
       td {{getRole(t.role)}}
       td.center.aligned
-        .ui.teal.icon.button.can-popup((click)="edit(t)", data-content="Edit")
+        .ui.teal.icon.button((click)="edit(t)")
           i.edit.icon
       td.center.aligned
-        .ui.red.icon.button.can-popup((click)="delete(t)", data-content="Remove")
+        .ui.red.icon.button((click)="delete(t)")
           i.remove.icon
   tfoot.full-width
     tr
@@ -82,9 +82,4 @@ table.ui.definition.compact.striped.celled.table
       i.checkmark.icon
       | OK
 
-#error.ui.small.modal
-  .header Error
-  .content
-    | Error
-  .actions
-    .ui.grey.right.ok.button OK
+.alert([subscribeTo]="observable", (next)="next($event)")
