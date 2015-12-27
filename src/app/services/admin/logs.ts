@@ -10,7 +10,7 @@ export class LogsService extends ReadOnlyModelService<Log> {
       refresh: {
         _id: 1,
         q: { method: 1, name: 1 },
-        t: { payload: { sub: 1 } }
+        t: { payload: { name: 1 } }
       },
       read: {
         _id: 1, name: 1, enabled: 1, role: 1

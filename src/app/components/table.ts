@@ -55,10 +55,9 @@ export abstract class TableComponent extends EventHandler {
         }))
         .map(xs => _.filter(xs, x => this.dateFilter(x)))
         .map(xs => _.filter(xs, x => this.filter(x)))
-        .map(xs => {
+        .do(xs => {
           this.page.itemCount = _.isArray(xs) && xs.length || 0;
           this.emitter.next({ name: 'refreshPage' });
-          return xs;
         })
         .flatMap<any>(xs => Observable.create(emitter => {
           emitter.next(xs);

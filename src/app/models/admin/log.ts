@@ -7,8 +7,8 @@ export interface Log extends Id {
       alg: string;
     };
     payload: {
-      sub: string;
-      role: string;
+      name: string;
+      ns: string;
       iat: number;
       signature: string;
     }

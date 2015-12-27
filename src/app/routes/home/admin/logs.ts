@@ -31,11 +31,11 @@ export class LogsRoute extends TableComponent {
       if (!this.search.keyword) return true;
       switch (this.search.field) {
         case '':
-          return x.t.payload.sub.split('/')[0].indexOf(this.search.keyword) !== -1 ||
+          return x.t.payload.name.indexOf(this.search.keyword) !== -1 ||
                  x.q.method.indexOf(this.search.keyword) !== -1 ||
                  x.q.name.indexOf(this.search.keyword) !== -1;
         case 'user':
-          return x.t.payload.sub.split('/')[0].indexOf(this.search.keyword) !== -1;
+          return x.t.payload.name.indexOf(this.search.keyword) !== -1;
         case 'method':
           return x.q.method.indexOf(this.search.keyword) !== -1;
         case 'collection':

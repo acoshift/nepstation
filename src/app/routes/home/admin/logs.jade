@@ -31,7 +31,7 @@ table.ui.fixed.compact.striped.celled.table
   tbody
     tr(*ngFor="#t of list | async")
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
-      td {{t.t?.payload?.sub?.split('/')[0]}}
+      td {{t.t?.payload?.name}}
       td {{t.q?.method}}
       td {{t.q?.name}}
 
