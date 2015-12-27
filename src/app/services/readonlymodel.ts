@@ -35,7 +35,7 @@ export class ReadOnlyModelService<T> extends EventHandler {
   }
 
   private _read(id: string) {
-    this.db.request('query', this.namespace, id, this.retrieves.read)
+    this.db.request('read', this.namespace, id, this.retrieves.read)
       .subscribe(
         r => {
           if (r.error) {

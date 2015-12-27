@@ -13,6 +13,7 @@ declare var $: any;
 export class AlertComponent extends EventComponent {
   title: string = '';
   content: string = '';
+  code: string = '';
   buttons: string[] = [];
 
   constructor(private e: ElementRef) {
@@ -21,9 +22,10 @@ export class AlertComponent extends EventComponent {
 
   onEvent(event: Event) {
     if (event.name === 'alert') {
-      this.title = event.data.title;
-      this.content = event.data.content;
-      this.buttons = event.data.buttons;
+      this.title = event.data.title || '';
+      this.content = event.data.content || '';
+      this.code = event.data.code || '';
+      this.buttons = event.data.buttons || [ 'ok' ];
       $(this.e.nativeElement)
         .modal({
           closable: event.data.closable || false,

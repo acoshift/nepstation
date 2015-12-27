@@ -45,7 +45,7 @@ export abstract class ModelService<T> extends EventHandler {
   }
 
   private _read(id: string): void {
-    this.db.request('query', this.namespace, id, this.retrieves.read)
+    this.db.request('read', this.namespace, id, this.retrieves.read)
       .subscribe(
         r => {
           if (r.error) {

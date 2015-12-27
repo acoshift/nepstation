@@ -2,9 +2,10 @@
   .item
     .header Admin
     .menu
-      a.item([class.active]="isActive('admin/logs')", [routerLink]="['./Admin/Logs']") Logs
       a.item([class.active]="isActive('admin/users')", [routerLink]="['./Admin/Users']") Users
       a.item([class.active]="isActive('admin/roles')", [routerLink]="['./Admin/Roles']") Roles
+      a.item([class.active]="isActive('admin/logs')", [routerLink]="['./Admin/Logs']") Logs
+      a.item([class.active]="isActive('admin/trash')", [routerLink]="['./Admin/Trash']") Trash
   .item
     .header Sale
     .menu

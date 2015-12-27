@@ -1,0 +1,56 @@
+.ui.form
+  .fields
+    .field
+      .ui.right.action.left.icon.input
+        i.search.icon
+        input(type="text", placeholder="Search", (input)="setKeyword($event.target.value)")
+        .ui.basic.floating.dropdown.button
+          .text Select field
+          i.dropdown.icon
+          .menu
+            .item((click)="setField('')") All
+            .item((click)="setField('id')") ID
+            .item((click)="setField('db')") Collection
+    .field
+      .ui.left.icon.input
+        i.calendar.icon
+        input(type="text", placeholder="Start: YYYY-MM-DD", (input)="setStartDate($event.target.value)")
+    .field
+      .ui.left.icon.input
+        i.calendar.icon
+        input(type="text", placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
+
+table.ui.fixed.single.line.definition.compact.striped.celled.table
+  thead
+    tr
+      th.one.wide
+      th Date
+      th ID
+      th Collection
+      th.one.wide
+  tbody
+    tr(*ngFor="#t of list | async")
+      td.collapsing.center.aligned
+        .ui.fitted.checkbox
+          input(type="checkbox")
+          label
+      td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
+      td {{t._id}}
+      td {{t.db}}
+      td.center.aligned
+        .ui.blue.icon.button((click)="view(t)")
+          i.zoom.icon
+  tfoot.full-width
+    tr
+      th
+      th(colspan=4)
+        .ui.green.small.labeled.icon.button((click)="restoreSelected()")
+          i.reply.all.icon
+          | Restore Selected
+
+.ui.right.aligned.grid
+  pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
+
+.ui.active.centered.large.inline.loader(*ngIf="loading")
+
+.alert([subscribeTo]="observable", (next)="next($event)")

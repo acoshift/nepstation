@@ -3,6 +3,7 @@ import { RouteConfig, RouterOutlet } from 'angular2/router';
 import { LogsRoute } from './logs';
 import { UsersRoute } from './users';
 import { RolesRoute } from './roles';
+import { TrashRoute } from './trash';
 
 @Component({
   template: '<router-outlet></router-outlet>',
@@ -12,5 +13,6 @@ import { RolesRoute } from './roles';
   { path: '/logs', name: 'Logs', component: LogsRoute },
   { path: '/users', name: 'Users', component: UsersRoute },
   { path: '/roles', name: 'Roles', component: RolesRoute },
+  { path: '/trash', name: 'Trash', component: TrashRoute },
 ])
 export class AdminRouter {}

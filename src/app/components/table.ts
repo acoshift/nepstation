@@ -31,26 +31,7 @@ export abstract class TableComponent extends EventHandler {
   constructor(protected service: EventHandler) {
     super();
     service.observable.subscribe(
-      event => {
-        switch (event.name) {
-          case 'delete':
-            service.next({ name: 'refresh' });
-            break;
-          case 'submit':
-            service.next({ name: 'refresh' });
-            break;
-          case 'error':
-            this.emitter.next({
-              name: 'alert',
-              data: {
-                title: '',
-                content: event.data,
-                buttons: [ 'ok' ]
-              }
-            });
-            break;
-        }
-      },
+      event => this.onEvent(event),
       error => {
         this.emitter.next({
           name: 'alert',
@@ -100,6 +81,12 @@ export abstract class TableComponent extends EventHandler {
 
   onEvent(event: Event) {
     switch (event.name) {
+      case 'delete':
+        this.service.next({ name: 'refresh' });
+        break;
+      case 'submit':
+        this.service.next({ name: 'refresh' });
+        break;
       case 'gotoPage':
         this.emitter.next({ name: 'repeatPage' });
         break;
