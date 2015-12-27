@@ -28,12 +28,4 @@
 #loading.ui.modal
   .ui.active.dimmer
     .ui.large.text.loader Loading
-#wrong.ui.small.modal
-  .header Error
-  .content
-    .description
-      | Wrong username or password.
-  .actions
-    .ui.grey.right.ok.button
-      | OK
-.alert(title="", content="Please input username and password.")
+.alert([subscribeTo]="observable", (next)="next($event)")

@@ -9,11 +9,10 @@ import {
 } from 'angular2/common';
 
 import { AlertComponent } from '../../components';
-
 import { Directives } from '../../directives';
-
 import { Router, RouterLink } from 'angular2/router';
 import { AuthService } from '../../services';
+import { EventHandler, Event } from '../../models';
 
 declare var $: any;
 
@@ -29,12 +28,14 @@ declare var $: any;
   template: require('./login.jade'),
   styles: [ require('./login.css') ],
 })
-export class LoginRoute {
+export class LoginRoute extends EventHandler {
   loginForm: ControlGroup;
 
-  constructor(private router: Router,
-              private auth: AuthService,
-              fb: FormBuilder) {
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    fb: FormBuilder) {
+    super();
     // init model
     this.loginForm = fb.group({
       user: ['', Validators.required],
@@ -49,9 +50,20 @@ export class LoginRoute {
     }
   }
 
+  onEvent(event: Event) {
+    //
+  }
+
   login() {
     if (!this.loginForm.valid) {
-      $('.alert').modal('show');
+      this.emitter.next({
+        name: 'alert',
+        data: {
+          title: '',
+          content: 'Please input username and password.',
+          buttons: [ 'ok' ]
+        }
+      });
       return;
     }
     let { user, pwd, remember } = this.loginForm.value;
@@ -65,9 +77,15 @@ export class LoginRoute {
           this.router.navigate(['/Home']);
         }
       } else {
-        $('#wrong').modal({
-          onHide: () => { $('#loading').modal('hide'); }
-        }).modal('show');
+        this.emitter.next({
+          name: 'alert',
+          data: {
+            title: '',
+            content: 'Wrong username or password.',
+            buttons: [ 'ok' ],
+            onHide: () => $('#loading').modal('hide')
+          }
+        });
       }
     });
   }

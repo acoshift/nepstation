@@ -1,4 +1,9 @@
 .header {{ title }}
 .content {{ content }}
 .actions
-  .ui.center.grey.ok.button OK
+  .ui.red.cancel.button(*ngIf="buttons.indexOf('cancel') !== -1") Cancel
+  .ui.grey.ok.button(*ngIf="buttons.indexOf('ok') !== -1") OK
+  .ui.purple.ok.button(*ngIf="buttons.indexOf('update') !== -1") Delete
+  .ui.teal.ok.button(*ngIf="buttons.indexOf('update') !== -1") Restore
+  .ui.green.ok.button(*ngIf="buttons.indexOf('update') !== -1") Update
+  .ui.primary.ok.button(*ngIf="buttons.indexOf('add') !== -1") Add
