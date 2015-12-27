@@ -1,12 +1,9 @@
 import { Component, View } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
-import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, UsersService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent } from '../../../components';
 import { Observable } from 'rxjs';
 import _ = require('lodash');
-import moment = require('moment');
-import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { User, Role } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
@@ -18,10 +15,6 @@ declare var $: any;
   directives: [
     PaginationComponent,
     Directives,
-  ],
-  pipes: [
-    TimestampPipe,
-    MomentPipe,
   ]
 })
 export class UsersRoute extends TableComponent {
