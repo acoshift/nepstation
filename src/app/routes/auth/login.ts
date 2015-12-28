@@ -37,6 +37,12 @@ export class LoginRoute extends EventHandler {
     private auth: AuthService,
     fb: FormBuilder) {
     super();
+    // if alredy login, redirect to home
+    if (auth.isLoggedIn()) {
+      router.navigate(['/Home']);
+      return;
+    }
+
     // init model
     this.loginForm = fb.group({
       user: ['', Validators.required],
