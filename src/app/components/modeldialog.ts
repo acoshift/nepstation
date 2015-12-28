@@ -75,6 +75,10 @@ export abstract class ModelDialog extends EventComponent {
     __reset(this.model.controls);
   }
 
+  protected valid(name: string) {
+    return this.model.controls[name].touched && !this.model.controls[name].valid;
+  }
+
   protected preSubmit() {
     // override to edit model before submit
   }
