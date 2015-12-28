@@ -13,6 +13,11 @@ export abstract class ModelDialog extends EventComponent {
     protected element: ElementRef,
     protected service: EventHandler) {
     super();
+    service.observable.subscribe(event => {
+      if (event.name === 'submit') {
+        $(this.element.nativeElement).modal('hide');
+      }
+    })
   }
 
   onEvent(event: Event) {
@@ -29,7 +34,7 @@ export abstract class ModelDialog extends EventComponent {
             offset: event.data.offset || Number.POSITIVE_INFINITY,
             transition: event.data.transition,
             duration: event.data.duration,
-            onApprove: () => this._submit(),
+            onApprove: () => { this._submit(); return false; },
           })
           .modal('show');
         break;
@@ -86,7 +91,7 @@ export abstract class ModelDialog extends EventComponent {
 
   private _submit() {
     this._markAsTouched();
-    if (!this.model.valid) return false;
+    if (!this.model.valid) return;
     this.preSubmit();
     this.service.next({ name: 'submit', data: this.model.value });
   }
