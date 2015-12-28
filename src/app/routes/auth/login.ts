@@ -8,7 +8,7 @@ import {
   Validators,
 } from 'angular2/common';
 
-import { AlertComponent } from '../../components';
+import { AlertComponent, LoaderComponent } from '../../components';
 import { Directives } from '../../directives';
 import { Router, RouterLink } from 'angular2/router';
 import { AuthService } from '../../services';
@@ -24,6 +24,7 @@ declare var $: any;
     RouterLink,
     Directives,
     AlertComponent,
+    LoaderComponent,
   ],
   template: require('./login.jade'),
   styles: [ require('./login.css') ],
@@ -67,10 +68,10 @@ export class LoginRoute extends EventHandler {
       return;
     }
     let { user, pwd, remember } = this.loginForm.value;
-    $('#loading').modal('show');
+    this.emitter.next({ name: 'loader', data: 'show' });
     this.auth.login(user, pwd, remember, (ok, location) => {
       if (ok) {
-        $('#loading').modal('hide');
+        this.emitter.next({ name: 'loader', data: 'hide' });
         if (location) {
           this.router.navigateByUrl(location);
         } else {
@@ -83,7 +84,7 @@ export class LoginRoute extends EventHandler {
             title: '',
             content: 'Wrong username or password.',
             buttons: [ 'ok' ],
-            onHide: () => $('#loading').modal('hide')
+            onHide: () => this.emitter.next({ name: 'loader', data: 'hide' })
           }
         });
       }

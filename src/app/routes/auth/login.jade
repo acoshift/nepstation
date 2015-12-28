@@ -25,7 +25,7 @@
       | &nbsp;/&nbsp;
       a([routerLink]="['ForgotPassword']") password
       | &nbsp;?
-#loading.ui.modal
-  .ui.active.dimmer
-    .ui.large.text.loader Loading
+
+loader([subscribeTo]="observable", (next)="next($event)")
+
 .alert([subscribeTo]="observable", (next)="next($event)")
