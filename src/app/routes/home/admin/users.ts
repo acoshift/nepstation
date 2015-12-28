@@ -1,11 +1,81 @@
-import { Component, View } from 'angular2/core';
+import { Component, View, ElementRef } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { NavbarService, UsersService, RolesService } from '../../../services';
-import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
+import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
 import _ = require('lodash');
-import { User, Role } from '../../../models';
+import { User, Role, Event } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
+
+@Component({
+  selector: '.dialog',
+  host: {
+    class: 'ui long modal'
+  }
+})
+@View({
+  template: require('./user.dialog.jade'),
+  directives: [ Directives ]
+})
+class UserDialog extends ModelDialog {
+  roles: Role[];
+
+  private _modelTemplate = {
+    _id: [''],
+    name: ['', Validators.required],
+    pwd: ['', Validators.required],
+    enabled: [false],
+    role: ['']
+  };
+
+  constructor(
+    e: ElementRef,
+    service: UsersService,
+    fb: FormBuilder,
+    roles: RolesService) {
+    super(e, service);
+
+    this.model = fb.group(this._modelTemplate);
+
+    roles.observable.subscribe(event => {
+      if (event.name === 'list') this.roles = event.data;
+    });
+
+    roles.next({ name: 'refresh' });
+  }
+
+  onEvent(event: Event) {
+    super.onEvent(event);
+    switch (event.name) {
+      case 'add':
+        super.onEvent({
+          name: 'modelDialog',
+          data: {
+            header: 'Add User',
+            button: 'Add',
+            model: this._modelTemplate
+          }
+        });
+        break;
+      case 'edit':
+        super.onEvent({
+          name: 'modelDialog',
+          data: {
+            header: 'Edit User: ' + event.data.name,
+            button: 'Update',
+            model: {
+              _id: [event.data._id],
+              name: [event.data.name, Validators.required],
+              pwd: [''],
+              enabled: [event.data.enabled],
+              role: [event.data.role]
+            }
+          }
+        });
+        break;
+    }
+  }
+}
 
 @Component({})
 @View({
@@ -14,29 +84,19 @@ declare var $: any;
   directives: [
     PaginationComponent,
     AlertComponent,
+    UserDialog,
     Directives,
   ]
 })
 export class UsersRoute extends TableComponent {
-  header: string = '';
-  model: ControlGroup;
   roles: Role[];
 
   constructor(
     navbar: NavbarService,
     service: UsersService,
-    roles: RolesService,
-    private fb: FormBuilder) {
+    roles: RolesService) {
     super(service);
     navbar.active('admin/users');
-
-    this.model = fb.group({
-      _id: [''],
-      name: ['', Validators.required],
-      pwd: ['', Validators.required],
-      enabled: [false],
-      role: ['']
-    });
 
     roles.observable.subscribe(event => {
       if (event.name === 'list') this.roles = event.data;
@@ -62,47 +122,6 @@ export class UsersRoute extends TableComponent {
       }
       return false;
     };
-  }
-
-  isValid() {
-    this.model.controls['name'].markAsTouched();
-    this.model.controls['pwd'].markAsTouched();
-    return this.model.valid;
-  }
-
-  add() {
-    this.header = 'New User';
-
-    (<Control>this.model.controls['_id']).updateValue('');
-    (<Control>this.model.controls['name']).updateValue('');
-    (<any>this.model.controls['name'])._touched = false;
-    (<Control>this.model.controls['pwd']).validator = Validators.required;
-    (<Control>this.model.controls['pwd']).updateValue('');
-    (<any>this.model.controls['pwd'])._touched = false;
-    (<Control>this.model.controls['enabled']).updateValue(false);
-    (<Control>this.model.controls['role']).updateValue('');
-
-    $('#userForm').modal('setting', 'onApprove', () => this.isValid()).modal('show');
-  }
-
-  edit(item: User) {
-    this.header = 'Edit User: ' + item.name;
-
-    (<Control>this.model.controls['_id']).updateValue(item._id);
-    (<Control>this.model.controls['name']).updateValue(item.name);
-    (<any>this.model.controls['name'])._touched = false;
-    (<Control>this.model.controls['pwd']).validator = null;
-    (<Control>this.model.controls['pwd']).updateValue('');
-    (<any>this.model.controls['pwd'])._touched = false;
-    (<Control>this.model.controls['enabled']).updateValue(item.enabled);
-    (<Control>this.model.controls['role']).updateValue(item.role);
-
-    $('#userForm').modal('setting', 'onApprove', () => this.isValid()).modal('show');
-  }
-
-  submit() {
-    if (!this.model.valid) return;
-    this.service.next({ name: 'submit', data: this.model.value });
   }
 
   getRole(id: string) {

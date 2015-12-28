@@ -117,6 +117,14 @@ export abstract class TableComponent extends EventHandler {
     return item.name;
   }
 
+  add() {
+    this.emitter.next({ name: 'add' });
+  }
+
+  edit(item) {
+    this.emitter.next({ name: 'edit', data: item });
+  }
+
   delete(item) {
     this.emitter.next({
       name: 'alert',

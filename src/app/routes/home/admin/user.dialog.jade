@@ -1,0 +1,21 @@
+.header {{header}}
+.content
+  form.ui.form([ngFormModel]="model")
+    .field([class.error]="model.controls['name'].touched && !model.controls['name'].valid")
+      label Name:
+      input(ngControl="name", type="text")
+    .field([class.error]="model.controls['pwd'].touched && !model.controls['pwd'].valid")
+      label Password:
+      input(ngControl="pwd", type="password", autocomplete="off")
+    .field
+      .ui.checkbox
+        input(ngControl="enabled", type="checkbox")
+        label Enabled
+    .field
+      label Role:
+      select(ngControl="role")
+        option(value="") Select Role
+        option(*ngFor="#role of roles", value="{{role._id}}") {{role.name}}
+.actions
+  .ui.cancel.button Cancel
+  .ui.primary.ok.button {{button}}
