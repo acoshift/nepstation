@@ -88,7 +88,7 @@ export abstract class ModelService<T> extends EventHandler {
     }
   }
 
-  protected _delete(id: string): void {
+  protected _delete(id: string | string[]): void {
     if (!id) this.emitter.error(new Error());
     this.db.request('delete', this.namespace, id, this.retrieves.delete)
       .subscribe(

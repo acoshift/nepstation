@@ -150,6 +150,9 @@ export abstract class TableComponent extends EventHandler {
   }
 
   select(item, value: boolean) {
+    if (typeof value === 'undefined') {
+      return _.contains(this.selected, x => x === item);
+    }
     if (value) {
       this.selected.push(item);
     } else {
@@ -157,10 +160,44 @@ export abstract class TableComponent extends EventHandler {
     }
   }
 
+  deleteSelected() {
+    let ids = _(this.selected).map(x => x._id).value();
+    if (!ids.length) {
+      this.emitter.next({
+        name: 'alert',
+        data: {
+          title: '',
+          content: 'Please select items first.',
+          buttons: [ 'ok' ]
+        }
+      });
+      return;
+    }
+    this.emitter.next({
+      name: 'alert',
+      data: {
+        title: '',
+        content: `Are you sure you want to delete ${ids.length} selected items?`,
+        buttons: [ 'delete', 'cancel.primary' ],
+        onApprove: () => {
+          this.service.next({
+            name: 'delete',
+            data: ids
+          });
+          this.resetSelected();
+        }
+      }
+    });
+  }
+
   get dateFilter(): (item) => boolean {
     return item => {
       return item._id && this._dateFilter(parseInt(item._id.substr(0, 8), 16) * 1000);
     };
+  }
+
+  protected resetSelected() {
+    this.selected = [];
   }
 
   private _dateFilter(ts: number): boolean {

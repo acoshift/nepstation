@@ -26,7 +26,7 @@ table.ui.definition.compact.striped.celled.table
     tr(*ngFor="#t of list | async")
       td.collapsing
         .ui.fitted.checkbox
-          input(type="checkbox")
+          input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
           label
       td {{t.name}}
       td
@@ -46,7 +46,7 @@ table.ui.definition.compact.striped.celled.table
         .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
           i.user.icon
           | Add User
-        .ui.red.small.labeled.icon.button
+        .ui.red.small.labeled.icon.button((click)="deleteSelected()")
           i.erase.icon
           | Delete Selected
 
