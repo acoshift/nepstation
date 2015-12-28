@@ -8,6 +8,7 @@ export abstract class ModelDialog extends EventComponent {
   protected model: ControlGroup;
   protected header: string = '';
   protected button: string = '';
+  protected loading: boolean = false;
 
   constructor(
     protected element: ElementRef,
@@ -16,13 +17,15 @@ export abstract class ModelDialog extends EventComponent {
     service.observable.subscribe(event => {
       if (event.name === 'submit') {
         $(this.element.nativeElement).modal('hide');
+        this.loading = false;
       }
-    })
+    });
   }
 
   onEvent(event: Event) {
     switch (event.name) {
       case 'modelDialog':
+        this.loading = false;
         this.header = event.data.header || '';
         this.button = event.data.button || '';
         this.setModel(event.data.model);
@@ -93,6 +96,7 @@ export abstract class ModelDialog extends EventComponent {
     this._markAsTouched();
     if (!this.model.valid) return;
     this.preSubmit();
+    this.loading = true;
     this.service.next({ name: 'submit', data: this.model.value });
   }
 }

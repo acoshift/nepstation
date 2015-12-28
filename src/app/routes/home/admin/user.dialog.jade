@@ -18,4 +18,4 @@
         option(*ngFor="#role of roles", value="{{role._id}}") {{role.name}}
 .actions
   .ui.cancel.button Cancel
-  .ui.primary.ok.button {{button}}
+  .ui.primary.ok.button([class.loading]="loading") {{button}}

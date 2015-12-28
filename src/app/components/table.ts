@@ -77,6 +77,7 @@ export abstract class TableComponent extends EventHandler {
 
     this.list.subscribe(r => {
       this.loading = r === null;
+      this.emitter.next({ name: 'alert.hide' });
     });
     service.next({ name: 'refresh' });
   }
@@ -101,6 +102,9 @@ export abstract class TableComponent extends EventHandler {
             buttons: [ 'ok' ]
           }
         });
+        break;
+      case 'loading':
+        this.emitter.next({ name: 'loader', data: 'show' });
         break;
     }
   }
@@ -132,6 +136,7 @@ export abstract class TableComponent extends EventHandler {
         title: '',
         content: `Are you sure you want to delete "${this.getName(item)}"?`,
         buttons: [ 'delete', 'cancel.primary' ],
+        wait: true,
         onApprove: () => this.service.next({ name: 'delete', data: item._id })
       }
     });
@@ -187,6 +192,7 @@ export abstract class TableComponent extends EventHandler {
         title: '',
         content: `Are you sure you want to delete ${ids.length} selected items?`,
         buttons: [ 'delete', 'cancel.primary' ],
+        wait: true,
         onApprove: () => {
           this.service.next({
             name: 'delete',

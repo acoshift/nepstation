@@ -72,6 +72,7 @@ export class TrashRoute extends TableComponent {
         title: '',
         content: `Are you sure you want to restore ${ids.length} selected items?`,
         buttons: [ 'restore', 'cancel.primary' ],
+        wait: true,
         onApprove: () => {
           this.service.next({
             name: 'restore',
@@ -94,6 +95,7 @@ export class TrashRoute extends TableComponent {
             title: `Restore "${item._id}"?`,
             code: JSON.stringify(item, null, 4),
             buttons: [ 'restore', 'cancel.primary' ],
+            wait: true,
             onApprove: () => this.restore(item)
           }
         });
