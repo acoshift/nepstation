@@ -26,6 +26,8 @@ export abstract class TableComponent extends EventHandler {
 
   protected filter: (any) => boolean;
 
+  protected selected: any[] = [];
+
   private _list: Observable<any>;
 
   constructor(protected service: EventHandler) {
@@ -145,6 +147,14 @@ export abstract class TableComponent extends EventHandler {
   setKeyword(keyword: string): void {
     this.search.keyword = keyword;
     this.refresh();
+  }
+
+  select(item, value: boolean) {
+    if (value) {
+      this.selected.push(item);
+    } else {
+      _.remove(this.selected, x => x === item);
+    }
   }
 
   get dateFilter(): (item) => boolean {

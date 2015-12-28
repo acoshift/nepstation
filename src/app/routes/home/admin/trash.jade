@@ -32,7 +32,7 @@ table.ui.fixed.single.line.definition.compact.striped.celled.table
     tr(*ngFor="#t of list | async")
       td.collapsing.center.aligned
         .ui.fitted.checkbox
-          input(type="checkbox")
+          input(type="checkbox", (change)="select(t, $event.target.checked)")
           label
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t._id}}

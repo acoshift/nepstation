@@ -46,12 +46,38 @@ export class TrashRoute extends TableComponent {
     };
   }
 
-  restore() {
-    // TODO:
+  restore(item: Trash) {
+    this.service.next({
+      name: 'restore',
+      data: item._id
+    });
   }
 
   restoreSelected() {
-    // TODO:
+    let ids = _(this.selected).map(x => x._id).value();
+    if (!ids.length) {
+      this.emitter.next({
+        name: 'alert',
+        data: {
+          title: '',
+          content: 'Please select items first.',
+          buttons: [ 'ok' ]
+        }
+      });
+      return;
+    }
+    this.emitter.next({
+      name: 'alert',
+      data: {
+        title: '',
+        content: `Are you sure you want to restore ${ids.length} selected items?`,
+        buttons: [ 'restore', 'cancel.primary' ],
+        onApprove: () => this.service.next({
+          name: 'restore',
+          data: ids
+        })
+      }
+    });
   }
 
   onEvent(event: Event) {
@@ -65,9 +91,12 @@ export class TrashRoute extends TableComponent {
             title: `Restore "${item._id}"?`,
             code: JSON.stringify(item, null, 4),
             buttons: [ 'restore', 'cancel.primary' ],
-            onApprove: () => this.service.next({ name: 'restore', data: item._id })
+            onApprove: () => this.restore(item)
           }
         });
+        break;
+      case 'restore':
+        this.service.next({ name: 'refresh' });
         break;
     }
   }

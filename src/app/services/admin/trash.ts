@@ -36,7 +36,7 @@ export class TrashService extends ReadOnlyModelService<Trash> {
     );
   }
 
-  protected _restore(id: string) {
+  protected _restore(id: string | string[]) {
     this.db.request('restore', '', id, this.retrieves.restore)
       .subscribe(
         r => {
