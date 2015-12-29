@@ -1,12 +1,12 @@
 .header {{header}}
 .content
-  form.ui.form([ngFormModel]="model")
+  form.ui.form([ngFormModel]="model", autocomplete="off")
     .field([class.error]="valid('name')")
       label Name:
       input(ngControl="name")
     .field([class.error]="valid('pwd')")
       label Password:
-      input(ngControl="pwd", type="password", autocomplete="off")
+      input(ngControl="pwd", type="password")
     .field
       .ui.checkbox
         input(ngControl="enabled", type="checkbox")
