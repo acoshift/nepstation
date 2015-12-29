@@ -79,8 +79,9 @@ export abstract class ModelDialog extends EventComponent {
     return this.model.controls[name].touched && !this.model.controls[name].valid;
   }
 
-  protected preSubmit() {
+  protected preSubmit(data) {
     // override to edit model before submit
+    return data;
   }
 
   private _markAsTouched() {
@@ -99,8 +100,9 @@ export abstract class ModelDialog extends EventComponent {
   private _submit() {
     this._markAsTouched();
     if (!this.model.valid) return;
-    this.preSubmit();
+    let v = this.preSubmit(this.model.value);
+    if (v === null || typeof v === 'undefined') return;
     this.loading = true;
-    this.service.next({ name: 'submit', data: this.model.value });
+    this.service.next({ name: 'submit', data: v });
   }
 }
