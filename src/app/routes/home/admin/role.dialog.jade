@@ -13,7 +13,7 @@
         .ui.checkbox([class.disable]="!_admin")
           input(type="checkbox", [(ngModel)]="_onlyOwner", [attr.disabled]="_admin ? null : true")
           label Only Owner
-    .field.disable
+    .field(*ngIf="!_admin")
       label Databases:
       table.ui.compact.striped.celled.structured.table
         thead
