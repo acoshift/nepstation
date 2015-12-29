@@ -3,7 +3,7 @@
   form.ui.form([ngFormModel]="model")
     .field([class.error]="valid('name')")
       label Name:
-      input(ngControl="name", type="text")
+      input(ngControl="name")
     .field([class.error]="valid('pwd')")
       label Password:
       input(ngControl="pwd", type="password", autocomplete="off")
@@ -11,9 +11,9 @@
       .ui.checkbox
         input(ngControl="enabled", type="checkbox")
         label Enabled
-    .field
+    .field([class.error]="valid('role')")
       label Role:
-      select(ngControl="role")
+      select.ui.search.dropdown(ngControl="role", [subscribeTo]="next")
         option(value="") Select Role
         option(*ngFor="#role of roles", value="{{role._id}}") {{role.name}}
 .actions

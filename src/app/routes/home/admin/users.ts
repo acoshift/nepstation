@@ -25,7 +25,7 @@ class UserDialog extends ModelDialog {
     name: ['', Validators.required],
     pwd: ['', Validators.required],
     enabled: [false],
-    role: ['']
+    role: ['', Validators.required]
   };
 
   constructor(
@@ -48,6 +48,7 @@ class UserDialog extends ModelDialog {
     super.onEvent(event);
     switch (event.name) {
       case 'add':
+        this.next.emit({ name: 'dropdown', data: ['clear'] });
         super.onEvent({
           name: 'modelDialog',
           data: {
@@ -58,6 +59,7 @@ class UserDialog extends ModelDialog {
         });
         break;
       case 'edit':
+        this.next.emit({ name: 'dropdown', data: ['set selected', event.data.role] });
         super.onEvent({
           name: 'modelDialog',
           data: {
@@ -68,7 +70,7 @@ class UserDialog extends ModelDialog {
               name: [event.data.name, Validators.required],
               pwd: [''],
               enabled: [event.data.enabled],
-              role: [event.data.role]
+              role: [event.data.role, Validators.required]
             }
           }
         });
