@@ -39,13 +39,10 @@ export abstract class TableComponent extends EventHandler {
     service.observable.subscribe(
       event => this.onEvent(event),
       error => {
-        this.emitter.next({
-          name: 'alert',
-          data: {
-            title: '',
-            content: error,
-            buttons: [ 'ok' ]
-          }
+        this.alert.show({
+          title: '',
+          content: error.data, // TODO: edit error
+          buttons: [ 'ok' ]
         });
       }
     );
@@ -141,16 +138,6 @@ export abstract class TableComponent extends EventHandler {
       wait: true,
       onApprove: () => this.service.next({ name: 'delete', data: item._id })
     });
-    /*this.emitter.next({
-      name: 'alert',
-      data: {
-        title: '',
-        content: `Are you sure you want to delete "${this.getName(item)}"?`,
-        buttons: [ 'delete', 'cancel.primary' ],
-        wait: true,
-        onApprove: () => this.service.next({ name: 'delete', data: item._id })
-      }
-    });*/
   }
 
   setStartDate(date: string): void {
@@ -187,30 +174,24 @@ export abstract class TableComponent extends EventHandler {
   deleteSelected() {
     let ids = _(this.selected).map(x => x._id).value();
     if (!ids.length) {
-      this.emitter.next({
-        name: 'alert',
-        data: {
-          title: '',
-          content: 'Please select items first.',
-          buttons: [ 'ok' ]
-        }
+      this.alert.show({
+        title: '',
+        content: 'Please select items first.',
+        buttons: [ 'ok' ]
       });
       return;
     }
-    this.emitter.next({
-      name: 'alert',
-      data: {
-        title: '',
-        content: `Are you sure you want to delete ${ids.length} selected items?`,
-        buttons: [ 'delete', 'cancel.primary' ],
-        wait: true,
-        onApprove: () => {
-          this.service.next({
-            name: 'delete',
-            data: ids
-          });
-          this.resetSelected();
-        }
+    this.alert.show({
+      title: '',
+      content: `Are you sure you want to delete ${ids.length} selected items?`,
+      buttons: [ 'delete', 'cancel.primary' ],
+      wait: true,
+      onApprove: () => {
+        this.service.next({
+          name: 'delete',
+          data: ids
+        });
+        this.resetSelected();
       }
     });
   }
