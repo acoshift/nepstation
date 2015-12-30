@@ -109,4 +109,9 @@ export class AlertComponent extends EventComponent {
       })
       .modal('show');
   }
+
+  hide() {
+    $(this.e.nativeElement).modal('hide');
+    this._loading = false;
+  }
 }
