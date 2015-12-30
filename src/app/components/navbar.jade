@@ -7,9 +7,14 @@
       a.item([class.active]="isActive('admin/logs')", [routerLink]="['./Admin/Logs']") Logs
       a.item([class.active]="isActive('admin/trash')", [routerLink]="['./Admin/Trash']") Trash
   .item
-    .header Sale
+    .header Common
     .menu
-      a.item([class.active]="isActive('sale/customers')", [routerLink]="['./Sale/Customers']") Customers
+      a.item([class.active]="isActive('common/customers')", [routerLink]="['./Common/Customers']") Customers
+//
+  .item
+    .header Collection
+    .menu
+      a.item([class.active]="isActive('collection/customers')", [routerLink]="['./Collection/Customers']") De
 
 .ui.top.fixed.menu
   .item

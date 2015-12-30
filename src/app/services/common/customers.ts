@@ -7,12 +7,12 @@ import { User } from '../../models';
 @Injectable()
 export class CustomersService extends ModelService<User> {
   constructor(db: DbService) {
-    super(db, 'sale.customers', {
+    super(db, 'common.customers', {
       refresh: {
-        _id: 1
+        _id: 1, name: 1
       },
       read: {
-        _id: 1
+        _id: 1, name: 1
       }
     });
   }

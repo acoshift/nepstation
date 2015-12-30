@@ -1,0 +1,54 @@
+.ui.form
+  .fields
+    .field
+      .ui.right.action.left.icon.input
+        i.search.icon
+        input(type="text", placeholder="Search", (input)="setKeyword($event.target.value)")
+        .ui.basic.floating.dropdown.button
+          .text Select field
+          i.dropdown.icon
+          .menu
+            .item((click)="setField('')") All
+            .item((click)="setField('name')") Name
+            .item((click)="setField('method')") Method
+            .item((click)="setField('collection')") Collection
+
+table.ui.definition.compact.striped.celled.table
+  thead
+    tr
+      th
+      th Name
+      th.one.wide
+      th.one.wide
+  tbody
+    tr(*ngFor="#t of list | async")
+      td.collapsing
+        .ui.fitted.checkbox
+          input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
+          label
+      td {{t.name}}
+      td.center.aligned
+        .ui.teal.icon.button((click)="edit(t)")
+          i.edit.icon
+      td.center.aligned
+        .ui.red.icon.button((click)="delete(t)")
+          i.remove.icon
+  tfoot.full-width
+    tr
+      th
+      th(colspan=3)
+        .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
+          i.user.icon
+          | Add Customer
+        .ui.red.small.labeled.icon.button((click)="deleteSelected()")
+          i.erase.icon
+          | Delete Selected
+
+.ui.right.aligned.grid
+  pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
+
+.ui.active.centered.large.inline.loader(*ngIf="loading")
+
+.dialog([subscribeTo]="observable", (next)="next($event)")
+
+.alert([subscribeTo]="observable", (next)="next($event)")

@@ -9,4 +9,4 @@ import { CustomersRoute } from './customers';
 @RouteConfig([
   { path: '/customers', name: 'Customers', component: CustomersRoute },
 ])
-export class SaleRouter {}
+export class CommonRouter {}

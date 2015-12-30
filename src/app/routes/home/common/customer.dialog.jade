@@ -1,0 +1,25 @@
+.header {{header}}
+.content
+  form.ui.form([ngFormModel]="model")
+    .field([class.error]="valid('name')")
+      label Name:
+      input(ngControl="name")
+    .field([class.error]="valid('gender')")
+        label Gender:
+        select.ui.dropdown(ngControl="gender", [subscribeTo]="next")
+          option(value="") Select Gender
+          option(value="male") Male
+          option(value="female") Female
+    //-
+      .field
+        .ui.checkbox
+          input(ngControl="enabled", type="checkbox")
+          label Enabled
+      .field([class.error]="valid('role')")
+        label Role:
+        select.ui.search.dropdown(ngControl="role", [subscribeTo]="next")
+          option(value="") Select Role
+          option(*ngFor="#role of roles", value="{{role._id}}") {{role.name}}
+.actions
+  .ui.cancel.button Cancel
+  .ui.primary.ok.button([class.loading]="loading") {{button}}

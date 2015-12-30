@@ -5,7 +5,7 @@ import { AuthService } from '../../services';
 
 import { IndexRoute } from './index';
 import { AdminRouter } from './admin/router';
-import { SaleRouter } from './sale/router';
+import { CommonRouter } from './common/router';
 
 @Component({})
 @View({
@@ -19,7 +19,7 @@ import { SaleRouter } from './sale/router';
 @RouteConfig([
   { path: '/', name: 'Index', component: IndexRoute, useAsDefault: true },
   { path: '/admin/...', name: 'Admin', component: AdminRouter },
-  { path: '/sale/...', name: 'Sale', component: SaleRouter },
+  { path: '/common/...', name: 'Common', component: CommonRouter },
 ])
 export class HomeRouter {
   constructor(auth: AuthService) {
