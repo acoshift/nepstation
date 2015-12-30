@@ -1,4 +1,4 @@
-import { Component, View } from 'angular2/core';
+import { Component, View, ViewChild } from 'angular2/core';
 import { NavbarService, LogsService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
 import { TimestampPipe, MomentPipe } from '../../../pipes';

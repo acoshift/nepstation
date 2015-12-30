@@ -1,6 +1,7 @@
-import { Component } from 'angular2/core';
+import { Component, ViewChild } from 'angular2/core';
 import { Observable, Subject } from 'rxjs';
 import { Page, Id, Event, EventHandler } from '../models';
+import { AlertComponent } from './alert';
 import moment = require('moment');
 
 declare var $: any;
@@ -27,6 +28,9 @@ export abstract class TableComponent extends EventHandler {
   protected filter: (any) => boolean;
 
   protected selected: any[] = [];
+
+  @ViewChild(AlertComponent)
+  protected alert: AlertComponent;
 
   private _list: Observable<any>;
 
@@ -130,7 +134,14 @@ export abstract class TableComponent extends EventHandler {
   }
 
   delete(item) {
-    this.emitter.next({
+    this.alert.show({
+      title: '',
+      content: `Are you sure you want to delete "${this.getName(item)}"?`,
+      buttons: [ 'delete', 'cancel.primary' ],
+      wait: true,
+      onApprove: () => this.service.next({ name: 'delete', data: item._id })
+    });
+    /*this.emitter.next({
       name: 'alert',
       data: {
         title: '',
@@ -139,7 +150,7 @@ export abstract class TableComponent extends EventHandler {
         wait: true,
         onApprove: () => this.service.next({ name: 'delete', data: item._id })
       }
-    });
+    });*/
   }
 
   setStartDate(date: string): void {
