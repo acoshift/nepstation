@@ -8,7 +8,7 @@ import {
   Validators,
 } from 'angular2/common';
 
-import { AlertComponent, LoaderComponent } from '../../components';
+import { AlertComponent, IndicatorComponent } from '../../components';
 import { Directives } from '../../directives';
 import { Router, RouterLink } from 'angular2/router';
 import { AuthService } from '../../services';
@@ -24,7 +24,7 @@ declare var $: any;
     RouterLink,
     Directives,
     AlertComponent,
-    LoaderComponent,
+    IndicatorComponent,
   ],
   template: require('./login.jade'),
   styles: [ require('./login.css') ],
@@ -34,6 +34,9 @@ export class LoginRoute extends EventHandler {
 
   @ViewChild(AlertComponent)
   private _alert: AlertComponent;
+
+  @ViewChild(IndicatorComponent)
+  private _indicator: IndicatorComponent;
 
   constructor(
     private router: Router,
@@ -74,10 +77,10 @@ export class LoginRoute extends EventHandler {
       return;
     }
     let { user, pwd, remember } = this.loginForm.value;
-    this.emitter.next({ name: 'loader', data: 'show' });
+    this._indicator.show();
     this.auth.login(user, pwd, remember, (ok, location) => {
       if (ok) {
-        this.emitter.next({ name: 'loader', data: 'hide' });
+        this._indicator.hide();
         if (location) {
           this.router.navigateByUrl(location);
         } else {
@@ -88,7 +91,7 @@ export class LoginRoute extends EventHandler {
           title: '',
             content: 'Wrong username or password.',
             buttons: [ 'ok' ],
-            onHide: () => this.emitter.next({ name: 'loader', data: 'hide' })
+            onHide: () => this._indicator.hide()
         });
       }
     });
