@@ -1,18 +1,18 @@
 import { PopupDirective } from './directives/popup';
-import { DropdownDirective } from './directives/dropdown';
+import { DropdownControlValueAccessor } from './directives/dropdown_value_accessor';
 import { ModalDirective } from './directives/modal';
 import { CheckboxDirective } from './directives/checkbox';
 
 export {
   PopupDirective,
-  DropdownDirective,
+  DropdownControlValueAccessor,
   ModalDirective,
   CheckboxDirective,
 };
 
 export var Directives = [
   PopupDirective,
-  DropdownDirective,
   ModalDirective,
   CheckboxDirective,
+  DropdownControlValueAccessor,
 ];
