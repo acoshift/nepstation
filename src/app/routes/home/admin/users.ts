@@ -1,4 +1,4 @@
-import { Component, View, ElementRef } from 'angular2/core';
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { NavbarService, UsersService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
@@ -8,12 +8,7 @@ import { Directives } from '../../../directives';
 declare var $: any;
 
 @Component({
-  selector: '.dialog',
-  host: {
-    class: 'ui long modal'
-  }
-})
-@View({
+  selector: 'dialog',
   template: require('./user.dialog.jade'),
   directives: [ Directives ]
 })
@@ -28,12 +23,14 @@ class UserDialog extends ModelDialog {
     role: ['', Validators.required]
   };
 
+  private _dropdowns;
+
   constructor(
-    e: ElementRef,
+    @ViewQuery('modal') el: QueryList<ElementRef>,
     service: UsersService,
     fb: FormBuilder,
     roles: RolesService) {
-    super(e, service);
+    super(el, service);
 
     this.model = fb.group(this._modelTemplate);
 
@@ -44,38 +41,34 @@ class UserDialog extends ModelDialog {
     roles.next({ name: 'refresh' });
   }
 
-  onEvent(event: Event) {
-    super.onEvent(event);
-    switch (event.name) {
-      case 'add':
-        this.next.emit({ name: 'dropdown', data: ['clear'] });
-        super.onEvent({
-          name: 'modelDialog',
-          data: {
-            header: 'Add User',
-            button: 'Add',
-            model: this._modelTemplate
-          }
-        });
-        break;
-      case 'edit':
-        this.next.emit({ name: 'dropdown', data: ['set selected', event.data.role] });
-        super.onEvent({
-          name: 'modelDialog',
-          data: {
-            header: 'Edit User: ' + event.data.name,
-            button: 'Update',
-            model: {
-              _id: [event.data._id],
-              name: [event.data.name, Validators.required],
-              pwd: [''],
-              enabled: [event.data.enabled],
-              role: [event.data.role, Validators.required]
-            }
-          }
-        });
-        break;
-    }
+  ngAfterViewInit() {
+    super.ngAfterViewInit();
+  }
+
+  log(a) {
+    console.log(a);
+  }
+
+  showAdd() {
+    this.show({
+      header: 'Add User',
+      button: 'Add',
+      model: this._modelTemplate
+    });
+  }
+
+  showEdit(item: User) {
+    this.show({
+      header: 'Edit User: ' + item.name,
+      button: 'Update',
+      model: {
+        _id: [item._id],
+        name: [item.name, Validators.required],
+        pwd: [''],
+        enabled: [item.enabled],
+        role: [item.role, Validators.required]
+      }
+    });
   }
 }
 
@@ -92,6 +85,12 @@ class UserDialog extends ModelDialog {
 })
 export class UsersRoute extends TableComponent {
   roles: Role[];
+
+  @ViewChild(UserDialog)
+  dialog: UserDialog;
+
+  @ViewChild(AlertComponent)
+  protected alert: AlertComponent;
 
   constructor(
     navbar: NavbarService,

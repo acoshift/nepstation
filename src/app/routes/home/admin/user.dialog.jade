@@ -1,21 +1,25 @@
-.header {{header}}
-.content
-  form.ui.form([ngFormModel]="model", autocomplete="off")
-    .field([class.error]="valid('name')")
-      label Name:
-      input(ngControl="name")
-    .field([class.error]="valid('pwd')")
-      label Password:
-      input(ngControl="pwd", type="password")
-    .field
-      .ui.checkbox
-        input(ngControl="enabled", type="checkbox")
-        label Enabled
-    .field([class.error]="valid('role')")
-      label Role:
-      select.ui.search.dropdown(ngControl="role", [subscribeTo]="next")
-        option(value="") Select Role
-        option(*ngFor="#role of roles", value="{{role._id}}") {{role.name}}
-.actions
-  .ui.cancel.button Cancel
-  .ui.primary.ok.button([class.loading]="loading") {{button}}
+.ui.long.modal(#modal)
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model", autocomplete="off")
+      .field([class.error]="valid('name')")
+        label Name:
+        input(ngControl="name")
+      .field([class.error]="valid('pwd')")
+        label Password:
+        input(ngControl="pwd", type="password")
+      .field
+        .ui.checkbox
+          input(ngControl="enabled", type="checkbox")
+          label Enabled
+      .field([class.error]="valid('role')")
+        label Role:
+        .ui.selection.search.dropdown(ngControl="role")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Role
+          .menu
+            .item(*ngFor="#role of roles", [attr.data-value]="role._id") {{role.name}}
+  .actions
+    .ui.cancel.button Cancel
+    .ui.primary.ok.button([class.loading]="loading") {{button}}
