@@ -1,4 +1,4 @@
-import { Component, View, ElementRef, AfterViewInit, ViewQuery, QueryList, ViewChild, ContentChild } from 'angular2/core';
+import { Component, View, ElementRef, AfterViewInit, ViewQuery, QueryList } from 'angular2/core';
 import { Event } from '../models';
 declare var $: any;
 
@@ -13,10 +13,10 @@ declare var $: any;
 export class IndicatorComponent implements AfterViewInit {
   private _modal = null;
 
-  constructor(@ViewQuery('modal') private _elModal: QueryList<ElementRef>) { }
+  constructor(@ViewQuery('modal') private _el: QueryList<ElementRef>) {}
 
   ngAfterViewInit() {
-    this._modal = $(this._elModal.first.nativeElement);
+    this._modal = $(this._el.first.nativeElement);
   }
 
   show() {
