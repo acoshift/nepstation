@@ -1,47 +1,65 @@
 import { Event, EventHandler } from '../models';
 import { EventComponent } from './event';
 import { ControlGroup, Control } from 'angular2/common';
-import { ElementRef } from 'angular2/core';
+import { ElementRef, AfterViewInit, QueryList } from 'angular2/core';
 declare var $: any;
 
-export abstract class ModelDialog extends EventComponent {
+interface ModelDialogOption {
+  header?: string;
+  button?: string;
+  model?: any;
+  closable?: boolean;
+  allowMultiple?: boolean;
+  offset?: number;
+  transition?: string;
+  duration?: number;
+}
+
+export abstract class ModelDialog implements AfterViewInit {
   protected model: ControlGroup;
   protected header: string = '';
   protected button: string = '';
   protected loading: boolean = false;
+  protected element;
 
   constructor(
-    protected element: ElementRef,
-    protected service: EventHandler) {
-    super();
-    service.observable.subscribe(event => {
+    protected el: QueryList<ElementRef>,
+    protected service: EventHandler) {}
+
+  ngAfterViewInit() {
+    this.element = $(this.el.first.nativeElement);
+    this.service.observable.subscribe(event => {
       if (event.name === 'submit') {
-        $(this.element.nativeElement).modal('hide');
+        this.element.modal('hide');
         this.loading = false;
       }
     });
   }
 
-  onEvent(event: Event) {
-    switch (event.name) {
-      case 'modelDialog':
-        this.loading = false;
-        this.header = event.data.header || '';
-        this.button = event.data.button || '';
-        this.setModel(event.data.model);
-        $(this.element.nativeElement)
-          .modal({
-            closable: event.data.closable || false,
-            allowMultiple: event.data.allowMultiple || true,
-            observeChanges: true,
-            offset: event.data.offset || Number.POSITIVE_INFINITY,
-            transition: event.data.transition,
-            duration: event.data.duration,
-            onApprove: () => { this._submit(); return false; },
-          })
-          .modal('show');
-        break;
-    }
+  show(opt: ModelDialogOption) {
+    this.loading = false;
+    this.header = opt.header || '';
+    this.button = opt.button || '';
+    this.setModel(opt.model);
+    this.element
+      .modal({
+        closable: opt.closable || false,
+        allowMultiple: opt.allowMultiple || true,
+        observeChanges: true,
+        offset: opt.offset || Number.POSITIVE_INFINITY,
+        transition: opt.transition,
+        duration: opt.duration,
+        onApprove: () => { this._submit(); return false; },
+      })
+      .modal('show');
+  }
+
+  showAdd() { /* Override */}
+
+  showEdit(item) { /* Override */ }
+
+  hide() {
+    this.element.modal('hide');
   }
 
   protected setModel(data: any) {

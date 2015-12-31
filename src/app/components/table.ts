@@ -2,6 +2,7 @@ import { Component, ViewChild } from 'angular2/core';
 import { Observable, Subject } from 'rxjs';
 import { Page, Id, Event, EventHandler } from '../models';
 import { AlertComponent } from './alert';
+import { ModelDialog } from './modeldialog';
 import moment = require('moment');
 
 declare var $: any;
@@ -29,8 +30,9 @@ export abstract class TableComponent extends EventHandler {
 
   protected selected: any[] = [];
 
-  @ViewChild(AlertComponent)
   protected alert: AlertComponent;
+
+  protected dialog: ModelDialog;
 
   private _list: Observable<any>;
 
@@ -120,11 +122,11 @@ export abstract class TableComponent extends EventHandler {
   }
 
   add() {
-    this.emitter.next({ name: 'add' });
+    this.dialog.showAdd();
   }
 
   edit(item) {
-    this.emitter.next({ name: 'edit', data: item });
+    this.dialog.showEdit(item);
   }
 
   delete(item) {
