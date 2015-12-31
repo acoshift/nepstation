@@ -78,7 +78,7 @@ export abstract class TableComponent extends EventHandler {
 
     this.list.subscribe(r => {
       this.loading = r === null;
-      this.emitter.next({ name: 'alert.hide' });
+      this.alert.hide();
     });
     service.next({ name: 'refresh' });
   }
@@ -95,13 +95,10 @@ export abstract class TableComponent extends EventHandler {
         this.emitter.next({ name: 'repeatPage' });
         break;
       case 'error':
-        this.emitter.next({
-          name: 'alert',
-          data: {
-            title: '',
-            content: event.data,
-            buttons: [ 'ok' ]
-          }
+        this.alert.show({
+          title: '',
+          content: event.data,
+          buttons: [ 'ok' ]
         });
         break;
       case 'loading':
