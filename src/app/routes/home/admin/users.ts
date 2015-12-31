@@ -24,11 +24,11 @@ class UserDialog extends ModelDialog {
   };
 
   constructor(
-    @ViewQuery('modal') el: QueryList<ElementRef>,
+    e: ElementRef,
     service: UsersService,
     fb: FormBuilder,
     roles: RolesService) {
-    super(el, service);
+    super(e, service);
 
     this.model = fb.group(this._modelTemplate);
 

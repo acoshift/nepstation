@@ -20,17 +20,17 @@ export abstract class ModelDialog implements AfterViewInit {
   protected header: string = '';
   protected button: string = '';
   protected loading: boolean = false;
-  protected element;
+  private _modal;
 
   constructor(
-    protected el: QueryList<ElementRef>,
+    private _elementRef: ElementRef,
     protected service: EventHandler) {}
 
   ngAfterViewInit() {
-    this.element = $(this.el.first.nativeElement);
+    this._modal = $(this._elementRef.nativeElement).find('.ui.modal');
     this.service.observable.subscribe(event => {
       if (event.name === 'submit') {
-        this.element.modal('hide');
+        this._modal.modal('hide');
         this.loading = false;
       }
     });
@@ -41,7 +41,7 @@ export abstract class ModelDialog implements AfterViewInit {
     this.header = opt.header || '';
     this.button = opt.button || '';
     this.setModel(opt.model);
-    this.element
+    this._modal
       .modal({
         closable: opt.closable || false,
         allowMultiple: opt.allowMultiple || true,
@@ -59,7 +59,7 @@ export abstract class ModelDialog implements AfterViewInit {
   showEdit(item) { /* Override */ }
 
   hide() {
-    this.element.modal('hide');
+    this._modal.modal('hide');
   }
 
   protected setModel(data: any) {

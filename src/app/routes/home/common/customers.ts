@@ -1,4 +1,4 @@
-import { Component, View, ElementRef } from 'angular2/core';
+import { Component, View, ElementRef, ViewChild } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { NavbarService, CustomersService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
@@ -9,12 +9,7 @@ import { Directives } from '../../../directives';
 declare var $: any;
 
 @Component({
-  selector: '.dialog',
-  host: {
-    class: 'ui long modal'
-  }
-})
-@View({
+  selector: 'dialog',
   template: require('./customer.dialog.jade'),
   directives: [ Directives ]
 })
@@ -34,36 +29,24 @@ class CustomerDialog extends ModelDialog {
     this.model = fb.group(this._modelTemplate);
   }
 
-  onEvent(event: Event) {
-    super.onEvent(event);
-    switch (event.name) {
-      case 'add':
-        this.next.emit({ name: 'dropdown', data: ['clear'] });
-        super.onEvent({
-          name: 'modelDialog',
-          data: {
-            header: 'Add Customer',
-            button: 'Add',
-            model: this._modelTemplate
-          }
-        });
-        break;
-      case 'edit':
-        this.next.emit({ name: 'dropdown', data: ['set selected', event.data.gender] });
-        super.onEvent({
-          name: 'modelDialog',
-          data: {
-            header: 'Edit Customer: ' + event.data.name,
-            button: 'Update',
-            model: {
-              _id: [event.data._id],
-              name: [event.data.name, Validators.required],
-              gender: [event.data.gender, Validators.required]
-            }
-          }
-        });
-        break;
-    }
+  showAdd() {
+    this.show({
+      header: 'Add Customer',
+      button: 'Add',
+      model: this._modelTemplate
+    });
+  }
+
+  showEdit(item: Customer) {
+    this.show({
+      header: 'Edit Customer: ' + item.name,
+      button: 'Update',
+      model: {
+        _id: [item._id],
+        name: [item.name, Validators.required],
+        gender: [item.gender, Validators.required]
+      }
+    });
   }
 }
 
@@ -79,10 +62,20 @@ class CustomerDialog extends ModelDialog {
   ]
 })
 export class CustomersRoute extends TableComponent {
+  @ViewChild(CustomerDialog)
+  dialog: CustomerDialog;
+
+  @ViewChild(AlertComponent)
+  protected alert: AlertComponent;
+
   constructor(navbar: NavbarService,
               service: CustomersService) {
     super(service);
     navbar.active('common/customers');
+  }
+
+  ngAfterViewInit() {
+    console.log(this.dialog);
   }
 
   get filter() {
