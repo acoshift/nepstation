@@ -23,8 +23,6 @@ class UserDialog extends ModelDialog {
     role: ['', Validators.required]
   };
 
-  private _dropdowns;
-
   constructor(
     @ViewQuery('modal') el: QueryList<ElementRef>,
     service: UsersService,
@@ -39,14 +37,6 @@ class UserDialog extends ModelDialog {
     });
 
     roles.next({ name: 'refresh' });
-  }
-
-  ngAfterViewInit() {
-    super.ngAfterViewInit();
-  }
-
-  log(a) {
-    console.log(a);
   }
 
   showAdd() {
