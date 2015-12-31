@@ -1,4 +1,4 @@
-import { Component, View, Directive } from 'angular2/core';
+import { Component, View, Directive, ViewChild } from 'angular2/core';
 
 import {
   FORM_DIRECTIVES,
@@ -32,6 +32,9 @@ declare var $: any;
 export class LoginRoute extends EventHandler {
   loginForm: ControlGroup;
 
+  @ViewChild(AlertComponent)
+  private _alert: AlertComponent;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -63,13 +66,10 @@ export class LoginRoute extends EventHandler {
 
   login() {
     if (!this.loginForm.valid) {
-      this.emitter.next({
-        name: 'alert',
-        data: {
-          title: '',
-          content: 'Please input username and password.',
-          buttons: [ 'ok' ]
-        }
+      this._alert.show({
+        title: '',
+        content: 'Please input username and password.',
+        buttons: [ 'ok' ]
       });
       return;
     }
@@ -84,14 +84,11 @@ export class LoginRoute extends EventHandler {
           this.router.navigate(['/Home']);
         }
       } else {
-        this.emitter.next({
-          name: 'alert',
-          data: {
-            title: '',
+        this._alert.show({
+          title: '',
             content: 'Wrong username or password.',
             buttons: [ 'ok' ],
             onHide: () => this.emitter.next({ name: 'loader', data: 'hide' })
-          }
         });
       }
     });
