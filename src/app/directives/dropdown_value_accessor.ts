@@ -33,7 +33,7 @@ export class DropdownControlValueAccessor implements ControlValueAccessor, After
 
   registerOnTouched(fn: () => {}): void { this.onTouched = fn; }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     $(this._elementRef.nativeElement).dropdown({
       match: 'text',
       fullTextSearch: true,
