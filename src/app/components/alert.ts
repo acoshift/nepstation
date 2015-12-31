@@ -27,14 +27,13 @@ interface AlertOption {
   template: require('./alert.jade')
 })
 export class AlertComponent implements AfterViewInit {
-  private _modal = null;
-
   title: string = '';
   content: string = '';
   code: string = '';
   buttons: string[] = [];
   wait: boolean = false;
 
+  private _modal = null;
   private _loading: boolean = false;
 
   constructor(@ViewQuery('modal') private _el: QueryList<ElementRef>) {}
