@@ -56,30 +56,24 @@ export class TrashRoute extends TableComponent {
   restoreSelected() {
     let ids = _(this.selected).map(x => x._id).value();
     if (!ids.length) {
-      this.emitter.next({
-        name: 'alert',
-        data: {
-          title: '',
-          content: 'Please select items first.',
-          buttons: [ 'ok' ]
-        }
+      this.alert.show({
+        title: '',
+        content: 'Please select items first.',
+        buttons: [ 'ok' ]
       });
       return;
     }
-    this.emitter.next({
-      name: 'alert',
-      data: {
-        title: '',
-        content: `Are you sure you want to restore ${ids.length} selected items?`,
-        buttons: [ 'restore', 'cancel.primary' ],
-        wait: true,
-        onApprove: () => {
-          this.service.next({
-            name: 'restore',
-            data: ids
-          });
-          this.resetSelected();
-        }
+    this.alert.show({
+      title: '',
+      content: `Are you sure you want to restore ${ids.length} selected items?`,
+      buttons: [ 'restore', 'cancel.primary' ],
+      wait: true,
+      onApprove: () => {
+        this.service.next({
+          name: 'restore',
+          data: ids
+        });
+        this.resetSelected();
       }
     });
   }
@@ -89,15 +83,12 @@ export class TrashRoute extends TableComponent {
     switch (event.name) {
       case 'read':
         let item: Trash = event.data;
-        this.emitter.next({
-          name: 'alert',
-          data: {
-            title: `Restore "${item._id}"?`,
-            code: JSON.stringify(item, null, 4),
-            buttons: [ 'restore', 'cancel.primary' ],
-            wait: true,
-            onApprove: () => this.restore(item)
-          }
+        this.alert.show({
+          title: `Restore "${item._id}"?`,
+          code: JSON.stringify(item, null, 4),
+          buttons: [ 'restore', 'cancel.primary' ],
+          wait: true,
+          onApprove: () => this.restore(item)
         });
         break;
       case 'restore':
