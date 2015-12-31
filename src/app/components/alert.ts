@@ -99,7 +99,7 @@ export class AlertComponent extends EventComponent {
         onHide: opt.onHide,
         onHidden: opt.onHidden,
         onApprove: () => {
-          opt.onApprove();
+          if (_.isFunction(opt.onApprove)) opt.onApprove();
           if (this.wait) {
             this._loading = true;
             return false;
