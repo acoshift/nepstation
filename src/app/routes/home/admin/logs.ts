@@ -52,13 +52,10 @@ export class LogsRoute extends TableComponent {
     switch (event.name) {
       case 'read':
         let item: Log = event.data;
-        this.emitter.next({
-          name: 'alert',
-          data: {
-            title: `Log: "${item._id}"`,
-            code: JSON.stringify(item, null, 4),
-            buttons: [ 'ok' ]
-          }
+        this.alert.show({
+          title: `Log: "${item._id}"`,
+          code: JSON.stringify(item, null, 4),
+          buttons: [ 'ok' ]
         });
         break;
     }
