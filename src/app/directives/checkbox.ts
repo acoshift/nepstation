@@ -3,12 +3,12 @@ import { Directive, AfterViewInit, ElementRef } from 'angular2/core';
 declare var $: any;
 
 @Directive({
-  selector: '.checkbox'
+  selector: '.ui.checkbox'
 })
 export class CheckboxDirective implements AfterViewInit {
-  constructor(private e: ElementRef) {}
+  constructor(private _elementRef: ElementRef) {}
 
   ngAfterViewInit() {
-    $(this.e.nativeElement).checkbox();
+    $(this._elementRef.nativeElement).checkbox();
   }
 }

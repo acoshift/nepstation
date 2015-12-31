@@ -10,7 +10,7 @@
         input(ngControl="pwd", type="password")
       .field
         .ui.checkbox
-          input(ngControl="enabled", type="checkbox")
+          input.hidden(ngControl="enabled", type="checkbox")
           label Enabled
       .field([class.error]="valid('role')")
         label Role:
