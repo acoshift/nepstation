@@ -1,4 +1,4 @@
-import { Component, ElementRef } from 'angular2/core';
+import { Component, ElementRef, AfterViewInit, ViewQuery, QueryList } from 'angular2/core';
 import { Event } from '../models';
 import { EventComponent } from './event';
 declare var $: any;
@@ -23,13 +23,12 @@ interface AlertOption {
 }
 
 @Component({
-  selector: '.alert',
-  host: {
-    class: 'ui long modal'
-  },
+  selector: 'alert',
   template: require('./alert.jade')
 })
-export class AlertComponent {
+export class AlertComponent implements AfterViewInit {
+  private _modal = null;
+
   title: string = '';
   content: string = '';
   code: string = '';
@@ -38,7 +37,11 @@ export class AlertComponent {
 
   private _loading: boolean = false;
 
-  constructor(private e: ElementRef) {}
+  constructor(@ViewQuery('modal') private _el: QueryList<ElementRef>) {}
+
+  ngAfterViewInit() {
+    this._modal = $(this._el.first.nativeElement);
+  }
 
   show(opt?: AlertOption) {
     if (!opt) opt = {};
@@ -48,7 +51,7 @@ export class AlertComponent {
     this.code = opt.code || '';
     this.buttons = opt.buttons || [ 'ok' ];
     this.wait = opt.wait || false;
-    $(this.e.nativeElement)
+    this._modal
       .modal({
         closable: opt.closable || false,
         allowMultiple: opt.allowMultiple || true,
@@ -73,7 +76,7 @@ export class AlertComponent {
   }
 
   hide() {
-    $(this.e.nativeElement).modal('hide');
+    this._modal.modal('hide');
     this._loading = false;
   }
 }

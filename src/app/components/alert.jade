@@ -1,12 +1,13 @@
-.header {{ title }}
-.content
-  | {{ content }}
-  pre {{ code }}
-.actions
-  .ui.cancel.button(*ngIf="buttons.indexOf('cancel') !== -1") Cancel
-  .ui.primary.cancel.button(*ngIf="buttons.indexOf('cancel.primary') !== -1") Cancel
-  .ui.primary.ok.button(*ngIf="buttons.indexOf('ok') !== -1", [class.loading]="_loading") OK
-  .ui.ok.button(*ngIf="buttons.indexOf('delete') !== -1", [class.loading]="_loading") Delete
-  .ui.ok.button(*ngIf="buttons.indexOf('restore') !== -1", [class.loading]="_loading") Restore
-  .ui.primary.ok.button(*ngIf="buttons.indexOf('update') !== -1", [class.loading]="_loading") Update
-  .ui.primary.ok.button(*ngIf="buttons.indexOf('add') !== -1", [class.loading]="_loading") Add
+.ui.long.modal(#modal)
+  .header {{ title }}
+  .content
+    | {{ content }}
+    pre {{ code }}
+  .actions
+    .ui.cancel.button(*ngIf="buttons.indexOf('cancel') !== -1") Cancel
+    .ui.primary.cancel.button(*ngIf="buttons.indexOf('cancel.primary') !== -1") Cancel
+    .ui.primary.ok.button(*ngIf="buttons.indexOf('ok') !== -1", [class.loading]="_loading") OK
+    .ui.ok.button(*ngIf="buttons.indexOf('delete') !== -1", [class.loading]="_loading") Delete
+    .ui.ok.button(*ngIf="buttons.indexOf('restore') !== -1", [class.loading]="_loading") Restore
+    .ui.primary.ok.button(*ngIf="buttons.indexOf('update') !== -1", [class.loading]="_loading") Update
+    .ui.primary.ok.button(*ngIf="buttons.indexOf('add') !== -1", [class.loading]="_loading") Add
