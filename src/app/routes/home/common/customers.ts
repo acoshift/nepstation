@@ -4,7 +4,7 @@ import { NavbarService, CustomersService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
 import { Log } from '../../../models';
 import _ = require('lodash');
-import { Customer, Event } from '../../../models';
+import { Customer } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
 
@@ -13,7 +13,7 @@ declare var $: any;
   template: require('./customer.dialog.jade'),
   directives: [ Directives ]
 })
-class CustomerDialog extends ModelDialog {
+class CustomerDialog extends ModelDialog<Customer> {
   private _modelTemplate = {
     _id: [''],
     name: ['', Validators.required],
@@ -37,16 +37,25 @@ class CustomerDialog extends ModelDialog {
     });
   }
 
-  showEdit(item: Customer) {
-    this.show({
-      header: 'Edit Customer: ' + item.name,
-      button: 'Update',
-      model: {
-        _id: [item._id],
-        name: [item.name, Validators.required],
-        gender: [item.gender, Validators.required]
+  showEdit(item: Customer, e?) {
+    if (e) e.loading = true;
+    this.service.read(item._id).subscribe(
+      result => {
+        this.show({
+          header: 'Edit Customer: ' + item.name,
+          button: 'Update',
+          model: {
+            _id: [item._id],
+            name: [item.name, Validators.required],
+            gender: [item.gender, Validators.required]
+          }
+        });
+      },
+      error => { /* TODO: Error handler */ },
+      () => {
+        if (e) e.loading = false;
       }
-    });
+    );
   }
 }
 
@@ -61,7 +70,7 @@ class CustomerDialog extends ModelDialog {
     Directives,
   ]
 })
-export class CustomersRoute extends TableComponent {
+export class CustomersRoute extends TableComponent<Customer> {
   @ViewChild(CustomerDialog)
   dialog: CustomerDialog;
 
@@ -72,10 +81,6 @@ export class CustomersRoute extends TableComponent {
               service: CustomersService) {
     super(service);
     navbar.active('common/customers');
-  }
-
-  ngAfterViewInit() {
-    console.log(this.dialog);
   }
 
   get filter() {
