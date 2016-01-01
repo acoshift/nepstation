@@ -47,9 +47,9 @@ export abstract class ModelDialog<T> implements AfterViewInit {
       .modal('show');
   }
 
-  showAdd() { /* Override */}
+  showAdd(): void { /* Override */}
 
-  showEdit(item) { /* Override */ }
+  showEdit(item: T, e?): void { /* Override */ }
 
   hide() {
     this._modal.modal('hide');
@@ -116,9 +116,13 @@ export abstract class ModelDialog<T> implements AfterViewInit {
     if (v === null || typeof v === 'undefined') return;
     this.loading = true;
     this.service.submit(v).subscribe(
-      result => { /* empty */ },
+      null,
       error => { /* TODO: Error handle */ },
-      () => this.hide()
+      () => {
+        this.service.refresh().subscribe(null, null, () => {
+          this.hide();
+        });
+      }
     );
   }
 }
