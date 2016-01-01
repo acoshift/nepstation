@@ -36,47 +36,38 @@ class RoleDialog extends ModelDialog {
     this.model = fb.group(this._modelTemplate);
   }
 
-  onEvent(event: Event) {
-    super.onEvent(event);
-    switch (event.name) {
-      case 'add':
-        this._dbs = [];
-        this._admin = false;
-        this._onlyOwner = false;
-        super.onEvent({
-          name: 'modelDialog',
-          data: {
-            header: 'Add Role',
-            button: 'Add',
-            model: this._modelTemplate
-          }
-        });
-        break;
-      case 'edit':
-        if (event.data.dbs === 1) {
-          this._admin = true;
-          this._onlyOwner = false;
-        } else if (event.data.dbs === 2) {
-          this._admin = true;
-          this._onlyOwner = true;
-        } else {
-          this._admin = false;
-          this._onlyOwner = false;
-        }
-        this._toList(event.data.dbs);
-        super.onEvent({
-          name: 'modelDialog',
-          data: {
-            header: 'Edit Role: ' + event.data.name,
-            button: 'Update',
-            model: {
-              _id: [event.data._id],
-              name: [event.data.name, Validators.required]
-            }
-          }
-        });
-        break;
+  showAdd() {
+    this._dbs = [];
+    this._admin = false;
+    this._onlyOwner = false;
+
+    this.show({
+      header: 'Add Role',
+      button: 'Add',
+      model: this._modelTemplate
+    });
+  }
+
+  showEdit(item: Role) {
+    if (item.dbs === 1) {
+      this._admin = true;
+      this._onlyOwner = false;
+    } else if (item.dbs === 2) {
+      this._admin = true;
+      this._onlyOwner = true;
+    } else {
+      this._admin = false;
+      this._onlyOwner = false;
     }
+    this._toList(item.dbs);
+    this.show({
+      header: 'Edit Role: ' + item.name,
+      button: 'Update',
+      model: {
+        _id: [item._id],
+        name: [item.name, Validators.required]
+      }
+    });
   }
 
   preSubmit(data) {
