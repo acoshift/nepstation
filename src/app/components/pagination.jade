@@ -1,9 +1,9 @@
 .ui.pagination.menu
-  a.item((click)="_prevPage()")
+  a.item((click)="prevPage()")
     i.left.chevron.icon
   a.item(*ngFor="#p of pages",
-         (click)="_gotoPage(p)",
-         [class.active]="p === data.current",
+         (click)="gotoPage(p)",
+         [class.active]="p === page.current",
          [class.disabled]="p === -1") {{p !== -1 ? p + 1 : '...'}}
-  a.item((click)="_nextPage()")
+  a.item((click)="nextPage()")
     i.right.chevron.icon

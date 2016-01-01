@@ -1,51 +1,61 @@
-import { Component } from 'angular2/core';
-import { Page, Event } from '../models';
-import { EventComponent } from './event';
+import { Component, EventEmitter } from 'angular2/core';
+import { Page } from '../models';
 import _ = require('lodash');
 
 @Component({
   selector: 'pagination',
-  template: require('./pagination.jade')
+  template: require('./pagination.jade'),
+  inputs: [
+    'page'
+  ],
+  events: [
+    'pageChange'
+  ]
 })
-export class PaginationComponent extends EventComponent {
+export class PaginationComponent {
   pages: number[];
-  data: Page;
 
-  ngOnInit() {
-    super.ngOnInit();
+  pageChange: EventEmitter<Page> = new EventEmitter();
+
+  private _page: Page;
+
+  refresh() {
+    this.page.current = 0;
     this._refresh();
   }
 
-  onEvent(event: Event) {
-    if (event.name === 'refreshPage') {
-      this.data.current = 0;
-      this._refresh();
-    }
+  set page(page: Page) {
+    this._page = page;
+    this.refresh();
+  }
+
+  get page() {
+    return this._page;
+  }
+
+  gotoPage(page: number) {
+    if (page < 0) return;
+    this.page.current = page;
+    this.pageChange.emit(this.page);
+    this._refresh();
+  }
+
+  nextPage() {
+    if (this.page.current < this.page.total - 1)
+      this.gotoPage(this.page.current + 1);
+  }
+
+  prevPage() {
+    if (this.page.current > 0)
+      this.gotoPage(this.page.current - 1);
   }
 
   private _refresh() {
-    this.data.total = Math.ceil(this.data.itemCount / this.data.itemPerPage);
+    this.page.total = Math.ceil(this.page.itemCount / this.page.itemPerPage);
     let r = [];
-    if (this.data.current - 2 > 0) r = [0, -1];
-    r = r.concat(_.range(Math.max(this.data.current - 2, 0), Math.min(this.data.current + 3, this.data.total)));
-    if (this.data.current + 3 < this.data.total) r = r.concat([-1, this.data.total - 1]);
+    if (this.page.current - 2 > 0) r = [0, -1];
+    r = r.concat(_.range(Math.max(this.page.current - 2, 0), Math.min(this.page.current + 3, this.page.total)));
+    if (this.page.current + 3 < this.page.total) r = r.concat([-1, this.page.total - 1]);
     this.pages = r;
-  }
-
-  private _gotoPage(page: number) {
-    if (page < 0) return;
-    this.data.current = page;
-    this.next.emit({ name: 'gotoPage' });
-    this._refresh();
-  }
-
-  private _nextPage() {
-    if (this.data.current < this.data.total - 1)
-      this._gotoPage(this.data.current + 1);
-  }
-
-  private _prevPage() {
-    if (this.data.current > 0)
-      this._gotoPage(this.data.current - 1);
   }
 }
