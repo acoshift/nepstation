@@ -1,5 +1,4 @@
 import { Component, ElementRef, AfterViewInit, ViewQuery, QueryList } from 'angular2/core';
-import { Event } from '../models';
 import { EventComponent } from './event';
 declare var $: any;
 

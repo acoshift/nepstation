@@ -1,5 +1,4 @@
 import { Component, View, ElementRef, AfterViewInit, ViewQuery, QueryList } from 'angular2/core';
-import { Event } from '../models';
 declare var $: any;
 
 @Component({
