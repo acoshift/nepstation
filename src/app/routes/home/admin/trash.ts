@@ -1,9 +1,9 @@
-import { Component, View } from 'angular2/core';
+import { Component, View, ViewChild } from 'angular2/core';
 import { NavbarService, TrashService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
 import { TimestampPipe, MomentPipe } from '../../../pipes';
 import _ = require('lodash');
-import { Trash, Event } from '../../../models';
+import { Trash } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
 
@@ -21,10 +21,13 @@ declare var $: any;
     MomentPipe,
   ]
 })
-export class TrashRoute extends TableComponent {
+export class TrashRoute extends TableComponent<Trash> {
+  @ViewChild(AlertComponent)
+  protected alert: AlertComponent;
+
   constructor(
     navbar: NavbarService,
-    service: TrashService) {
+    protected service: TrashService) {
     super(service);
     navbar.active('admin/trash');
   }
@@ -35,8 +38,7 @@ export class TrashRoute extends TableComponent {
       switch (this.search.field) {
         case '':
           return x._id.indexOf(this.search.keyword) !== -1 ||
-                 x.db.indexOf(this.search.keyword) !== -1 ||
-                 JSON.stringify(x.data).indexOf(this.search.keyword) !== -1;
+                 x.db.indexOf(this.search.keyword) !== -1;
         case 'id':
           return x._id.indexOf(this.search.keyword) !== -1;
         case 'db':
@@ -47,10 +49,7 @@ export class TrashRoute extends TableComponent {
   }
 
   restore(item: Trash) {
-    this.service.next({
-      name: 'restore',
-      data: item._id
-    });
+    this.service.restore(item._id);
   }
 
   restoreSelected() {
@@ -69,35 +68,32 @@ export class TrashRoute extends TableComponent {
       buttons: [ 'restore', 'cancel.primary' ],
       wait: true,
       onApprove: () => {
-        this.service.next({
-          name: 'restore',
-          data: ids
+        this.service.restore(ids).subscribe(null, error => this.error(error), () => {
+          this.resetSelected();
+          this.service.refresh().subscribe(null, null, () => this.alert.hide());
         });
-        this.resetSelected();
       }
     });
   }
 
-  onEvent(event: Event) {
-    super.onEvent(event);
-    switch (event.name) {
-      case 'read':
-        let item: Trash = event.data;
-        this.alert.show({
-          title: `Restore "${item._id}"?`,
-          code: JSON.stringify(item, null, 4),
-          buttons: [ 'restore', 'cancel.primary' ],
-          wait: true,
-          onApprove: () => this.restore(item)
-        });
-        break;
-      case 'restore':
-        this.service.next({ name: 'refresh' });
-        break;
-    }
-  }
-
-  view(item: Trash) {
-    this.service.next({ name: 'read', data: item._id });
+  view(item: Trash, e?): void {
+    if (e) e.loading = true;
+    this.service.read(item._id).subscribe(
+      result => this.alert.show({
+        title: `Restore "${item._id}"?`,
+        code: JSON.stringify(item, null, 4),
+        buttons: [ 'restore', 'cancel.primary' ],
+        wait: true,
+        onApprove: () => {
+          this.service.restore(item._id).subscribe(null, error => this.error(error), () => {
+            this.service.refresh().subscribe(null, null, () => this.alert.hide());
+          });
+        }
+      }),
+      error => this.error(error),
+      () => {
+        if (e) e.loading = false;
+      }
+    );
   }
 }
