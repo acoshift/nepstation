@@ -3,13 +3,13 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from 'angular2/common';
 import { CONST_EXPR } from 'angular2/src/facade/lang';
 declare var $: any;
 
-const DROPBOX_VALUE_ACCESSOR = CONST_EXPR(
+const DROPDOWN_VALUE_ACCESSOR = CONST_EXPR(
   new Provider(NG_VALUE_ACCESSOR, { useExisting: forwardRef(() => DropdownControlValueAccessor), multi: true }));
 
 @Directive({
   selector: '.ui.dropdown',
   host: { '(change)': 'onChange($event.target.value)', '(blur)': 'onTouched()' },
-  bindings: [ DROPBOX_VALUE_ACCESSOR ]
+  bindings: [ DROPDOWN_VALUE_ACCESSOR ]
 })
 export class DropdownControlValueAccessor implements ControlValueAccessor, AfterViewInit {
   onChange = (_) => { /* empty */ };
