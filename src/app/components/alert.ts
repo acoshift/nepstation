@@ -1,5 +1,4 @@
 import { Component, ElementRef, AfterViewInit, ViewQuery, QueryList } from 'angular2/core';
-import { EventComponent } from './event';
 declare var $: any;
 
 interface AlertOption {
