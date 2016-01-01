@@ -1,4 +1,4 @@
-.ui.long.modal(#modal)
+.ui.long.modal
   .header {{header}}
   .content
     form.ui.form([ngFormModel]="model")
@@ -6,14 +6,14 @@
         label Name:
         input(ngControl="name")
       .field([class.error]="valid('gender')")
-          label Gender:
-          .ui.selection.dropdown(ngControl="gender")
-            input(type="hidden")
-            i.dropdown.icon
-            .default.text Select Gender
-            .menu
-              .item(data-value="male") Male
-              .item(data-value="female") Female
+        label Gender:
+        .ui.selection.dropdown(ngControl="gender")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Gender
+          .menu
+            .item(data-value="male") Male
+            .item(data-value="female") Female
   .actions
     .ui.cancel.button Cancel
     .ui.primary.ok.button([class.loading]="loading") {{button}}
