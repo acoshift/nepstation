@@ -1,7 +1,6 @@
-import { Event, EventHandler } from '../models';
-import { EventComponent } from './event';
 import { ControlGroup, Control } from 'angular2/common';
 import { ElementRef, AfterViewInit, QueryList } from 'angular2/core';
+import { ModelService } from '../services/model';
 declare var $: any;
 
 interface ModelDialogOption {
@@ -15,7 +14,7 @@ interface ModelDialogOption {
   duration?: number;
 }
 
-export abstract class ModelDialog implements AfterViewInit {
+export abstract class ModelDialog<T> implements AfterViewInit {
   protected model: ControlGroup;
   protected header: string = '';
   protected button: string = '';
@@ -24,16 +23,10 @@ export abstract class ModelDialog implements AfterViewInit {
 
   constructor(
     private _elementRef: ElementRef,
-    protected service: EventHandler) {}
+    protected service: ModelService<T>) {}
 
   ngAfterViewInit() {
     this._modal = $(this._elementRef.nativeElement).find('.ui.modal');
-    this.service.observable.subscribe(event => {
-      if (event.name === 'submit') {
-        this._modal.modal('hide');
-        this.loading = false;
-      }
-    });
   }
 
   show(opt: ModelDialogOption) {
@@ -60,6 +53,7 @@ export abstract class ModelDialog implements AfterViewInit {
 
   hide() {
     this._modal.modal('hide');
+    this.loading = false;
   }
 
   protected setModel(data: any) {
@@ -121,6 +115,10 @@ export abstract class ModelDialog implements AfterViewInit {
     let v = this.preSubmit(this.model.value);
     if (v === null || typeof v === 'undefined') return;
     this.loading = true;
-    this.service.next({ name: 'submit', data: v });
+    this.service.submit(v).subscribe(
+      result => { /* empty */ },
+      error => { /* TODO: Error handle */ },
+      () => this.hide()
+    );
   }
 }
