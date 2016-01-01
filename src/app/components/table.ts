@@ -1,13 +1,15 @@
 import { Component, ViewChild } from 'angular2/core';
 import { Observable, Subject } from 'rxjs';
-import { Page, Id, Event, EventHandler } from '../models';
+import { Page, Id } from '../models';
 import { AlertComponent } from './alert';
 import { ModelDialog } from './modeldialog';
+import { PaginationComponent } from './pagination';
+import { ModelService } from '../services/model';
 import moment = require('moment');
 
 declare var $: any;
 
-export abstract class TableComponent extends EventHandler {
+export abstract class TableComponent<T extends Id> {
   protected search = {
     keyword: '',
     field: '',
@@ -17,7 +19,7 @@ export abstract class TableComponent extends EventHandler {
     }
   };
 
-  protected page: Page = {
+  private _page: Page = {
     current: 0,
     total: 0,
     itemCount: 0,
@@ -32,93 +34,72 @@ export abstract class TableComponent extends EventHandler {
 
   protected alert: AlertComponent;
 
-  protected dialog: ModelDialog;
+  protected dialog: ModelDialog<T>;
+
+  protected pagination: PaginationComponent;
 
   private _list: Observable<any>;
 
-  constructor(protected service: EventHandler) {
-    super();
-    service.observable.subscribe(
-      event => this.onEvent(event),
-      error => {
-        this.alert.show({
-          title: '',
-          content: error.data, // TODO: edit error
-          buttons: [ 'ok' ]
-        });
-      }
-    );
+  private _repeatFilter = () => { /* empty */ };
+  private _repeatPage = () => { /* empty */ };
 
-    this._list = service.observable
-        .filter(event => event.name === 'list')
-        .map(event => event.data)
-        .map(xs => _.clone(xs).reverse())
-        .flatMap<any>(xs => Observable.create(emitter => {
-          emitter.next(xs);
-          this.observable
-            .filter(event => event.name === 'repeatFilter')
-            .subscribe(() => emitter.next(xs));
-        }))
-        .map(xs => _.filter(xs, x => this.dateFilter(x)))
-        .map(xs => _.filter(xs, x => this.filter(x)))
-        .do(xs => {
-          this.page.itemCount = _.isArray(xs) && xs.length || 0;
-          this.emitter.next({ name: 'refreshPage' });
-        })
-        .flatMap<any>(xs => Observable.create(emitter => {
-          emitter.next(xs);
-          this.observable
-            .filter(event => event.name === 'repeatPage')
-            .subscribe(() => emitter.next(xs));
-        }))
-        .map(xs => {
-          let p = this.page.current * this.page.itemPerPage;
-          let k = this.page.itemPerPage && p + this.page.itemPerPage || undefined;
-          return _.slice(xs, p, k);
-        })
-        .share();
+  constructor(protected service: ModelService<T>) {
+    this.refresh();
+  }
+
+  error(item: Id) {
+    this.alert.show({
+      title: item.error.name,
+      content: item.error.message,
+      buttons: [ 'ok' ]
+    });
+  }
+
+  refresh() {
+    this._list = this.service.list()
+      .map(xs => _.clone(xs).reverse())
+      .flatMap<any>(xs => Observable.create(emitter => {
+        emitter.next(xs);
+        this._repeatFilter = () => { emitter.next(xs); };
+      }))
+      .map(xs => _.filter(xs, x => this.dateFilter(x)))
+      .map(xs => _.filter(xs, x => this.filter(x)))
+      .do(xs => {
+        this.page.itemCount = _.isArray(xs) && xs.length || 0;
+        if (this.pagination) this.pagination.page = this.page;
+      })
+      .flatMap<any>(xs => Observable.create(emitter => {
+        emitter.next(xs);
+        this._repeatPage = () => { emitter.next(xs); };
+      }))
+      .map(xs => {
+        let p = this.page.current * this.page.itemPerPage;
+        let k = this.page.itemPerPage && p + this.page.itemPerPage || undefined;
+        return _.slice(xs, p, k);
+      })
+      .share();
 
     this.list.subscribe(r => {
       this.loading = r === null;
       this.alert.hide();
     });
-    service.next({ name: 'refresh' });
-  }
-
-  onEvent(event: Event) {
-    switch (event.name) {
-      case 'delete':
-        this.service.next({ name: 'refresh' });
-        break;
-      case 'submit':
-        this.service.next({ name: 'refresh' });
-        break;
-      case 'gotoPage':
-        this.emitter.next({ name: 'repeatPage' });
-        break;
-      case 'error':
-        this.alert.show({
-          title: '',
-          content: event.data,
-          buttons: [ 'ok' ]
-        });
-        break;
-      case 'loading':
-        this.emitter.next({ name: 'loader', data: 'show' });
-        break;
-    }
-  }
-
-  refresh() {
-    this.emitter.next({ name: 'repeatFilter' });
   }
 
   get list() {
     return this._list;
   }
 
-  getName(item) {
-    return item.name;
+  get page() {
+    return this._page;
+  }
+
+  set page(page: Page) {
+    this._page = page;
+    this._repeatPage();
+  }
+
+  getName(item: T) {
+    return (<any>item).name;
   }
 
   add() {
@@ -135,28 +116,39 @@ export abstract class TableComponent extends EventHandler {
       content: `Are you sure you want to delete "${this.getName(item)}"?`,
       buttons: [ 'delete', 'cancel.primary' ],
       wait: true,
-      onApprove: () => this.service.next({ name: 'delete', data: item._id })
+      onApprove: () => this.service.delete(item._id).subscribe(null, error => this.error(error))
     });
+  }
+
+  view(item: T): void {
+    this.service.read(item._id).subscribe(
+      result => this.alert.show({
+        title: `Log: "${item._id}"`,
+        code: JSON.stringify(item, null, 4),
+        buttons: [ 'ok' ]
+      }),
+      error => this.error(error)
+    );
   }
 
   setStartDate(date: string): void {
     this.search.date.start = this._fromDate(date);
-    this.refresh();
+    this._repeatFilter();
   }
 
   setEndDate(date: string): void {
     this.search.date.end = this._fromDate(date);
-    this.refresh();
+    this._repeatFilter();
   }
 
   setField(field: string): void {
     this.search.field = field;
-    this.refresh();
+    this._repeatFilter();
   }
 
   setKeyword(keyword: string): void {
     this.search.keyword = keyword;
-    this.refresh();
+    this._repeatFilter();
   }
 
   select(item, value: boolean) {
@@ -186,11 +178,9 @@ export abstract class TableComponent extends EventHandler {
       buttons: [ 'delete', 'cancel.primary' ],
       wait: true,
       onApprove: () => {
-        this.service.next({
-          name: 'delete',
-          data: ids
-        });
+        this.service.delete(ids).subscribe(null, error => this.error(error));
         this.resetSelected();
+        this.refresh();
       }
     });
   }
