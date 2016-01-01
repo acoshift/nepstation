@@ -1,23 +1,18 @@
-import { Component, View, ElementRef } from 'angular2/core';
+import { Component, View, ElementRef, ViewChild } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import { Role, Event } from '../../../models';
+import { Role } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
 
 @Component({
-  selector: '.dialog',
-  host: {
-    class: 'ui long modal'
-  }
-})
-@View({
+  selector: 'dialog',
   template: require('./role.dialog.jade'),
   directives: [ Directives ]
 })
-class RoleDialog extends ModelDialog {
+class RoleDialog extends ModelDialog<Role> {
   private _modelTemplate = {
     _id: [''],
     name: ['', Validators.required]
@@ -48,26 +43,35 @@ class RoleDialog extends ModelDialog {
     });
   }
 
-  showEdit(item: Role) {
-    if (item.dbs === 1) {
-      this._admin = true;
-      this._onlyOwner = false;
-    } else if (item.dbs === 2) {
-      this._admin = true;
-      this._onlyOwner = true;
-    } else {
-      this._admin = false;
-      this._onlyOwner = false;
-    }
-    this._toList(item.dbs);
-    this.show({
-      header: 'Edit Role: ' + item.name,
-      button: 'Update',
-      model: {
-        _id: [item._id],
-        name: [item.name, Validators.required]
+  showEdit(item: Role, e?) {
+    if (e) e.loading = true;
+    this.service.read(item._id).subscribe(
+      result => {
+        if (result.dbs === 1) {
+          this._admin = true;
+          this._onlyOwner = false;
+        } else if (result.dbs === 2) {
+          this._admin = true;
+          this._onlyOwner = true;
+        } else {
+          this._admin = false;
+          this._onlyOwner = false;
+        }
+        this._toList(result.dbs);
+        this.show({
+          header: 'Edit Role: ' + result.name,
+          button: 'Update',
+          model: {
+            _id: [result._id],
+            name: [result.name, Validators.required]
+          }
+        });
+      },
+      error => { /* TODO: Error handler */},
+      () => {
+        if (e) e.loading = false;
       }
-    });
+    );
   }
 
   preSubmit(data) {
@@ -192,7 +196,13 @@ class RoleDialog extends ModelDialog {
     Directives,
   ]
 })
-export class RolesRoute extends TableComponent {
+export class RolesRoute extends TableComponent<Role> {
+  @ViewChild(RoleDialog)
+  dialog: RoleDialog;
+
+  @ViewChild(AlertComponent)
+  protected alert: AlertComponent;
+
   constructor(
     navbar: NavbarService,
     service: RolesService) {

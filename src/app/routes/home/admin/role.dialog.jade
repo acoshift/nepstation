@@ -1,86 +1,87 @@
-.header {{header}}
-.content
-  form.ui.form([ngFormModel]="model")
-    .field([class.error]="valid('name')")
-      label Name:
-      input(ngControl="name", type="text")
-    .fields
-      .field
-        .ui.checkbox
-          input(type="checkbox", [(ngModel)]="_admin")
-          label Admin
-      .field
-        .ui.checkbox([class.disable]="!_admin")
-          input(type="checkbox", [(ngModel)]="_onlyOwner", [attr.disabled]="_admin ? null : true")
-          label Only Owner
-    .field(*ngIf="!_admin")
-      label Databases:
-      table.ui.compact.striped.celled.structured.table
-        thead
-          tr
-            th(rowspan=2) Name
-            th.one.wide.center.aligned(rowspan=2) C
-            th.one.wide.center.aligned(colspan=2) R
-            th.one.wide.center.aligned(colspan=2) U
-            th.one.wide.center.aligned(colspan=2) D
-            th.one.wide.center.aligned(colspan=2) A
-            th.one.wide(rowspan=2)
-          tr
-            th.center.aligned A
-            th.center.aligned O
-            th.center.aligned A
-            th.center.aligned O
-            th.center.aligned A
-            th.center.aligned O
-            th.center.aligned A
-            th.center.aligned O
-        tbody
-          tr(*ngFor="#t of _dbs")
-            td.input.error([class.error]="t.name === ''")
-              input([(ngModel)]="t.name", type="text", placeholder="Name")
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'c')")
-                input(type="checkbox", [(ngModel)]="t.actions.c", [attr.disabled]="_attrDisable(t, 'c')")
-                label
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'r.a')")
-                input(type="checkbox", [(ngModel)]="t.actions.r.a", [attr.disabled]="_attrDisable(t, 'r.a')")
-                label
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'r.o')")
-                input(type="checkbox", [(ngModel)]="t.actions.r.o", [attr.disabled]="_attrDisable(t, 'r.o')")
-                label
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'u.a')")
-                input(type="checkbox", [(ngModel)]="t.actions.u.a", [attr.disabled]="_attrDisable(t, 'u.a')")
-                label
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'u.o')")
-                input(type="checkbox", [(ngModel)]="t.actions.u.o", [attr.disabled]="_attrDisable(t, 'u.o')")
-                label
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'd.a')")
-                input(type="checkbox", [(ngModel)]="t.actions.d.a", [attr.disabled]="_attrDisable(t, 'd.a')")
-                label
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'd.o')")
-                input(type="checkbox", [(ngModel)]="t.actions.d.o", [attr.disabled]="_attrDisable(t, 'd.o')")
-                label
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'a.a')")
-                input(type="checkbox", [(ngModel)]="t.actions.a.a", [attr.disabled]="_attrDisable(t, 'a.a')")
-                label
-            td.center.aligned
-              .ui.fitted.checkbox([class.disable]="_disable(t, 'a.o')")
-                input(type="checkbox", [(ngModel)]="t.actions.a.o", [attr.disabled]="_attrDisable(t, 'a.o')")
-                label
-            td.center.aligned
-              .ui.red.icon.button((click)="delete(t)")
-                i.remove.icon
-        tfoot.full-width
-          tr
-            th(colspan=11)
-              .ui.right.floated.small.primary.button((click)="add()") Add Database
-.actions
-  .ui.cancel.button Cancel
-  .ui.primary.ok.button([class.loading]="loading") {{button}}
+.ui.long.modal
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model")
+      .field([class.error]="valid('name')")
+        label Name:
+        input(ngControl="name", type="text")
+      .fields
+        .field
+          .ui.checkbox
+            input(type="checkbox", [(ngModel)]="_admin")
+            label Admin
+        .field
+          .ui.checkbox([class.disable]="!_admin")
+            input(type="checkbox", [(ngModel)]="_onlyOwner", [attr.disabled]="_admin ? null : true")
+            label Only Owner
+      .field(*ngIf="!_admin")
+        label Databases:
+        table.ui.compact.striped.celled.structured.table
+          thead
+            tr
+              th(rowspan=2) Name
+              th.one.wide.center.aligned(rowspan=2) C
+              th.one.wide.center.aligned(colspan=2) R
+              th.one.wide.center.aligned(colspan=2) U
+              th.one.wide.center.aligned(colspan=2) D
+              th.one.wide.center.aligned(colspan=2) A
+              th.one.wide(rowspan=2)
+            tr
+              th.center.aligned A
+              th.center.aligned O
+              th.center.aligned A
+              th.center.aligned O
+              th.center.aligned A
+              th.center.aligned O
+              th.center.aligned A
+              th.center.aligned O
+          tbody
+            tr(*ngFor="#t of _dbs")
+              td.input.error([class.error]="t.name === ''")
+                input([(ngModel)]="t.name", type="text", placeholder="Name")
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'c')")
+                  input(type="checkbox", [(ngModel)]="t.actions.c", [attr.disabled]="_attrDisable(t, 'c')")
+                  label
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'r.a')")
+                  input(type="checkbox", [(ngModel)]="t.actions.r.a", [attr.disabled]="_attrDisable(t, 'r.a')")
+                  label
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'r.o')")
+                  input(type="checkbox", [(ngModel)]="t.actions.r.o", [attr.disabled]="_attrDisable(t, 'r.o')")
+                  label
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'u.a')")
+                  input(type="checkbox", [(ngModel)]="t.actions.u.a", [attr.disabled]="_attrDisable(t, 'u.a')")
+                  label
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'u.o')")
+                  input(type="checkbox", [(ngModel)]="t.actions.u.o", [attr.disabled]="_attrDisable(t, 'u.o')")
+                  label
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'd.a')")
+                  input(type="checkbox", [(ngModel)]="t.actions.d.a", [attr.disabled]="_attrDisable(t, 'd.a')")
+                  label
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'd.o')")
+                  input(type="checkbox", [(ngModel)]="t.actions.d.o", [attr.disabled]="_attrDisable(t, 'd.o')")
+                  label
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'a.a')")
+                  input(type="checkbox", [(ngModel)]="t.actions.a.a", [attr.disabled]="_attrDisable(t, 'a.a')")
+                  label
+              td.center.aligned
+                .ui.fitted.checkbox([class.disable]="_disable(t, 'a.o')")
+                  input(type="checkbox", [(ngModel)]="t.actions.a.o", [attr.disabled]="_attrDisable(t, 'a.o')")
+                  label
+              td.center.aligned
+                .ui.red.icon.button((click)="delete(t)")
+                  i.remove.icon
+          tfoot.full-width
+            tr
+              th(colspan=11)
+                .ui.right.floated.small.primary.button((click)="add()") Add Database
+  .actions
+    .ui.cancel.button Cancel
+    .ui.primary.ok.button([class.loading]="loading") {{button}}
