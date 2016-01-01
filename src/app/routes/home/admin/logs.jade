@@ -40,7 +40,7 @@ table.ui.fixed.compact.striped.celled.table
           i.zoom.icon
 
 .ui.right.aligned.grid
-  pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
+  pagination.column(*ngIf="!loading", [(page)]="page")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
 

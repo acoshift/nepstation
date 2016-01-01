@@ -3,7 +3,7 @@ import { NavbarService, LogsService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
 import { TimestampPipe, MomentPipe } from '../../../pipes';
 import { Directives } from '../../../directives';
-import { Event, Log } from '../../../models';
+import { Log } from '../../../models';
 
 @Component({})
 @View({
@@ -19,9 +19,12 @@ import { Event, Log } from '../../../models';
     MomentPipe,
   ]
 })
-export class LogsRoute extends TableComponent {
+export class LogsRoute extends TableComponent<Log> {
   @ViewChild(AlertComponent)
   protected alert: AlertComponent;
+
+  @ViewChild(PaginationComponent)
+  protected pagination: PaginationComponent;
 
   constructor(
     navbar: NavbarService,
@@ -48,23 +51,5 @@ export class LogsRoute extends TableComponent {
       }
       return false;
     };
-  }
-
-  onEvent(event: Event) {
-    super.onEvent(event);
-    switch (event.name) {
-      case 'read':
-        let item: Log = event.data;
-        this.alert.show({
-          title: `Log: "${item._id}"`,
-          code: JSON.stringify(item, null, 4),
-          buttons: [ 'ok' ]
-        });
-        break;
-    }
-  }
-
-  view(item: Log) {
-    this.service.next({ name: 'read', data: item._id });
   }
 }
