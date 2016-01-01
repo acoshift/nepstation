@@ -134,8 +134,8 @@ export abstract class TableComponent<T extends Id> {
     if (e) e.loading = true;
     this.service.read(item._id).subscribe(
       result => this.alert.show({
-        title: `Log: "${item._id}"`,
-        code: JSON.stringify(item, null, 4),
+        title: `Log: "${result._id}"`,
+        code: JSON.stringify(result, null, 4),
         buttons: [ 'ok' ]
       }),
       error => this.error(error),
