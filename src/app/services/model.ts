@@ -1,14 +1,28 @@
 import { DbService } from './db';
-import { Observable } from 'rxjs';
+import { Observable, Subject, ConnectableObservable } from 'rxjs';
 
 export abstract class ModelService<T> {
+  protected _list: Subject<T[]>;
+
   constructor(
     protected db: DbService,
     protected namespace: string,
-    protected retrieves: any) {}
+    protected retrieves: any) {
 
-  list(): Observable<T[]> {
-    return this.db.request('query', this.namespace, null, this.retrieves.refresh);
+    this._list = new Subject();
+    this.list = this._list.publishBehavior([]);
+    this.list.connect();
+  }
+
+  list: ConnectableObservable<T[]>;
+
+  refresh(): Observable<T[]> {
+    let t = this.db.request('query', this.namespace, null, this.retrieves.refresh);
+    t.subscribe(
+      result => this._list.next(result),
+      error => { /* skip error here */ }
+    );
+    return t;
   }
 
   read(id: string): Observable<T> {
@@ -21,7 +35,7 @@ export abstract class ModelService<T> {
       return this.db.request('update', this.namespace, [(<any>item)._id, item], this.retrieves.read);
     } else {
       delete (<any>item)._id;
-      this.db.request('create', this.namespace, item, this.retrieves.read);
+      return this.db.request('create', this.namespace, item, this.retrieves.read);
     }
   }
 

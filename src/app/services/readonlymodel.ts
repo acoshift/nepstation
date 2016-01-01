@@ -8,8 +8,13 @@ export class ReadOnlyModelService<T> extends ModelService<T> {
     protected namespace: string,
     protected retrieves: any) { super(db, namespace, retrieves); }
 
-  list(): Observable<T[]> {
-    return this.db.request('query', this.namespace, null, this.retrieves.refresh, true);
+  refresh() {
+    let t = this.db.request('query', this.namespace, null, this.retrieves.refresh, true);
+    t.subscribe(
+      result => this._list.next(result),
+      error => { /* skip error here */ }
+    );
+    return t;
   }
 
   submit(item: T): Observable<any> {
