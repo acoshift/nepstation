@@ -28,7 +28,7 @@ table.ui.definition.compact.striped.celled.table
           label
       td {{t.name}}
       td.center.aligned
-        .ui.teal.icon.button(#e, (click)="edit(t, e)")
+        .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
       td.center.aligned
         .ui.red.icon.button((click)="delete(t)")
