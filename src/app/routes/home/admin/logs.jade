@@ -36,7 +36,7 @@ table.ui.fixed.compact.striped.celled.table
       td {{t.q?.method}}
       td {{t.q?.name}}
       td.center.aligned
-        .ui.blue.icon.button((click)="view(t)")
+        .ui.blue.icon.button(#e, [class.loading]="e.loading", (click)="view(t, e)")
           i.zoom.icon
 
 .ui.right.aligned.grid

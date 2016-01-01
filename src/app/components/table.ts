@@ -128,14 +128,18 @@ export abstract class TableComponent<T extends Id> {
     });
   }
 
-  view(item: T): void {
+  view(item: T, e?): void {
+    if (e) e.loading = true;
     this.service.read(item._id).subscribe(
       result => this.alert.show({
         title: `Log: "${item._id}"`,
         code: JSON.stringify(item, null, 4),
         buttons: [ 'ok' ]
       }),
-      error => this.error(error)
+      error => this.error(error),
+      () => {
+        if (e) e.loading = false;
+      }
     );
   }
 

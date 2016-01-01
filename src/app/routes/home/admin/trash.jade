@@ -38,7 +38,7 @@ table.ui.fixed.single.line.definition.compact.striped.celled.table
       td {{t._id}}
       td {{t.db}}
       td.center.aligned
-        .ui.blue.icon.button((click)="view(t)")
+        .ui.blue.icon.button(#e, [class.loading]="e.loading", (click)="view(t, e)")
           i.zoom.icon
   tfoot.full-width
     tr
@@ -49,7 +49,7 @@ table.ui.fixed.single.line.definition.compact.striped.celled.table
           | Restore Selected
 
 .ui.right.aligned.grid
-  pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
+  pagination.column(*ngIf="!loading", [data]="page")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
 
