@@ -3,7 +3,7 @@
     .field
       .ui.right.action.left.icon.input
         i.search.icon
-        input(type="text", placeholder="Search", (input)="setKeyword($event.target.value)")
+        input(placeholder="Search", (input)="setKeyword($event.target.value)")
         .ui.basic.floating.dropdown.button
           .text Select field
           i.dropdown.icon
@@ -15,11 +15,11 @@
     .field
       .ui.left.icon.input
         i.calendar.icon
-        input(type="text", placeholder="Start: YYYY-MM-DD", (input)="setStartDate($event.target.value)")
+        input(placeholder="Start: YYYY-MM-DD", (input)="setStartDate($event.target.value)")
     .field
       .ui.left.icon.input
         i.calendar.icon
-        input(type="text", placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
+        input(placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
 
 table.ui.fixed.compact.striped.celled.table
   thead

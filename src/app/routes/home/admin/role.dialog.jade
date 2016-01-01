@@ -4,7 +4,7 @@
     form.ui.form([ngFormModel]="model")
       .field([class.error]="valid('name')")
         label Name:
-        input(ngControl="name", type="text")
+        input(ngControl="name")
       .fields
         .field
           .ui.checkbox
@@ -38,7 +38,7 @@
           tbody
             tr(*ngFor="#t of _dbs")
               td.input.error([class.error]="t.name === ''")
-                input([(ngModel)]="t.name", type="text", placeholder="Name")
+                input([(ngModel)]="t.name", placeholder="Name")
               td.center.aligned
                 .ui.fitted.checkbox([class.disable]="_disable(t, 'c')")
                   input(type="checkbox", [(ngModel)]="t.actions.c", [attr.disabled]="_attrDisable(t, 'c')")
