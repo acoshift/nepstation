@@ -34,7 +34,7 @@ table.ui.definition.compact.striped.celled.table
         i.red.remove.icon(*ngIf="!t.enabled")
       td {{getRole(t.role)}}
       td.center.aligned
-        .ui.teal.icon.button((click)="edit(t)")
+        .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
       td.center.aligned
         .ui.red.icon.button((click)="delete(t)")
@@ -51,7 +51,7 @@ table.ui.definition.compact.striped.celled.table
           | Delete Selected
 
 .ui.right.aligned.grid
-  pagination.column(*ngIf="!loading", [data]="page", [subscribeTo]="observable", (next)="next($event)")
+  pagination.column(*ngIf="!loading", [page]="page")
 
 .ui.active.centered.large.inline.loader(*ngIf="loading")
 

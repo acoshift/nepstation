@@ -3,7 +3,7 @@ import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common'
 import { NavbarService, UsersService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
 import _ = require('lodash');
-import { User, Role, Event } from '../../../models';
+import { User, Role } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
 
@@ -12,7 +12,7 @@ declare var $: any;
   template: require('./user.dialog.jade'),
   directives: [ Directives ]
 })
-class UserDialog extends ModelDialog {
+class UserDialog extends ModelDialog<User> {
   roles: Role[];
 
   private _modelTemplate = {
@@ -32,11 +32,12 @@ class UserDialog extends ModelDialog {
 
     this.model = fb.group(this._modelTemplate);
 
-    roles.observable.subscribe(event => {
-      if (event.name === 'list') this.roles = event.data;
-    });
-
-    roles.next({ name: 'refresh' });
+    roles.list.subscribe(
+      result => {
+        this.roles = result;
+      }
+      // TODO: Error handler
+    );
   }
 
   showAdd() {
@@ -47,18 +48,27 @@ class UserDialog extends ModelDialog {
     });
   }
 
-  showEdit(item: User) {
-    this.show({
-      header: 'Edit User: ' + item.name,
-      button: 'Update',
-      model: {
-        _id: [item._id],
-        name: [item.name, Validators.required],
-        pwd: [''],
-        enabled: [item.enabled],
-        role: [item.role, Validators.required]
+  showEdit(item: User, e?) {
+    if (e) e.loading = true;
+    this.service.read(item._id).subscribe(
+      result => {
+        this.show({
+          header: 'Edit User: ' + item.name,
+          button: 'Update',
+          model: {
+            _id: [item._id],
+            name: [item.name, Validators.required],
+            pwd: [''],
+            enabled: [item.enabled],
+            role: [item.role, Validators.required]
+          }
+        });
+      },
+      error => {/* TODO: Error handler */ },//this.error(error)
+      () => {
+        if (e) e.loading = false;
       }
-    });
+    );
   }
 }
 
@@ -73,7 +83,7 @@ class UserDialog extends ModelDialog {
     Directives,
   ]
 })
-export class UsersRoute extends TableComponent {
+export class UsersRoute extends TableComponent<User> {
   roles: Role[];
 
   @ViewChild(UserDialog)
@@ -89,11 +99,14 @@ export class UsersRoute extends TableComponent {
     super(service);
     navbar.active('admin/users');
 
-    roles.observable.subscribe(event => {
-      if (event.name === 'list') this.roles = event.data;
-    });
+    roles.list.subscribe(
+      result => {
+        this.roles = result;
+      },
+      error => this.error(error)
+    );
 
-    roles.next({ name: 'refresh' });
+    roles.refresh();
   }
 
   get filter() {
