@@ -68,7 +68,9 @@ export abstract class TableComponent<T extends Id> {
       .share();
 
     this.list.subscribe(r => {
-      this.loading = r === null;
+      if (this.loading) {
+        if (_.isArray(r) && r.length > 0) this.loading = false;
+      }
     });
 
     this.refresh();
