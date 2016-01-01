@@ -1,7 +1,8 @@
 import { Injectable } from 'angular2/core';
+import { Observable } from 'rxjs';
 import { DbService } from '../db';
 import { ReadOnlyModelService } from '../readonlymodel';
-import { Trash, Event } from '../../models';
+import { Trash } from '../../models';
 
 @Injectable()
 export class TrashService extends ReadOnlyModelService<Trash> {
@@ -13,40 +14,16 @@ export class TrashService extends ReadOnlyModelService<Trash> {
     });
   }
 
-  onEvent(event: Event) {
-    super.onEvent(event);
-    switch (event.name) {
-      case 'restore':
-        this._restore(event.data);
-        break;
-    }
-  }
-
-  protected _refresh() {
-    this.db.request('query', this.namespace, null, this.retrieves.refresh)
-    .subscribe(
-      r => {
-        if (r.error) {
-          this.emitter.next({ name: 'error', data: r.error });
-        } else {
-          this.emitter.next({ name: 'list', data: r });
-        }
-      },
-      e => this.emitter.next({ name: 'error', data: e })
+  refresh(): Observable<Trash[]> {
+    let t = this.db.request('query', this.namespace, null, this.retrieves.refresh);
+    t.subscribe(
+      result => this._list.next(result),
+      error => { /* skip error here */ }
     );
+    return t;
   }
 
-  protected _restore(id: string | string[]) {
-    this.db.request('restore', '', id, this.retrieves.restore)
-      .subscribe(
-        r => {
-          if (r.error) {
-            this.emitter.next({ name: 'error', data: r.error });
-          } else {
-            this.emitter.next({ name: 'restore', data: r });
-          }
-        },
-        e => this.emitter.next({ name: 'error', data: e })
-      );
+  restore(id: string | string[]): Observable<any> {
+    return this.db.request('restore', '', id, this.retrieves.restore);
   }
 }
