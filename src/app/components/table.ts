@@ -192,9 +192,10 @@ export abstract class TableComponent<T extends Id> {
       buttons: [ 'delete', 'cancel.primary' ],
       wait: true,
       onApprove: () => {
-        this.service.delete(ids).subscribe(null, error => this.error(error));
-        this.resetSelected();
-        this.service.refresh().subscribe(null, null, () => this.alert.hide());
+        this.service.delete(ids).subscribe(null, error => this.error(error), () => {
+          this.resetSelected();
+          this.service.refresh().subscribe(null, null, () => this.alert.hide());
+        });
       }
     });
   }
