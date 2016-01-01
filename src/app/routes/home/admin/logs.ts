@@ -20,6 +20,9 @@ import { Event, Log } from '../../../models';
   ]
 })
 export class LogsRoute extends TableComponent {
+  @ViewChild(AlertComponent)
+  protected alert: AlertComponent;
+
   constructor(
     navbar: NavbarService,
     service: LogsService) {
