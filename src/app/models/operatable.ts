@@ -1,7 +1,7 @@
 import { Id } from './id';
 
 export interface Operatable extends Id {
-  $id;
-  $bcrypt;
-  $date;
+  $id?: any;
+  $bcrypt?: any;
+  $date?: any;
 }
