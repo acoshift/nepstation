@@ -8,7 +8,7 @@ const DROPBOX_VALUE_ACCESSOR = CONST_EXPR(
 
 @Directive({
   selector: '.ui.dropdown',
-  host: { '(change)': 'onChange($event.target.checked)', '(blur)': 'onTouched()' },
+  host: { '(change)': 'onChange($event.target.value)', '(blur)': 'onTouched()' },
   bindings: [ DROPBOX_VALUE_ACCESSOR ]
 })
 export class DropdownControlValueAccessor implements ControlValueAccessor, AfterViewInit {
