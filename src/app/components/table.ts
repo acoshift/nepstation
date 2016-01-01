@@ -19,13 +19,6 @@ export abstract class TableComponent<T extends Id> {
     }
   };
 
-  private _page: Page = {
-    current: 0,
-    total: 0,
-    itemCount: 0,
-    itemPerPage: 20,
-  };
-
   protected loading = true;
 
   protected filter: (any) => boolean;
@@ -38,25 +31,20 @@ export abstract class TableComponent<T extends Id> {
 
   protected pagination: PaginationComponent;
 
+  private _page: Page = {
+    current: 0,
+    total: 0,
+    itemCount: 0,
+    itemPerPage: 20,
+  };
+
   private _list: Observable<any>;
 
   private _repeatFilter = () => { /* empty */ };
   private _repeatPage = () => { /* empty */ };
 
   constructor(protected service: ModelService<T>) {
-    this.refresh();
-  }
-
-  error(item: Id) {
-    this.alert.show({
-      title: item.error.name,
-      content: item.error.message,
-      buttons: [ 'ok' ]
-    });
-  }
-
-  refresh() {
-    this._list = this.service.list()
+    this._list = this.service.list
       .map(xs => _.clone(xs).reverse())
       .flatMap<any>(xs => Observable.create(emitter => {
         emitter.next(xs);
@@ -81,8 +69,21 @@ export abstract class TableComponent<T extends Id> {
 
     this.list.subscribe(r => {
       this.loading = r === null;
-      this.alert.hide();
     });
+
+    this.refresh();
+  }
+
+  error(item: Id) {
+    this.alert.show({
+      title: item.error.name,
+      content: item.error.message,
+      buttons: [ 'ok' ]
+    });
+  }
+
+  refresh() {
+    this.service.refresh();
   }
 
   get list() {
@@ -106,8 +107,8 @@ export abstract class TableComponent<T extends Id> {
     this.dialog.showAdd();
   }
 
-  edit(item) {
-    this.dialog.showEdit(item);
+  edit(item, e) {
+    this.dialog.showEdit(item, e);
   }
 
   delete(item) {
@@ -116,7 +117,14 @@ export abstract class TableComponent<T extends Id> {
       content: `Are you sure you want to delete "${this.getName(item)}"?`,
       buttons: [ 'delete', 'cancel.primary' ],
       wait: true,
-      onApprove: () => this.service.delete(item._id).subscribe(null, error => this.error(error))
+      onApprove: () => this.service.delete(item._id).subscribe(
+        null,
+        error => this.error(error),
+        () => {
+          this.service.refresh().subscribe(null, null, () => {
+            this.alert.hide();
+          });
+        })
     });
   }
 
@@ -180,7 +188,7 @@ export abstract class TableComponent<T extends Id> {
       onApprove: () => {
         this.service.delete(ids).subscribe(null, error => this.error(error));
         this.resetSelected();
-        this.refresh();
+        this.service.refresh().subscribe(null, null, () => this.alert.hide());
       }
     });
   }
