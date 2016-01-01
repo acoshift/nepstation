@@ -64,7 +64,7 @@ class UserDialog extends ModelDialog<User> {
           }
         });
       },
-      error => {/* TODO: Error handler */ },//this.error(error)
+      error => { /* TODO: Error handler */ }, //this.error(error)
       () => {
         if (e) e.loading = false;
       }
