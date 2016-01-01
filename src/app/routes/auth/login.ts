@@ -12,7 +12,6 @@ import { AlertComponent, IndicatorComponent } from '../../components';
 import { Directives } from '../../directives';
 import { Router, RouterLink } from 'angular2/router';
 import { AuthService } from '../../services';
-import { EventHandler, Event } from '../../models';
 
 declare var $: any;
 
@@ -29,7 +28,7 @@ declare var $: any;
   template: require('./login.jade'),
   styles: [ require('./login.css') ],
 })
-export class LoginRoute extends EventHandler {
+export class LoginRoute {
   loginForm: ControlGroup;
 
   @ViewChild(AlertComponent)
@@ -42,7 +41,7 @@ export class LoginRoute extends EventHandler {
     private router: Router,
     private auth: AuthService,
     fb: FormBuilder) {
-    super();
+
     // if alredy login, redirect to home
     if (auth.isLoggedIn()) {
       router.navigate(['/Home']);
@@ -61,10 +60,6 @@ export class LoginRoute extends EventHandler {
       router.navigate(['Home']);
       return;
     }
-  }
-
-  onEvent(event: Event) {
-    //
   }
 
   login() {
