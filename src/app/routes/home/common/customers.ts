@@ -42,12 +42,12 @@ class CustomerDialog extends ModelDialog<Customer> {
     this.service.read(item._id).subscribe(
       result => {
         this.show({
-          header: 'Edit Customer: ' + item.name,
+          header: 'Edit Customer: ' + result.name,
           button: 'Update',
           model: {
-            _id: [item._id],
-            name: [item.name, Validators.required],
-            gender: [item.gender, Validators.required]
+            _id: [result._id],
+            name: [result.name, Validators.required],
+            gender: [result.gender, Validators.required]
           }
         });
       },

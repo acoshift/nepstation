@@ -53,14 +53,14 @@ class UserDialog extends ModelDialog<User> {
     this.service.read(item._id).subscribe(
       result => {
         this.show({
-          header: 'Edit User: ' + item.name,
+          header: 'Edit User: ' + result.name,
           button: 'Update',
           model: {
-            _id: [item._id],
-            name: [item.name, Validators.required],
+            _id: [result._id],
+            name: [result.name, Validators.required],
             pwd: [''],
-            enabled: [item.enabled],
-            role: [item.role, Validators.required]
+            enabled: [result.enabled],
+            role: [result.role, Validators.required]
           }
         });
       },
