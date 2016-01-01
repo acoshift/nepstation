@@ -73,22 +73,24 @@ export class LoginRoute {
     }
     let { user, pwd, remember } = this.loginForm.value;
     this._indicator.show();
-    this.auth.login(user, pwd, remember, (ok, location) => {
-      if (ok) {
-        this._indicator.hide();
-        if (location) {
-          this.router.navigateByUrl(location);
+    this.auth.login(user, pwd, remember).subscribe(
+      ({ ok, lastLocation }) => {
+        if (ok) {
+          this._indicator.hide();
+          if (lastLocation) {
+            this.router.navigateByUrl(lastLocation);
+          } else {
+            this.router.navigate(['/Home']);
+          }
         } else {
-          this.router.navigate(['/Home']);
+          this._alert.show({
+            title: '',
+              content: 'Wrong username or password.',
+              buttons: [ 'ok' ],
+              onHide: () => this._indicator.hide()
+          });
         }
-      } else {
-        this._alert.show({
-          title: '',
-            content: 'Wrong username or password.',
-            buttons: [ 'ok' ],
-            onHide: () => this._indicator.hide()
-        });
       }
-    });
+    );
   }
 }

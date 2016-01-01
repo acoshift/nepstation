@@ -1,5 +1,6 @@
 import { Component, Injectable } from 'angular2/core';
 import { Router, Location } from 'angular2/router';
+import { Observable } from 'rxjs';
 import { DbService } from './db';
 
 @Injectable()
@@ -29,17 +30,21 @@ export class AuthService {
     return this.token() != null;
   }
 
-  login(user: string, pwd: string, remember: boolean, cb: (ok: boolean, lastLocation: string) => void) {
+  login(user: string, pwd: string, remember: boolean): Observable<{ ok: boolean, lastLocation: string }> {
     this.remember = remember;
-    this.db.login({ name: user, pwd: pwd })
-      .subscribe(
-        r => {
-          if (r.error) return cb(false, null);
-          this.setToken(r.token);
-          cb(true, this.lastLocation);
-          this.lastLocation = null;
-        },
-        err => cb(false, null));
+    return Observable.create(emitter => {
+      this.db.login({ name: user, pwd: pwd })
+        .subscribe(
+          result => {
+            if (result.error) return emitter.next({ ok: false, lastLocation: null});
+            this.setToken(result.token);
+            emitter.next({ ok: true, lastLocation: this.lastLocation });
+            this.lastLocation = null;
+          },
+          err => emitter.next({ ok: false, lastLocation: null }),
+          () => emitter.complete()
+        );
+    });
   }
 
   logout() {
