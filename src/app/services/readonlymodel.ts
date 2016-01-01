@@ -1,50 +1,22 @@
 import { DbService } from './db';
-import { Event, EventHandler } from '../models';
+import { Observable } from 'rxjs';
+import { ModelService } from './model';
 
-export class ReadOnlyModelService<T> extends EventHandler {
+export class ReadOnlyModelService<T> extends ModelService<T> {
   constructor(
     protected db: DbService,
     protected namespace: string,
-    protected retrieves: any) {
-    super();
+    protected retrieves: any) { super(db, namespace, retrieves); }
+
+  list(): Observable<T[]> {
+    return this.db.request('query', this.namespace, null, this.retrieves.refresh, true);
   }
 
-  onEvent(event: Event) {
-    switch (event.name) {
-      case 'refresh':
-        this._refresh();
-        break;
-      case 'read':
-        this._read(event.data);
-        break;
-    }
+  submit(item: T): Observable<any> {
+    return Observable.throw(new Error('Read-only model can not submit'));
   }
 
-  protected _refresh() {
-    this.db.request('query', this.namespace, null, this.retrieves.refresh, true)
-    .subscribe(
-      r => {
-        if (r.error) {
-          this.emitter.next({ name: 'error', data: r.error });
-        } else {
-          this.emitter.next({ name: 'list', data: r });
-        }
-      },
-      e => this.emitter.next({ name: 'error', data: e })
-    );
-  }
-
-  protected _read(id: string) {
-    this.db.request('read', this.namespace, id, this.retrieves.read)
-      .subscribe(
-        r => {
-          if (r.error) {
-            this.emitter.next({ name: 'error', data: r.error });
-          } else {
-            this.emitter.next({ name: 'read', data: r });
-          }
-        },
-        e => this.emitter.next({ name: 'error', data: e })
-      );
+  delete(id: string | string[]): Observable<any> {
+    return Observable.throw(new Error('Read-only model can not delete'));
   }
 }
