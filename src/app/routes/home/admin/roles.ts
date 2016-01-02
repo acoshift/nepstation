@@ -1,5 +1,5 @@
 import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
-import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
+import { FormBuilder, Validators } from 'angular2/common';
 import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';

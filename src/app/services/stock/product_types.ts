@@ -2,13 +2,12 @@ import { Injectable } from 'angular2/core';
 import { Observable } from 'rxjs';
 import { DbService } from '../db';
 import { ModelService } from '../model';
-import { CustomerType } from '../../models';
-import _ = require('lodash');
+import { ProductType } from '../../models';
 
 @Injectable()
-export class CustomerTypesService extends ModelService<CustomerType> {
+export class ProductTypesService extends ModelService<ProductType> {
   constructor(db: DbService) {
-    super(db, 'common.customer_types', {
+    super(db, 'stock.product_types', {
       refresh: {
         _id: 1, name: 1
       },
@@ -18,12 +17,12 @@ export class CustomerTypesService extends ModelService<CustomerType> {
     });
   }
 
-  refresh(): Observable<CustomerType[]> {
+  refresh(): Observable<ProductType[]> {
     let t = this.db.request('query', this.namespace, null, this.retrieves.refresh)
-      .do((xs: CustomerType[]) => {
+      .do((xs: ProductType[]) => {
         _.forEach(xs, v => {
-          this.db.request('count', 'common.customers', { $id: { type: v._id } }, null)
-            .subscribe(result => v.customerCount = result);
+          this.db.request('count', 'stock.products', { $id: { type: v._id } }, null)
+            .subscribe(result => v.productCount = result);
         });
       });
     t.subscribe(
