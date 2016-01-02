@@ -1,4 +1,4 @@
-import { Component, View, ElementRef, ViewChild } from 'angular2/core';
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { NavbarService, UsersService, RolesService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
@@ -24,7 +24,7 @@ class UserDialog extends ModelDialog<User> {
   };
 
   constructor(
-    e: ElementRef,
+    @ViewQuery('modal') e: QueryList<ElementRef>,
     service: UsersService,
     fb: FormBuilder,
     roles: RolesService) {
@@ -109,22 +109,12 @@ export class UsersRoute extends TableComponent<User> {
     roles.refresh();
   }
 
-  get filter() {
-    return x => {
-      if (!this.search.keyword) return true;
-      switch (this.search.field) {
-        case '':
-          return x.name.indexOf(this.search.keyword) !== -1 ||
-            x.enabled.toString().indexOf(this.search.keyword) !== -1 ||
-            this.getRole(x.role).indexOf(this.search.keyword) !== -1;
-        case 'name':
-          return x.name.indexOf(this.search.keyword) !== -1;
-        case 'enabled':
-          return x.enabled.toString().indexOf(this.search.keyword) !== -1;
-        case 'role':
-          return this.getRole(x.role).indexOf(this.search.keyword) !== -1;
-      }
-      return false;
+  get filters(): { [ key: string ]: Function } {
+    let k = this.search.keyword.toLowerCase();
+    return {
+      'name': x => x.name.toLowerCase().includes(k),
+      'enabled': x => x.enabled.toString().toLowerCase().includes(k),
+      'role': x => this.getRole(x.role).toLowerCase().includes(k)
     };
   }
 

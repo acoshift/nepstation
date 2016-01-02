@@ -1,4 +1,4 @@
-import { Component, View, ElementRef, ViewChild } from 'angular2/core';
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
 import { Subject, Subscriber } from 'rxjs';
 import { NavbarService, RolesService } from '../../../services';
@@ -23,7 +23,7 @@ class RoleDialog extends ModelDialog<Role> {
   private _onlyOwner: boolean = false;
 
   constructor(
-    e: ElementRef,
+    @ViewQuery('modal') e: QueryList<ElementRef>,
     service: RolesService,
     fb: FormBuilder) {
     super(e, service);
@@ -210,16 +210,10 @@ export class RolesRoute extends TableComponent<Role> {
     navbar.active('admin/roles');
   }
 
-  get filter() {
-    return x => {
-      if (!this.search.keyword) return true;
-      switch (this.search.field) {
-        case '':
-          return x.name.indexOf(this.search.keyword) !== -1;
-        case 'name':
-          return x.name.indexOf(this.search.keyword) !== -1;
-      }
-      return false;
+  get filters(): { [ key: string ]: Function } {
+    let k = this.search.keyword.toLowerCase();
+    return {
+      'name': x => x.name.toLowerCase().includes(k)
     };
   }
 }

@@ -34,22 +34,12 @@ export class LogsRoute extends TableComponent<Log> {
     this.page.itemPerPage = 23;
   }
 
-  get filter() {
-    return x => {
-      if (!this.search.keyword) return true;
-      switch (this.search.field) {
-        case '':
-          return x.t.payload.name.indexOf(this.search.keyword) !== -1 ||
-                 x.q.method.indexOf(this.search.keyword) !== -1 ||
-                 x.q.name.indexOf(this.search.keyword) !== -1;
-        case 'user':
-          return x.t.payload.name.indexOf(this.search.keyword) !== -1;
-        case 'method':
-          return x.q.method.indexOf(this.search.keyword) !== -1;
-        case 'collection':
-          return x.q.name.indexOf(this.search.keyword) !== -1;
-      }
-      return false;
+  get filters(): { [ key: string ]: Function } {
+    let k = this.search.keyword.toLowerCase();
+    return {
+      'user': x => x.t.payload.name.toLowerCase().includes(k),
+      'method': x => x.q.method.toLowerCase().includes(k),
+      'collection': x => x.q.name.toLowerCase().includes(k)
     };
-  }
+  };
 }

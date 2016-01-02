@@ -26,8 +26,9 @@ export class UsersService extends ModelService<User> {
       delete item.pwd;
     }
 
-    if (item.role && item.role !== '') {
+    if (!!item.role) {
       item.$id = { role: item.role };
+      delete item.role;
     }
 
     return item;

@@ -1,66 +1,53 @@
 import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
 import { ControlGroup, FormBuilder, Validators, Control } from 'angular2/common';
-import { NavbarService, CustomersService, CustomerTypesService } from '../../../services';
+import { NavbarService, CustomerTypesService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
 import { Log } from '../../../models';
 import _ = require('lodash');
-import { Customer, CustomerType } from '../../../models';
+import { CustomerType } from '../../../models';
 import { Directives } from '../../../directives';
 declare var $: any;
 
 @Component({
   selector: 'dialog',
-  template: require('./customer.dialog.jade'),
+  template: require('./customer_type.dialog.jade'),
   directives: [ Directives ]
 })
-class CustomerDialog extends ModelDialog<Customer> {
-  types: CustomerType[];
-
+class CustomerTypeDialog extends ModelDialog<CustomerType> {
   private _modelTemplate = {
     _id: [''],
     name: ['', Validators.required],
-    gender: ['', Validators.required],
-    type: ['', Validators.required]
+    remark: ['']
   };
 
   constructor(
     @ViewQuery('modal') e: QueryList<ElementRef>,
-    service: CustomersService,
-    types: CustomerTypesService,
+    service: CustomerTypesService,
     fb: FormBuilder) {
     super(e, service);
 
     this.model = fb.group(this._modelTemplate);
-
-    types.list.subscribe(
-      result => {
-        this.types = result;
-      }
-    );
-
-    types.refresh();
   }
 
   showAdd() {
     this.show({
-      header: 'Add Customer',
+      header: 'Add Customer Type',
       button: 'Add',
       model: this._modelTemplate
     });
   }
 
-  showEdit(item: Customer, e?) {
+  showEdit(item: CustomerType, e?) {
     if (e) e.loading = true;
     this.service.read(item._id).subscribe(
       result => {
         this.show({
-          header: 'Edit Customer: ' + result.name,
+          header: 'Edit Customer Type: ' + result.name,
           button: 'Update',
           model: {
             _id: [result._id],
             name: [result.name, Validators.required],
-            gender: [result.gender, Validators.required],
-            type: [result.type, Validators.required]
+            remark: [result.remark]
           }
         });
       },
@@ -74,49 +61,32 @@ class CustomerDialog extends ModelDialog<Customer> {
 
 @Component({})
 @View({
-  template: require('./customers.jade'),
+  template: require('./customer_types.jade'),
   styles: [ ],
   directives: [
     PaginationComponent,
     AlertComponent,
-    CustomerDialog,
+    CustomerTypeDialog,
     Directives,
   ]
 })
-export class CustomersRoute extends TableComponent<Customer> {
-  @ViewChild(CustomerDialog)
-  dialog: CustomerDialog;
+export class CustomerTypesRoute extends TableComponent<CustomerType> {
+  @ViewChild(CustomerTypeDialog)
+  protected dialog: CustomerTypeDialog;
 
   @ViewChild(AlertComponent)
   protected alert: AlertComponent;
 
-  types: CustomerType[];
-
   constructor(navbar: NavbarService,
-              service: CustomersService,
-              types: CustomerTypesService) {
+              service: CustomerTypesService) {
     super(service);
-    navbar.active('common/customers');
-
-    types.list.subscribe(
-      result => {
-        this.types = result;
-      }
-    );
-
-    types.refresh();
+    navbar.active('common/customer_types');
   }
 
   get filters(): { [ key: string ]: Function } {
     let k = this.search.keyword.toLowerCase();
     return {
-      'name': x => x.name.toLowerCase().includes(k),
-      'type': x => this.getType(x.type).toLowerCase().includes(k)
+      'name': x => x.name.toLowerCase().includes(k)
     };
-  };
-
-  getType(type: string): string {
-    let t = _.find(this.types, x => x._id === type || x.name === type);
-    return t && t.name || type;
   }
 }

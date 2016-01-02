@@ -9,11 +9,20 @@ export class CustomersService extends ModelService<Customer> {
   constructor(db: DbService) {
     super(db, 'common.customers', {
       refresh: {
-        _id: 1, name: 1
+        _id: 1, name: 1, type: 1
       },
       read: {
-        _id: 1, name: 1, gender: 1
+        _id: 1, name: 1, gender: 1, type: 1
       }
     });
+  }
+
+  preSubmit(item: Customer) {
+    if (!!item.type) {
+      item.$id = { type: item.type };
+      delete item.type;
+    }
+
+    return item;
   }
 }

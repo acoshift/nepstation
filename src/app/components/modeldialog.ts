@@ -1,5 +1,5 @@
+import { ElementRef, AfterViewInit, QueryList, ViewQuery } from 'angular2/core';
 import { ControlGroup, Control } from 'angular2/common';
-import { ElementRef, AfterViewInit, QueryList } from 'angular2/core';
 import { ModelService } from '../services/model';
 declare var $: any;
 
@@ -22,11 +22,12 @@ export abstract class ModelDialog<T> implements AfterViewInit {
   private _modal;
 
   constructor(
-    private _elementRef: ElementRef,
+    private _elementRef: QueryList<ElementRef>,
+    //private _elementRef: ElementRef,
     protected service: ModelService<T>) {}
 
   ngAfterViewInit() {
-    this._modal = $(this._elementRef.nativeElement).find('.ui.modal');
+    this._modal = $(this._elementRef.first.nativeElement);
   }
 
   show(opt: ModelDialogOption) {
@@ -42,7 +43,7 @@ export abstract class ModelDialog<T> implements AfterViewInit {
         offset: opt.offset || Number.POSITIVE_INFINITY,
         transition: opt.transition,
         duration: opt.duration,
-        onApprove: () => { this._submit(); return false; },
+        onApprove: () => { this._submit(); return false; }
       })
       .modal('show');
   }

@@ -1,0 +1,13 @@
+.ui.long.modal(#modal)
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model")
+      .field([class.error]="valid('name')")
+        label Name:
+        input(ngControl="name")
+      .field([class.error]="valid('remark')")
+        label Remark:
+        input(ngControl="remark")
+  .actions
+    .ui.cancel.button Cancel
+    .ui.primary.ok.button([class.loading]="loading") {{button}}

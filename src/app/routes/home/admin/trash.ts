@@ -32,19 +32,11 @@ export class TrashRoute extends TableComponent<Trash> {
     navbar.active('admin/trash');
   }
 
-  get filter() {
-    return x => {
-      if (!this.search.keyword) return true;
-      switch (this.search.field) {
-        case '':
-          return x._id.indexOf(this.search.keyword) !== -1 ||
-                 x.db.indexOf(this.search.keyword) !== -1;
-        case 'id':
-          return x._id.indexOf(this.search.keyword) !== -1;
-        case 'db':
-          return x.db.indexOf(this.search.keyword) !== -1;
-      }
-      return false;
+  get filters(): { [ key: string ]: Function } {
+    let k = this.search.keyword.toLowerCase();
+    return {
+      'id': x => x._id.toLowerCase().includes(k),
+      'db': x => x.db.toLowerCase().includes(k)
     };
   }
 

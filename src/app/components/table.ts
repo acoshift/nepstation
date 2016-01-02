@@ -21,8 +21,6 @@ export abstract class TableComponent<T extends Id> {
 
   protected loading: boolean;
 
-  protected filter: (any) => boolean;
-
   protected selected: any[] = [];
 
   protected alert: AlertComponent;
@@ -30,6 +28,8 @@ export abstract class TableComponent<T extends Id> {
   protected dialog: ModelDialog<T>;
 
   protected pagination: PaginationComponent;
+
+  protected filters: { [ key: string ]: Function };
 
   private _list: T[] = null;
 
@@ -53,7 +53,7 @@ export abstract class TableComponent<T extends Id> {
         this._repeatFilter = () => { emitter.next(xs); };
       }))
       .map(xs => _.filter(xs, x => this.dateFilter(x)))
-      .map(xs => _.filter(xs, x => this.filter(x)))
+      .map(xs => _.filter(xs, x => this._filter(x)))
       .do(xs => {
         this.page.itemCount = _.isArray(xs) && xs.length || 0;
         if (this.pagination) this.pagination.page = this.page;
@@ -224,5 +224,13 @@ export abstract class TableComponent<T extends Id> {
   private _fromDate(date: string): number {
     if (!date) return 0;
     return moment(date, 'YYYY-MM-DD').utc().unix() * 1000;
+  }
+
+  private _filter(x: T) {
+    if (!!this.search.field) {
+      return this.filters[this.search.field](x);
+    } else {
+      return _.some(this.filters, filter => filter(x));
+    }
   }
 }

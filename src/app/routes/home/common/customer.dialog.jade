@@ -1,4 +1,4 @@
-.ui.long.modal
+.ui.long.modal(#modal)
   .header {{header}}
   .content
     form.ui.form([ngFormModel]="model")
@@ -14,6 +14,14 @@
           .menu
             .item(data-value="male") Male
             .item(data-value="female") Female
+      .field([class.error]="valid('type')")
+        label Type:
+        .ui.selection.search.dropdown(ngControl="type")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Type
+          .menu
+            .item(*ngFor="#type of types", [attr.data-value]="type._id") {{type.name}}
   .actions
     .ui.cancel.button Cancel
     .ui.primary.ok.button([class.loading]="loading") {{button}}
