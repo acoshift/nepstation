@@ -4,6 +4,7 @@ export * from './services/navbar';
 export * from './services/cache';
 export * from './services/admin';
 export * from './services/common';
+export * from './services/collection';
 
 import { DbService } from './services/db';
 import { AuthService } from './services/auth';

@@ -1,0 +1,22 @@
+.ui.long.modal(#modal)
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model")
+      .field([class.error]="valid('code')")
+        label Code:
+        input(ngControl="code")
+      .field([class.error]="valid('name')")
+        label Name:
+        input(ngControl="name")
+      .field([class.error]="valid('phone')")
+        label Phone:
+        input(ngControl="phone")
+      .field([class.error]="valid('email')")
+        label Email:
+        input(ngControl="email")
+      .field([class.error]="valid('quota')")
+        label Quota:
+        input(ngControl="quota")
+  .actions
+    .ui.cancel.button Cancel
+    .ui.primary.ok.button([class.loading]="loading") {{button}}
