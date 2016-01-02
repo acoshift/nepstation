@@ -23,7 +23,6 @@ export abstract class ModelDialog<T> implements AfterViewInit {
 
   constructor(
     private _elementRef: QueryList<ElementRef>,
-    //private _elementRef: ElementRef,
     protected service: ModelService<T>) {}
 
   ngAfterViewInit() {
