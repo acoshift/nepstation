@@ -11,6 +11,7 @@ import { NavbarService } from './services/navbar';
 import { CacheService } from './services/cache';
 import { Services as AdminServices } from './services/admin';
 import { Services as CommonServices} from './services/common';
+import { Services as CollectionServices } from './services/collection';
 
 export var Services = [
   DbService,
@@ -19,4 +20,5 @@ export var Services = [
   CacheService,
   AdminServices,
   CommonServices,
+  CollectionServices,
 ];
