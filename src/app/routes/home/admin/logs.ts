@@ -37,9 +37,9 @@ export class LogsRoute extends TableComponent<Log> {
   get filters(): { [ key: string ]: Function } {
     let k = this.search.keyword.toLowerCase();
     return {
-      'user': x => x.t.payload.name.toLowerCase().includes(k),
-      'method': x => x.q.method.toLowerCase().includes(k),
-      'collection': x => x.q.name.toLowerCase().includes(k)
+      'user': x => !!x.t && !!x.t.payload && x.t.payload.name && x.t.payload.name.toLowerCase().includes(k),
+      'method': x => !!x.q && !!x.q.method && x.q.method.toLowerCase().includes(k),
+      'collection': x => !!x.q && x.q.name && x.q.name.toLowerCase().includes(k)
     };
   };
 }

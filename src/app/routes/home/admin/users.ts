@@ -112,9 +112,9 @@ export class UsersRoute extends TableComponent<User> {
   get filters(): { [ key: string ]: Function } {
     let k = this.search.keyword.toLowerCase();
     return {
-      'name': x => x.name.toLowerCase().includes(k),
+      'name': x => !!x.name && x.name.toLowerCase().includes(k),
       'enabled': x => x.enabled.toString().toLowerCase().includes(k),
-      'role': x => this.getRole(x.role).toLowerCase().includes(k)
+      'role': x => !!x.role && this.getRole(x.role).toLowerCase().includes(k)
     };
   }
 

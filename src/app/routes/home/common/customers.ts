@@ -112,8 +112,8 @@ export class CustomersRoute extends TableComponent<Customer> {
   get filters(): { [ key: string ]: Function } {
     let k = this.search.keyword.toLowerCase();
     return {
-      'name': x => x.name.toLowerCase().includes(k),
-      'type': x => this.getType(x.type).toLowerCase().includes(k),
+      'name': x => !!x.name && x.name.toLowerCase().includes(k),
+      'type': x => !!x.type && this.getType(x.type).toLowerCase().includes(k),
       'phone': x => !!x.phone && x.phone.replace(/\-/, '').toLowerCase().includes(k.replace(/\-/, ''))
     };
   };

@@ -35,8 +35,8 @@ export class TrashRoute extends TableComponent<Trash> {
   get filters(): { [ key: string ]: Function } {
     let k = this.search.keyword.toLowerCase();
     return {
-      'id': x => x._id.toLowerCase().includes(k),
-      'db': x => x.db.toLowerCase().includes(k)
+      'id': x => !!x._id && x._id.toLowerCase().includes(k),
+      'db': x => !!x.db && x.db.toLowerCase().includes(k)
     };
   }
 
