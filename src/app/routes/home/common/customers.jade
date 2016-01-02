@@ -11,6 +11,7 @@
             .item((click)="setField('')") All
             .item((click)="setField('name')") Name
             .item((click)="setField('type')") Type
+            .item((click)="setField('phone')") Phone
 
 table.ui.definition.compact.striped.celled.table
   thead
@@ -18,6 +19,7 @@ table.ui.definition.compact.striped.celled.table
       th
       th Name
       th Type
+      th Phone
       th
       th
   tbody
@@ -28,6 +30,7 @@ table.ui.definition.compact.striped.celled.table
           label
       td {{t.name}}
       td {{getType(t.type)}}
+      td {{t.phone}}
       td.center.aligned.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
@@ -37,7 +40,7 @@ table.ui.definition.compact.striped.celled.table
   tfoot.full-width
     tr
       th
-      th(colspan=4)
+      th(colspan=5)
         .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
           i.user.icon
           | Add Customer

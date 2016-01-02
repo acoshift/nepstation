@@ -20,7 +20,8 @@ class CustomerDialog extends ModelDialog<Customer> {
     _id: [''],
     name: ['', Validators.required],
     gender: ['', Validators.required],
-    type: ['', Validators.required]
+    type: ['', Validators.required],
+    phone: ['']
   };
 
   constructor(
@@ -60,7 +61,8 @@ class CustomerDialog extends ModelDialog<Customer> {
             _id: [result._id],
             name: [result.name, Validators.required],
             gender: [result.gender, Validators.required],
-            type: [result.type, Validators.required]
+            type: [result.type, Validators.required],
+            phone: [result.phone]
           }
         });
       },
@@ -111,7 +113,8 @@ export class CustomersRoute extends TableComponent<Customer> {
     let k = this.search.keyword.toLowerCase();
     return {
       'name': x => x.name.toLowerCase().includes(k),
-      'type': x => this.getType(x.type).toLowerCase().includes(k)
+      'type': x => this.getType(x.type).toLowerCase().includes(k),
+      'phone': x => !!x.phone && x.phone.replace(/\-/, '').toLowerCase().includes(k.replace(/\-/, ''))
     };
   };
 

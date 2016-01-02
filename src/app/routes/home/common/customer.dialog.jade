@@ -22,6 +22,9 @@
           .default.text Select Type
           .menu
             .item(*ngFor="#type of types", [attr.data-value]="type._id") {{type.name}}
+      .field([class.error]="valid('phone')")
+        label Phone:
+        input(ngControl="phone")
   .actions
     .ui.cancel.button Cancel
     .ui.primary.ok.button([class.loading]="loading") {{button}}
