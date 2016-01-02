@@ -80,12 +80,12 @@ export class TrashRoute extends TableComponent<Trash> {
     if (e) e.loading = true;
     this.service.read(item._id).subscribe(
       result => this.alert.show({
-        title: `Restore "${item._id}"?`,
-        code: JSON.stringify(item, null, 4),
+        title: `Restore "${result._id}"?`,
+        code: JSON.stringify(result, null, 4),
         buttons: [ 'restore', 'cancel.primary' ],
         wait: true,
         onApprove: () => {
-          this.service.restore(item._id).subscribe(null, error => this.error(error), () => {
+          this.service.restore(result._id).subscribe(null, error => this.error(error), () => {
             this.service.refresh().subscribe(null, null, () => this.alert.hide());
           });
         }
