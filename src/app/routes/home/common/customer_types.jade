@@ -21,16 +21,16 @@ table.ui.definition.compact.striped.celled.table
       th
   tbody
     tr(*ngFor="#t of list")
-      td.collapsing
+      td.center.aligned.collapsing
         .ui.fitted.checkbox
           input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
         label
       td {{t.name}}
       td.right.aligned.collapsing {{t.customerCount}}
-      td.collapsing
+      td.center.aligned.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
-      td.collapsing
+      td.center.aligned.collapsing
         .ui.red.icon.button((click)="delete(t)")
           i.remove.icon
   tfoot.full-width
