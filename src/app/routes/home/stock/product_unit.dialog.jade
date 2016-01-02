@@ -1,0 +1,24 @@
+.ui.long.modal(#modal)
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model")
+      .field([class.error]="valid('name')")
+        label Name:
+        input(ngControl="name")
+      .field([class.error]="valid('base')")
+        label Base:
+        .ui.selection.search.dropdown(ngControl="base")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Base
+          .menu
+            .item(*ngFor="#base of list", [attr.data-value]="base._id") {{base.name}}
+      .field([class.error]="valid('baseAmount')")
+        label Amount:
+        input(ngControl="baseAmount")
+      .field([class.error]="valid('remark')")
+        label Remark:
+        input(ngControl="remark")
+  .actions
+    .ui.cancel.button Cancel
+    .ui.primary.ok.button([class.loading]="loading") {{button}}

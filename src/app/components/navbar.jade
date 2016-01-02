@@ -12,6 +12,10 @@
       a.item([class.active]="isActive('common/customers')", [routerLink]="['./Common/Customers']") Customers
       a.item([class.active]="isActive('common/customer_types')", [routerLink]="['./Common/CustomerTypes']") Customer Types
   .item
+    .header Stock
+    .menu
+      a.item([class.active]="isActive('stock/product_units')", [routerLink]="['./Stock/ProductUnits']") Product Units
+  .item
     .header Collection
     .menu
       a.item([class.active]="isActive('collection/collectors')", [routerLink]="['./Collection/Collectors']") Collectors

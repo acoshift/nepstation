@@ -1,12 +1,12 @@
 import { Component } from 'angular2/core';
 import { RouteConfig, RouterOutlet } from 'angular2/router';
-import { CollectorsRoute } from './collectors';
+import { ProductUnitsRoute } from './product_units';
 
 @Component({
   template: '<router-outlet></router-outlet>',
   directives: [ RouterOutlet ]
 })
 @RouteConfig([
-  { path: '/collectors', name: 'Collectors', component: CollectorsRoute },
+  { path: '/product_units', name: 'ProductUnits', component: ProductUnitsRoute },
 ])
-export class CollectionRouter {}
+export class StockRouter {}

@@ -1,4 +1,4 @@
-import { Component, View } from 'angular2/core';
+import { Component } from 'angular2/core';
 import { RouteConfig, RouterOutlet } from 'angular2/router';
 import { CustomersRoute } from './customers';
 import { CustomerTypesRoute } from './customer_types';
