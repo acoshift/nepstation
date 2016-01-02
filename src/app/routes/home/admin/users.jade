@@ -20,8 +20,8 @@ table.ui.definition.compact.striped.celled.table
       th Username
       th Enabled
       th Role
-      th.one.wide
-      th.one.wide
+      th
+      th
   tbody
     tr(*ngFor="#t of list")
       td.collapsing
@@ -33,10 +33,10 @@ table.ui.definition.compact.striped.celled.table
         i.green.checkmark.icon(*ngIf="t.enabled")
         i.red.remove.icon(*ngIf="!t.enabled")
       td {{getRole(t.role)}}
-      td.center.aligned
+      td.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
-      td.center.aligned
+      td.collapsing
         .ui.red.icon.button((click)="delete(t)")
           i.remove.icon
   tfoot.full-width

@@ -20,24 +20,24 @@
         i.calendar.icon
         input(placeholder="End: YYYY-MM-DD", (input)="setEndDate($event.target.value)")
 
-table.ui.fixed.single.line.definition.compact.striped.celled.table
+table.ui.single.line.definition.compact.striped.celled.table
   thead
     tr
-      th.one.wide
+      th
       th Date
       th ID
       th Collection
-      th.one.wide
+      th
   tbody
     tr(*ngFor="#t of list")
-      td.collapsing.center.aligned
+      td.collapsing
         .ui.fitted.checkbox
           input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
           label
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t._id}}
       td {{t.db}}
-      td.center.aligned
+      td.collapsing
         .ui.blue.icon.button(#e, [class.loading]="e.loading", (click)="view(t, e)")
           i.zoom.icon
   tfoot.full-width

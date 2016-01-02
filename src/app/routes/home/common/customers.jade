@@ -17,9 +17,9 @@ table.ui.definition.compact.striped.celled.table
     tr
       th
       th Name
-      th.two.wide Type
-      th.one.wide
-      th.one.wide
+      th Type
+      th
+      th
   tbody
     tr(*ngFor="#t of list")
       td.collapsing
@@ -28,10 +28,10 @@ table.ui.definition.compact.striped.celled.table
           label
       td {{t.name}}
       td {{getType(t.type)}}
-      td.center.aligned
+      td.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
-      td.center.aligned
+      td.collapsing
         .ui.red.icon.button((click)="delete(t)")
           i.remove.icon
   tfoot.full-width

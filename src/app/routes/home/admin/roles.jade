@@ -11,13 +11,13 @@
             .item((click)="setField('')") All
             .item((click)="setField('name')") Name
 
-table.ui.definition.compact.celled.table
+table.ui.definition.compact.striped.celled.table
   thead
     tr
       th
       th Name
-      th.one.wide
-      th.one.wide
+      th
+      th
   tbody
     tr(*ngFor="#t of list")
       td.collapsing
@@ -25,10 +25,10 @@ table.ui.definition.compact.celled.table
           input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
           label
       td {{t.name}}
-      td.center.aligned
+      td.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
-      td.center.aligned
+      td.collapsing
         .ui.red.icon.button((click)="delete(t)")
           i.remove.icon
   tfoot.full-width

@@ -16,9 +16,9 @@ table.ui.definition.compact.striped.celled.table
     tr
       th
       th Name
-      th.one.wide Customers
-      th.one.wide
-      th.one.wide
+      th Customers
+      th
+      th
   tbody
     tr(*ngFor="#t of list")
       td.collapsing
@@ -26,11 +26,11 @@ table.ui.definition.compact.striped.celled.table
           input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
         label
       td {{t.name}}
-      td.center.aligned {{t.customerCount}}
-      td.center.aligned
+      td.right.aligned.collapsing {{t.customerCount}}
+      td.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
-      td.center.aligned
+      td.collapsing
         .ui.red.icon.button((click)="delete(t)")
           i.remove.icon
   tfoot.full-width
