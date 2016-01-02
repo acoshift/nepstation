@@ -69,12 +69,13 @@ export abstract class TableComponent<T extends Id> {
       })
       .subscribe(r => {
         this._list = r;
-        if (this.loading) {
-          if (_.isArray(r) && r.length > 0) this.loading = false;
-        }
       });
 
-    this.refresh();
+    this.service.refresh().subscribe(null, null, () => {
+      if (this.loading) {
+        this.loading = false;
+      }
+    });
   }
 
   error(item: Id) {
