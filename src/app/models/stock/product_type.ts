@@ -1,7 +1,7 @@
 import { Operatable } from '../operatable';
 
-export interface CustomerType extends Operatable {
+export interface ProductType extends Operatable {
   name: string;
   remark: string;
-  customerCount?: number;
+  productCount?: number;
 }
