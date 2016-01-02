@@ -10,7 +10,7 @@ export abstract class ModelService<T> {
     protected retrieves: any) {
 
     this._list = new Subject();
-    this.list = this._list.publishBehavior([]);
+    this.list = this._list.publishBehavior(null);
     this.list.connect();
   }
 

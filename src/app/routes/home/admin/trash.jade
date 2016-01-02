@@ -29,7 +29,7 @@ table.ui.fixed.single.line.definition.compact.striped.celled.table
       th Collection
       th.one.wide
   tbody
-    tr(*ngFor="#t of list | async")
+    tr(*ngFor="#t of list")
       td.collapsing.center.aligned
         .ui.fitted.checkbox
           input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")

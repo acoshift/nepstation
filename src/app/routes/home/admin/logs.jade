@@ -30,7 +30,7 @@ table.ui.fixed.compact.striped.celled.table
       th Collection
       th.one.wide
   tbody
-    tr(*ngFor="#t of list | async")
+    tr(*ngFor="#t of list")
       td {{t._id | timestamp | moment:'YYYY-MM-DD HH:mm:ss'}}
       td {{t.t?.payload?.name}}
       td {{t.q?.method}}

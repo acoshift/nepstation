@@ -19,7 +19,7 @@ export abstract class TableComponent<T extends Id> {
     }
   };
 
-  protected loading = true;
+  protected loading: boolean;
 
   protected filter: (any) => boolean;
 
@@ -31,6 +31,8 @@ export abstract class TableComponent<T extends Id> {
 
   protected pagination: PaginationComponent;
 
+  private _list: T[] = null;
+
   private _page: Page = {
     current: 0,
     total: 0,
@@ -38,15 +40,15 @@ export abstract class TableComponent<T extends Id> {
     itemPerPage: 20,
   };
 
-  private _list: Observable<any>;
-
   private _repeatFilter = () => { /* empty */ };
   private _repeatPage = () => { /* empty */ };
 
   constructor(protected service: ModelService<T>) {
-    this._list = this.service.list
+    this.loading = true;
+    this.service.list
+      .filter(xs => !!xs)
       .map(xs => _.clone(xs).reverse())
-      .flatMap<any>(xs => Observable.create(emitter => {
+      .flatMap<T[]>(xs => Observable.create(emitter => {
         emitter.next(xs);
         this._repeatFilter = () => { emitter.next(xs); };
       }))
@@ -56,7 +58,7 @@ export abstract class TableComponent<T extends Id> {
         this.page.itemCount = _.isArray(xs) && xs.length || 0;
         if (this.pagination) this.pagination.page = this.page;
       })
-      .flatMap<any>(xs => Observable.create(emitter => {
+      .flatMap<T[]>(xs => Observable.create(emitter => {
         emitter.next(xs);
         this._repeatPage = () => { emitter.next(xs); };
       }))
@@ -65,13 +67,12 @@ export abstract class TableComponent<T extends Id> {
         let k = this.page.itemPerPage && p + this.page.itemPerPage || undefined;
         return _.slice(xs, p, k);
       })
-      .share();
-
-    this.list.subscribe(r => {
-      if (this.loading) {
-        if (_.isArray(r) && r.length > 0) this.loading = false;
-      }
-    });
+      .subscribe(r => {
+        this._list = r;
+        if (this.loading) {
+          if (_.isArray(r) && r.length > 0) this.loading = false;
+        }
+      });
 
     this.refresh();
   }
@@ -88,7 +89,7 @@ export abstract class TableComponent<T extends Id> {
     this.service.refresh();
   }
 
-  get list() {
+  get list(): T[] {
     return this._list;
   }
 
