@@ -14,6 +14,7 @@
   .item
     .header Stock
     .menu
+      a.item([class.active]="isActive('stock/products')", [routerLink]="['./Stock/Products']") Products
       a.item([class.active]="isActive('stock/product_brands')", [routerLink]="['./Stock/ProductBrands']") Product Brands
       a.item([class.active]="isActive('stock/product_units')", [routerLink]="['./Stock/ProductUnits']") Product Units
       a.item([class.active]="isActive('stock/product_types')", [routerLink]="['./Stock/ProductTypes']") Product Types
