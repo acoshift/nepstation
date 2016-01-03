@@ -22,13 +22,19 @@ export class ProductTypesService extends ModelService<ProductType> {
     let t = this.db.request('query', this.namespace, null, this.retrieves.refresh)
       .do((xs: ProductType[]) => {
         _.forEach(xs, v => {
-          v._productCount = 0;
+          if (!v._productCount) v._productCount = 0;
           this.db.request('query', 'stock.product_groups', { $id: { type: v._id } }).subscribe(
             result => {
+              let pc = 0;
+              let cnt = result && result.length || 0;
               _.forEach(result, group => {
                 this.db.request('count', 'stock.products', { $id: { group: group._id } }).subscribe(
                   result => {
-                    v._productCount += result;
+                    pc += result;
+                  },
+                  null,
+                  () => {
+                    if (--cnt <= 0) v._productCount = pc;
                   }
                 );
               });
