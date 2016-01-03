@@ -13,6 +13,8 @@ import { CacheService } from './cache';
 
 import _ = require('lodash');
 
+const FRESH_CACHE = 5000; // cache timestamp diff for fresh cache
+
 @Injectable()
 export class DbService {
   private _server = 'https://farkpage.com/nepdb';
@@ -23,6 +25,16 @@ export class DbService {
   request(method: string, ns?: string, params?: any, retrieves?: any, appendCache?: boolean) {
     let body = this._makeNepQ(method, ns, params, retrieves);
     let _body = body;
+
+    // check is cached still fresh
+    let ts = this.cache.timestamp(body);
+    if (Date.now() - ts < FRESH_CACHE) {
+      return Observable.create(emitter => {
+        emitter.next(this.cache.data(body));
+        emitter.complete();
+      });
+    }
+
     let headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/nepq'
@@ -56,6 +68,7 @@ export class DbService {
       });
     }).map(res => {
       if (res.status === 304) {
+        this.cache.makeFresh(body);
         return this.cache.data(body);
       }
       let r = res.json();

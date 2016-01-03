@@ -5,6 +5,7 @@ import _ = require('lodash');
 interface Cache {
   etag: string;
   data: any;
+  timestamp: number;
 }
 
 @Injectable()
@@ -17,16 +18,29 @@ export class CacheService {
     return null;
   }
 
-  data(key: string): string {
+  data(key: string): any {
     let x = this._cached[key];
     if (x) return _.cloneDeep(x.data);
+    return null;
+  }
+
+  timestamp(key: string): number {
+    let x = this._cached[key];
+    if (x) return x.timestamp;
     return null;
   }
 
   cache(key: string, etag: string, data: any) {
     this._cached[key] = {
       etag: etag,
-      data: data
+      data: data,
+      timestamp: Date.now()
     };
+  }
+
+  makeFresh(key: string): void {
+    if (!!this._cached[key]) {
+      this._cached[key].timestamp = Date.now();
+    }
   }
 }
