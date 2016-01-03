@@ -2,6 +2,7 @@ import { Injectable } from 'angular2/core';
 import { Observable } from 'rxjs';
 import { DbService, ModelService } from '../../../services';
 import { ProductType } from '../models/product_type';
+import _ = require('lodash');
 
 @Injectable()
 export class ProductTypesService extends ModelService<ProductType> {
@@ -16,12 +17,23 @@ export class ProductTypesService extends ModelService<ProductType> {
     });
   }
 
+  // TODO: NEED Optimize
   refresh(): Observable<ProductType[]> {
     let t = this.db.request('query', this.namespace, null, this.retrieves.refresh)
       .do((xs: ProductType[]) => {
         _.forEach(xs, v => {
-          this.db.request('count', 'stock.products', { $id: { type: v._id } }, null)
-            .subscribe(result => v._productCount = result);
+          v._productCount = 0;
+          this.db.request('query', 'stock.product_groups', { $id: { type: v._id } }).subscribe(
+            result => {
+              _.forEach(result, group => {
+                this.db.request('count', 'stock.products', { $id: { group: group._id } }).subscribe(
+                  result => {
+                    v._productCount += result;
+                  }
+                );
+              });
+            }
+          );
         });
       });
     t.subscribe(

@@ -16,9 +16,9 @@ export class ProductsService extends ModelService<Product> {
   preSubmit(item: Product) {
     item.$id = {};
 
-    if (!!item.unit) {
-      item.$id.unit = item.unit;
-      delete item.unit;
+    if (!!item.brand) {
+      item.$id.brand = item.brand;
+      delete item.brand;
     }
     if (!!item.group) {
       item.$id.group = item.group;

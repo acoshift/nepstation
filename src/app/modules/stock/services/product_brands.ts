@@ -20,7 +20,7 @@ export class ProductBrandsService extends ModelService<ProductBrand> {
     let t = this.db.request('query', this.namespace, null, this.retrieves.refresh)
       .do((xs: ProductBrand[]) => {
         _.forEach(xs, v => {
-          this.db.request('count', 'stock.products', { $id: { group: v._id } }, null)
+          this.db.request('count', 'stock.products', { $id: { brand: v._id } }, null)
             .subscribe(result => v._productCount = result);
         });
       });
