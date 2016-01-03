@@ -1,0 +1,54 @@
+.ui.form
+  .fields
+    .field
+      .ui.right.action.left.icon.input
+        i.search.icon
+        input(placeholder="Search", (input)="setKeyword($event.target.value)")
+        .ui.basic.floating.dropdown.button
+          .text Select field
+          i.dropdown.icon
+          .menu
+            .item((click)="setField('')") All
+            .item((click)="setField('name')") Name
+
+table.ui.definition.compact.striped.celled.table
+  thead
+    tr
+      th
+      th Name
+      th Products
+      th
+      th
+  tbody
+    tr(*ngFor="#t of list")
+      td.center.aligned.collapsing
+        .ui.fitted.checkbox
+          input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
+        label
+      td {{t.name}}
+      td.right.aligned.collapsing {{t._productCount}}
+      td.center.aligned.collapsing
+        .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
+          i.edit.icon
+      td.center.aligned.collapsing
+        .ui.red.icon.button((click)="delete(t)")
+          i.remove.icon
+  tfoot.full-width
+    tr
+      th
+      th(colspan=4)
+        .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
+          i.add.circle.icon
+          | Add Product Group
+        .ui.red.small.labeled.icon.button((click)="deleteSelected()")
+          i.erase.icon
+          | Delete Selected
+
+.ui.right.aligned.grid
+  pagination.column(*ngIf="!loading", [(page)]="page")
+
+.ui.active.centered.large.inline.loader(*ngIf="loading")
+
+dialog
+
+alert
