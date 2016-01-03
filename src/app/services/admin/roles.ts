@@ -22,7 +22,7 @@ export class RolesService extends ModelService<Role> {
       .do((xs: Role[]) => {
         _.forEach(xs, v => {
           this.db.request('count', 'db.users', { $id: { role: v._id } }, null)
-            .subscribe(result => v.userCount = result);
+            .subscribe(result => v._userCount = result);
         });
       });
     t.subscribe(

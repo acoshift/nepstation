@@ -23,7 +23,7 @@ export class CustomerTypesService extends ModelService<CustomerType> {
       .do((xs: CustomerType[]) => {
         _.forEach(xs, v => {
           this.db.request('count', 'common.customers', { $id: { type: v._id } }, null)
-            .subscribe(result => v.customerCount = result);
+            .subscribe(result => v._customerCount = result);
         });
       });
     t.subscribe(

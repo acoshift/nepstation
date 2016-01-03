@@ -22,7 +22,7 @@ export class ProductTypesService extends ModelService<ProductType> {
       .do((xs: ProductType[]) => {
         _.forEach(xs, v => {
           this.db.request('count', 'stock.products', { $id: { type: v._id } }, null)
-            .subscribe(result => v.productCount = result);
+            .subscribe(result => v._productCount = result);
         });
       });
     t.subscribe(
