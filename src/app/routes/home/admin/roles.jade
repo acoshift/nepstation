@@ -16,6 +16,7 @@ table.ui.definition.compact.striped.celled.table
     tr
       th
       th Name
+      th Users
       th
       th
   tbody
@@ -25,6 +26,7 @@ table.ui.definition.compact.striped.celled.table
           input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
           label
       td {{t.name}}
+      td.right.aligned.collapsing {{t.userCount}}
       td.center.aligned.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
@@ -34,7 +36,7 @@ table.ui.definition.compact.striped.celled.table
   tfoot.full-width
     tr
       th
-      th(colspan=3)
+      th(colspan=4)
         .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
           i.users.icon
           | Add Role
