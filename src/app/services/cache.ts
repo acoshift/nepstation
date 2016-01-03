@@ -19,7 +19,7 @@ export class CacheService {
 
   data(key: string): string {
     let x = this._cached[key];
-    if (x) return x.data;
+    if (x) return _.cloneDeep(x.data);
     return null;
   }
 
