@@ -42,6 +42,8 @@ import { Pipes } from './app/pipes';
 import { AuthRouter } from './app/routes/auth/router';
 import { HomeRouter } from './app/routes/home/router';
 
+import { Services as ModuleServices } from './app/modules';
+
 @Component({
   selector: 'app',
   template: `<router-outlet></router-outlet>`,
@@ -66,4 +68,5 @@ bootstrap(App, [
   provide(ROUTER_PRIMARY_COMPONENT, { useValue: App }),
   Services,
   Pipes,
+  ModuleServices,
 ]);

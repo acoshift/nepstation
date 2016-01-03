@@ -4,10 +4,11 @@ import { NavbarComponent } from '../../components';
 import { AuthService } from '../../services';
 
 import { IndexRoute } from './index';
-import { AdminRouter } from './admin/router';
-import { CommonRouter } from './common/router';
-import { CollectionRouter } from './collection/router';
-import { StockRouter } from './stock/router';
+
+import { Router as AdminRouter } from '../../modules/admin/router';
+import { Router as SaleRouter } from '../../modules/sale/router';
+import { Router as CollectionRouter } from '../../modules/collection/router';
+import { Router as StockRouter } from '../../modules/stock/router';
 
 @Component({})
 @View({
@@ -21,7 +22,7 @@ import { StockRouter } from './stock/router';
 @RouteConfig([
   { path: '/', name: 'Index', component: IndexRoute, useAsDefault: true },
   { path: '/admin/...', name: 'Admin', component: AdminRouter },
-  { path: '/common/...', name: 'Common', component: CommonRouter },
+  { path: '/sale/...', name: 'Sale', component: SaleRouter },
   { path: '/collection/...', name: 'Collection', component: CollectionRouter },
   { path: '/stock/...', name: 'Stock', component: StockRouter },
 ])

@@ -1,0 +1,31 @@
+.ui.long.modal(#modal)
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model")
+      .field([class.error]="valid('name')")
+        label Name:
+        input(ngControl="name")
+      .field([class.error]="valid('gender')")
+        label Gender:
+        .ui.selection.dropdown(ngControl="gender")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Gender
+          .menu
+            .item(data-value="male") Male
+            .item(data-value="female") Female
+            .item(data-value="none") Not Specified
+      .field([class.error]="valid('type')")
+        label Type:
+        .ui.selection.search.dropdown(ngControl="type")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Type
+          .menu
+            .item(*ngFor="#type of types", [attr.data-value]="type._id") {{type.name}}
+      .field([class.error]="valid('phone')")
+        label Phone:
+        input(ngControl="phone")
+  .actions
+    .ui.cancel.button Cancel
+    .ui.primary.ok.button([class.loading]="loading") {{button}}
