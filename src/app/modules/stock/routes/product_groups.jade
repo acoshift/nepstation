@@ -10,12 +10,14 @@
           .menu
             .item((click)="setField('')") All
             .item((click)="setField('name')") Name
+            .item((click)="setField('type')") Type
 
 table.ui.definition.compact.striped.celled.table
   thead
     tr
       th
       th Name
+      th Type
       th Products
       th
       th
@@ -26,6 +28,7 @@ table.ui.definition.compact.striped.celled.table
           input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
         label
       td {{t.name}}
+      td {{getTypeName(t.type)}}
       td.right.aligned.collapsing {{t._productCount}}
       td.center.aligned.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
@@ -36,7 +39,7 @@ table.ui.definition.compact.striped.celled.table
   tfoot.full-width
     tr
       th
-      th(colspan=4)
+      th(colspan=5)
         .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
           i.add.circle.icon
           | Add Product Group

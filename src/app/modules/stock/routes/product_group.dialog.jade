@@ -5,6 +5,14 @@
       .field([class.error]="valid('name')")
         label Name:
         input(ngControl="name")
+      .field([class.error]="valid('type')")
+        label Type:
+        .ui.selection.search.dropdown(ngControl="type")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Type
+          .menu
+            .item(*ngFor="#type of types", [attr.data-value]="type._id") {{type.name}}
       .field([class.error]="valid('remark')")
         label Remark:
         input(ngControl="remark")

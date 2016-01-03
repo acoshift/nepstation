@@ -8,10 +8,10 @@ export class ProductGroupsService extends ModelService<ProductGroup> {
   constructor(db: DbService) {
     super(db, 'stock.product_groups', {
       refresh: {
-        _id: 1, name: 1
+        _id: 1, name: 1, type: 1
       },
       read: {
-        _id: 1, name: 1, remark: 1
+        _id: 1, name: 1, type: 1, remark: 1
       }
     });
   }
@@ -29,5 +29,14 @@ export class ProductGroupsService extends ModelService<ProductGroup> {
       error => { /* skip error here */ }
     );
     return t;
+  }
+
+  preSubmit(item: ProductGroup) {
+    if (!!item.type) {
+      item.$id = { type: item.type };
+      delete item.type;
+    }
+
+    return item;
   }
 }
