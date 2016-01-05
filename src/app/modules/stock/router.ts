@@ -5,6 +5,7 @@ import { ProductBrandsRoute } from './routes/product_brands';
 import { ProductGroupsRoute } from './routes/product_groups';
 import { ProductUnitsRoute } from './routes/product_units';
 import { ProductTypesRoute } from './routes/product_types';
+import { WarehousesRoute } from './routes/warehouses';
 
 @Component({
   template: '<router-outlet></router-outlet>',
@@ -16,5 +17,6 @@ import { ProductTypesRoute } from './routes/product_types';
   { path: '/product_groups', name: 'ProductGroups', component: ProductGroupsRoute },
   { path: '/product_units', name: 'ProductUnits', component: ProductUnitsRoute },
   { path: '/product_types', name: 'ProductTypes', component: ProductTypesRoute },
+  { path: '/warehouses', name: 'Warehouses', component: WarehousesRoute },
 ])
 export class Router {}
