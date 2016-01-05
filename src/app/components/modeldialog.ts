@@ -88,7 +88,15 @@ export abstract class ModelDialog<T> implements AfterViewInit {
   }
 
   protected valid(name: string) {
-    return this.model.controls[name].touched && !this.model.controls[name].valid;
+    let control = (() => {
+      let ns = name.split('.');
+      let c: any = this.model;
+      for (let n of ns) {
+        c = c.controls[n];
+      }
+      return c;
+    })();
+    return control.touched && !control.valid;
   }
 
   protected preSubmit(data) {
