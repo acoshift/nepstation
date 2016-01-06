@@ -1,0 +1,62 @@
+.ui.form
+  .fields
+    .field
+      .ui.right.action.left.icon.input
+        i.search.icon
+        input(placeholder="Search", (input)="setKeyword($event.target.value)")
+        .ui.basic.floating.dropdown.button
+          .text Select field
+          i.dropdown.icon
+          .menu
+            .item((click)="setField('')") All
+            .item((click)="setField('code')") Code
+            .item((click)="setField('fullname')") Name
+            .item((click)="setField('enabled')") Enabled
+
+table.ui.definition.compact.striped.celled.table
+  thead
+    tr
+      th
+      th Code
+      th Name
+      th Enabled
+      th Quota
+      th
+      th
+  tbody
+    tr(*ngFor="#t of list")
+      td.center.aligned.collapsing
+        .ui.fitted.checkbox
+          input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
+          label
+      td {{t.code}}
+      td {{t.fullname}}
+      td
+        i.green.checkmark.icon(*ngIf="t.enabled")
+        i.red.remove.icon(*ngIf="!t.enabled")
+      td {{t.quota}}
+      td.center.aligned.collapsing
+        .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
+          i.edit.icon
+      td.center.aligned.collapsing
+        .ui.red.icon.button((click)="delete(t)")
+          i.remove.icon
+  tfoot.full-width
+    tr
+      th
+      th(colspan=6)
+        .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
+          i.user.icon
+          | Add Staff
+        .ui.red.small.labeled.icon.button((click)="deleteSelected()")
+          i.erase.icon
+          | Delete Selected
+
+.ui.right.aligned.grid
+  pagination.column(*ngIf="!loading", [(page)]="page")
+
+.ui.active.centered.large.inline.loader(*ngIf="loading")
+
+dialog
+
+alert

@@ -20,7 +20,7 @@ export class RolesService extends ModelService<Role> {
     let t = this.db.request('query', this.namespace, null, this.retrieves.refresh)
       .do((xs: Role[]) => {
         _.forEach(xs, v => {
-          this.db.request('count', 'db.users', { $id: { role: v._id } }, null)
+          this.db.request('count', 'db.users', { $or: [ { $id: { role: v._id } }, { role: v.name } ] }, null)
             .subscribe(result => v._userCount = result);
         });
       });
