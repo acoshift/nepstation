@@ -10,17 +10,16 @@
           .menu
             .item((click)="setField('')") All
             .item((click)="setField('code')") Code
-            .item((click)="setField('fullname')") Name
-            .item((click)="setField('enabled')") Enabled
+            .item((click)="setField('staff')") Staff
+            .item((click)="setField('status')") Status
 
 table.ui.definition.compact.striped.celled.table
   thead
     tr
       th
       th Code
-      th Name
-      th Enabled
-      th Quota
+      th Staff
+      th Status
       th
       th
   tbody
@@ -30,11 +29,11 @@ table.ui.definition.compact.striped.celled.table
           input(type="checkbox", (change)="select(t, $event.target.checked)", [ngModel]="select(t)")
           label
       td {{t.code}}
-      td {{t.fullname}}
-      td
+      td {{getStaff(t.staff)}}
+      td {{t.status}}
+      //
         i.green.checkmark.icon(*ngIf="t.enabled")
         i.red.remove.icon(*ngIf="!t.enabled")
-      td {{t._taskCount}} / {{t.quota}}
       td.center.aligned.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
@@ -44,10 +43,10 @@ table.ui.definition.compact.striped.celled.table
   tfoot.full-width
     tr
       th
-      th(colspan=6)
+      th(colspan=5)
         .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
           i.user.icon
-          | Add Staff
+          | Add Task
         .ui.red.small.labeled.icon.button((click)="deleteSelected()")
           i.erase.icon
           | Delete Selected

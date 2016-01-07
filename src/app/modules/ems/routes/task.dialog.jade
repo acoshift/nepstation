@@ -1,0 +1,28 @@
+.ui.long.modal(#modal)
+  .header {{header}}
+  .content
+    form.ui.form([ngFormModel]="model")
+      .field([class.error]="valid('code')")
+        label Code:
+        input(ngControl="code")
+      .field([class.error]="valid('status')")
+        label Status:
+        .ui.selection.search.dropdown(ngControl="status")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Status
+          .menu
+            .item(data-value="pending") Pending
+            .item(data-value="done") Done
+            .item(data-value="cancel") Cancel
+      .field([class.error]="valid('staff')")
+        label Staff:
+        .ui.selection.search.dropdown(ngControl="staff")
+          input(type="hidden")
+          i.dropdown.icon
+          .default.text Select Staff
+          .menu
+            .item(*ngFor="#staff of staffs", [attr.data-value]="staff._id") {{staff.fullname}}
+  .actions
+    .ui.cancel.button Cancel
+    .ui.primary.ok.button([class.loading]="loading") {{button}}
