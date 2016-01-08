@@ -58,14 +58,11 @@ export class DbService {
       body: body,
       headers: headers
     })).catch(err => {
-      return Observable.create(observer => {
-        if (err.status === 304) {
-          observer.next(err);
-          observer.complete();
-        } else {
-          observer.error(err);
-        }
-      });
+      if (err.status === 304) {
+        return Observable.of(err);
+      } else {
+        return Observable.throw(err);
+      }
     }).map(res => {
       if (res.status === 304) {
         this.cache.makeFresh(body);
