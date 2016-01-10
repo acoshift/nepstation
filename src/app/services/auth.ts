@@ -7,6 +7,7 @@ import { DbService } from './db';
 export class AuthService {
   remember = false;
   lastLocation = null;
+  user: any;
 
   constructor(private router: Router,
               private location: Location,
@@ -38,6 +39,7 @@ export class AuthService {
           result => {
             if (result.error) return emitter.next({ ok: false, lastLocation: null});
             this.setToken(result.token);
+            this.user = result.user;
             emitter.next({ ok: true, lastLocation: this.lastLocation });
             this.lastLocation = null;
           },
