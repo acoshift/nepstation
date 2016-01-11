@@ -1,24 +1,13 @@
-import { Component, View, Directive, ViewChild } from 'angular2/core';
-
-import {
-  FORM_DIRECTIVES,
-  CORE_DIRECTIVES,
-  ControlGroup,
-  FormBuilder,
-  Validators,
-} from 'angular2/common';
-
+import { Component, View, ViewChild } from 'angular2/core';
+import { FORM_DIRECTIVES } from 'angular2/common';
 import { AlertComponent, IndicatorComponent } from '../../components';
 import { Directives } from '../../directives';
 import { Router, RouterLink } from 'angular2/router';
 import { AuthService } from '../../services';
 
-declare var $: any;
-
 @Component({})
 @View({
   directives: [
-    CORE_DIRECTIVES,
     FORM_DIRECTIVES,
     RouterLink,
     Directives,
@@ -29,8 +18,6 @@ declare var $: any;
   styles: [ require('./login.css') ],
 })
 export class LoginRoute {
-  loginForm: ControlGroup;
-
   @ViewChild(AlertComponent)
   private _alert: AlertComponent;
 
@@ -39,21 +26,13 @@ export class LoginRoute {
 
   constructor(
     private router: Router,
-    private auth: AuthService,
-    fb: FormBuilder) {
+    private auth: AuthService) {
 
     // if alredy login, redirect to home
     if (auth.isLoggedIn()) {
       router.navigate(['/Home']);
       return;
     }
-
-    // init model
-    this.loginForm = fb.group({
-      user: ['', Validators.required],
-      pwd: ['', Validators.required],
-      remember: [false]
-    });
 
     // check auth
     if (auth.isLoggedIn()) {
@@ -62,8 +41,8 @@ export class LoginRoute {
     }
   }
 
-  login() {
-    if (!this.loginForm.valid) {
+  login(f) {
+    if (!f.user || !f.pwd) {
       this._alert.show({
         title: '',
         content: 'Please input username and password.',
@@ -71,9 +50,8 @@ export class LoginRoute {
       });
       return;
     }
-    let { user, pwd, remember } = this.loginForm.value;
     this._indicator.show();
-    this.auth.login(user, pwd, remember).subscribe(
+    this.auth.login(f.user, f.pwd, f.remember).subscribe(
       ({ ok, lastLocation }) => {
         if (ok) {
           this._indicator.hide();
