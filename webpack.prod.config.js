@@ -1,7 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
 // Webpack Plugins
+var ProvidePlugin = require('webpack/lib/ProvidePlugin');
 var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+var OccurenceOrderPlugin = require('webpack/lib/optimize/OccurenceOrderPlugin');
+var DedupePlugin = webpack.optimize.DedupePlugin;
+var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var DefinePlugin  = require('webpack/lib/DefinePlugin');
 
 var metadata = {
@@ -9,16 +13,13 @@ var metadata = {
   baseUrl: '/',
   host: 'localhost',
   port: 3000,
-  ENV: process.env.ENV = process.env.NODE_ENV = 'development'
+  ENV: process.env.ENV = process.env.NODE_ENV = 'production'
 };
 /*
  * Config
  */
 module.exports = {
   metadata: metadata,
-
-  devtool: 'source-map',
-  debug: true,
 
   devServer: {
     port: metadata.port,
@@ -44,6 +45,7 @@ module.exports = {
   },
 
   resolve: {
+    cache: false,
     extensions: ['', '.ts', '.js', '.json', '.css', '.html', '.jade']
   },
 
@@ -88,24 +90,42 @@ module.exports = {
             2375  // 2375 -> Duplicate string index signature
           ]
         },
+        transpileOnly: true,
         exclude: [ /\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/ ]
       }
     ]
   },
 
   plugins: [
-    new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
+    new DedupePlugin(),
+    new OccurenceOrderPlugin(true),
     new DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(metadata.ENV),
         'NODE_ENV': JSON.stringify(metadata.ENV)
       }
-    })
+    }),
+    new ProvidePlugin({
+      // TypeScript helpers
+      '__metadata': 'ts-helper/metadata',
+      '__decorate': 'ts-helper/decorate',
+      '__awaiter': 'ts-helper/awaiter',
+      '__extends': 'ts-helper/extends',
+      '__param': 'ts-helper/param',
+      'Reflect': 'es7-reflect-metadata/dist/browser'
+    }),
+    new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
+    new UglifyJsPlugin({
+      comments: false,
+      mangle: false,
+      unsafe: true,
+      copyright: false
+    }),
   ],
 
   tslint: {
-    emitErrors: false,
-    failOnHint: false
+    emitErrors: true,
+    failOnHint: true
   },
 };
 
