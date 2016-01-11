@@ -13,7 +13,7 @@ import { CacheService } from './cache';
 
 import _ = require('lodash');
 
-const FRESH_CACHE = 5000; // cache timestamp diff for fresh cache
+const FRESH_CACHE = 2000; // cache timestamp diff for fresh cache
 
 @Injectable()
 export class DbService {
