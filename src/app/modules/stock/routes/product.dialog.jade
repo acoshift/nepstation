@@ -4,10 +4,10 @@
     form.ui.form([ngFormModel]="model")
       .field([class.error]="valid('name')")
         label Name:
-        input(ngControl="name")
+        input([ngFormControl]="model.find('name')")
       .field([class.error]="valid('group')")
         label Group:
-        .ui.selection.search.dropdown(ngControl="group")
+        .ui.selection.search.dropdown([ngFormControl]="model.find('group')")
           input(type="hidden")
           i.dropdown.icon
           .default.text Select Group
@@ -15,7 +15,7 @@
             .item(*ngFor="#group of groups", [attr.data-value]="group._id") {{group.name}}
       .field([class.error]="valid('brand')")
         label Brand:
-        .ui.selection.search.dropdown(ngControl="brand")
+        .ui.selection.search.dropdown([ngFormControl]="model.find('brand')")
           input(type="hidden")
           i.dropdown.icon
           .default.text Select Brand
@@ -23,13 +23,13 @@
             .item(*ngFor="#brand of brands", [attr.data-value]="brand._id") {{brand.name}}
       .field([class.error]="valid('price')")
         label Price:
-        input(ngControl="price")
+        input([ngFormControl]="model.find('price')")
       .field([class.error]="valid('point')")
         label Point:
-        input(ngControl="point")
+        input([ngFormControl]="model.find('point')")
       .field([class.error]="valid('remark')")
         label Remark:
-        input(ngControl="remark")
+        input([ngFormControl]="model.find('remark')")
   .actions
     .ui.cancel.button Cancel
     .ui.primary.ok.button([class.loading]="loading") {{button}}

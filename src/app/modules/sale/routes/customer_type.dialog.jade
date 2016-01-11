@@ -4,10 +4,10 @@
     form.ui.form([ngFormModel]="model")
       .field([class.error]="valid('name')")
         label Name:
-        input(ngControl="name")
+        input([ngFormControl]="model.find('name')")
       .field([class.error]="valid('remark')")
         label Remark:
-        input(ngControl="remark")
+        input([ngFormControl]="model.find('remark')")
   .actions
     .ui.cancel.button Cancel
     .ui.primary.ok.button([class.loading]="loading") {{button}}

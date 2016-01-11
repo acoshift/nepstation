@@ -4,45 +4,45 @@
     form.ui.form([ngFormModel]="model")
       .field([class.error]="valid('name')")
         label Name:
-        input(ngControl="name")
+        input([ngFormControl]="model.find('name')")
       .field([class.error]="valid('taxId')")
         label Tax ID:
-        input(ngControl="taxId")
+        input([ngFormControl]="model.find('taxId')")
       .field([class.error]="valid('remark')")
         label Remark:
-        input(ngControl="remark")
+        input([ngFormControl]="model.find('remark')")
       h4.ui.dividing.header Contact Information
-      .grouped.fields(ngControlGroup="contact")
+      .grouped.fields
         .field([class.error]="valid('contact.address')")
           label Address:
-          input(ngControl="address")
+          input([ngFormControl]="model.find('contact').find('address')")
         .field([class.error]="valid('contact.subdistrict')")
           label Subdistrict:
-          input(ngControl="subdistrict")
+          input([ngFormControl]="model.find('contact').find('subdistrict')")
         .field([class.error]="valid('contact.district')")
           label District:
-          input(ngControl="district")
+          input([ngFormControl]="model.find('contact').find('district')")
         .field([class.error]="valid('contact.province')")
           label Province:
-          input(ngControl="province")
+          input([ngFormControl]="model.find('contact').find('province')")
         .field([class.error]="valid('contact.postalCode')")
           label Postal Code:
-          input(ngControl="postalCode")
+          input([ngFormControl]="model.find('contact').find('postalCode')")
         .field([class.error]="valid('contact.country')")
           label Country:
-          input(ngControl="country")
+          input([ngFormControl]="model.find('contact').find('country')")
         .field([class.error]="valid('contact.phone')")
           label Phone:
-          input(ngControl="phone")
+          input([ngFormControl]="model.find('contact').find('phone')")
         .field([class.error]="valid('contact.fax')")
           label Fax:
-          input(ngControl="fax")
+          input([ngFormControl]="model.find('contact').find('fax')")
         .field([class.error]="valid('contact.email')")
           label Email:
-          input(ngControl="email")
+          input([ngFormControl]="model.find('contact').find('email')")
         .field([class.error]="valid('contact.website')")
           label Website:
-          input(ngControl="website")
+          input([ngFormControl]="model.find('contact').find('website')")
   .actions
     .ui.cancel.button Cancel
     .ui.primary.ok.button([class.loading]="loading") {{button}}

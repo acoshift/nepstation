@@ -4,7 +4,7 @@
     form.ui.form([ngFormModel]="model")
       .field([class.error]="valid('name')")
         label Name:
-        input(ngControl="name")
+        input([ngFormControl]="model.find('name')")
       .fields
         .field
           .ui.checkbox

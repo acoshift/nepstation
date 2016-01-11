@@ -4,10 +4,10 @@
     form.ui.form([ngFormModel]="model")
       .field([class.error]="valid('name')")
         label Name:
-        input(ngControl="name")
+        input([ngFormControl]="model.find('name')")
       .field([class.error]="valid('gender')")
         label Gender:
-        .ui.selection.dropdown(ngControl="gender")
+        .ui.selection.dropdown([ngFormControl]="model.find('gender')")
           input(type="hidden")
           i.dropdown.icon
           .default.text Select Gender
@@ -17,7 +17,7 @@
             .item(data-value="none") Not Specified
       .field([class.error]="valid('type')")
         label Type:
-        .ui.selection.search.dropdown(ngControl="type")
+        .ui.selection.search.dropdown([ngFormControl]="model.find('type')")
           input(type="hidden")
           i.dropdown.icon
           .default.text Select Type
@@ -25,7 +25,7 @@
             .item(*ngFor="#type of types", [attr.data-value]="type._id") {{type.name}}
       .field([class.error]="valid('phone')")
         label Phone:
-        input(ngControl="phone")
+        input([ngFormControl]="model.find('phone')")
   .actions
     .ui.cancel.button Cancel
     .ui.primary.ok.button([class.loading]="loading") {{button}}

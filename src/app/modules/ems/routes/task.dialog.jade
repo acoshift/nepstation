@@ -4,10 +4,10 @@
     form.ui.form([ngFormModel]="model")
       .field([class.error]="valid('code')")
         label Code:
-        input(ngControl="code")
+        input([ngFormControl]="model.find('code')")
       .field([class.error]="valid('status')")
         label Status:
-        .ui.selection.search.dropdown(ngControl="status")
+        .ui.selection.search.dropdown([ngFormControl]="model.find('status')")
           input(type="hidden")
           i.dropdown.icon
           .default.text Select Status
@@ -17,7 +17,7 @@
             .item(data-value="cancel") Cancel
       .field([class.error]="valid('staff')")
         label Staff:
-        .ui.selection.search.dropdown(ngControl="staff")
+        .ui.selection.search.dropdown([ngFormControl]="model.find('staff')")
           input(type="hidden")
           i.dropdown.icon
           .default.text Select Staff
