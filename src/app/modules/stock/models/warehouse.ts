@@ -15,5 +15,5 @@ export interface Warehouse extends Operatable {
     fax: string;
     email: string;
     website: string;
-  }
+  };
 }
