@@ -4,19 +4,33 @@ var webpack = require('webpack');
 var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 var DedupePlugin = webpack.optimize.DedupePlugin;
 var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+var DefinePlugin  = require('webpack/lib/DefinePlugin');
+var ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 
+var metadata = {
+  title: 'NepStation',
+  baseUrl: '/',
+  host: 'localhost',
+  port: 3000,
+  ENV: ENV
+};
 /*
  * Config
  */
 module.exports = {
+  metadata: metadata,
+
   devtool: 'source-map', // for faster builds use 'eval'
   debug: true, // remove in production
 
   devServer: {
     historyApiFallback: true,
     contentBase: 'src/public',
-    publicPath: '/__build__'
+    publicPath: '/__build__',
+    watchOptions: { aggregateTimeout: 300, poll: 1000 }
   },
+
+  node: { global: 'window', progress: false, crypto: 'empty', module: false, clearImmediate: false, setImmediate: false },
 
   entry: {
     'vendor': './src/vendor.ts',
@@ -77,6 +91,12 @@ module.exports = {
     new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
     //new CommonsChunkPlugin({ name: 'common', filename: 'common.js', minChunks: 2, chunks: ['app', 'vendor'] }),
     new DedupePlugin(),
+    new DefinePlugin({
+      'process.env': {
+        'ENV': JSON.stringify(metadata.ENV),
+        'NODE_ENV': JSON.stringify(metadata.ENV)
+      }
+    })
     /*new UglifyJsPlugin({
       minimize: true,
       comments: false,

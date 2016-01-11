@@ -3,7 +3,6 @@ require('!style!css!./app/style.css');
 import {
   Component,
   provide,
-  enableProdMode,
 } from 'angular2/core';
 
 import {
@@ -54,19 +53,18 @@ import { Services as ModuleServices } from './app/modules';
 @RouteConfig([
   { path: '/auth/...', name: 'Auth', component: AuthRouter },
   { path: '/home/...', name: 'Home', component: HomeRouter, useAsDefault: true },
-  { path: '**', redirectTo: ['/Home'] }
+  { path: '/**', redirectTo: ['/Home'] }
 ])
 class App {}
 
-// enableProdMode() // include for production builds
 bootstrap(App, [
-  FORM_PROVIDERS,
-  ROUTER_PROVIDERS,
+  ('production' === process.env.ENV ? [] : ELEMENT_PROBE_PROVIDERS),
   HTTP_PROVIDERS,
-  ELEMENT_PROBE_PROVIDERS, // remove in production
+  ROUTER_PROVIDERS,
   provide(LocationStrategy, { useClass: PathLocationStrategy }),
   provide(ROUTER_PRIMARY_COMPONENT, { useValue: App }),
   Services,
   Pipes,
   ModuleServices,
-]);
+])
+.catch(err => console.error(err));
