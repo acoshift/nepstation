@@ -120,4 +120,8 @@ export class TasksRoute extends TableComponent<Task> {
     let t = _.find(this.staffs, x => x._id === id);
     return t && t.fullname || '';
   }
+
+  status(status: string): string {
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  }
 }

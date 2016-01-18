@@ -31,7 +31,7 @@ table.ui.definition.compact.striped.celled.table
           label
       td {{t.code}}
       td {{getStaff(t.staff)}}
-      td {{t.status}}
+      td {{status(t.status)}}
       //
         i.green.checkmark.icon(*ngIf="t.enabled")
         i.red.remove.icon(*ngIf="!t.enabled")
