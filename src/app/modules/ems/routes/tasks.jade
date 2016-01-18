@@ -22,6 +22,7 @@ table.ui.definition.compact.striped.celled.table
       th Status
       th
       th
+      th
   tbody
     tr(*ngFor="#t of list")
       td.center.aligned.collapsing
@@ -35,6 +36,9 @@ table.ui.definition.compact.striped.celled.table
         i.green.checkmark.icon(*ngIf="t.enabled")
         i.red.remove.icon(*ngIf="!t.enabled")
       td.center.aligned.collapsing
+        .ui.blue.icon.button(#e, [class.loading]="e.loading", (click)="view(t, e)")
+          i.zoom.icon
+      td.center.aligned.collapsing
         .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
           i.edit.icon
       td.center.aligned.collapsing
@@ -43,9 +47,9 @@ table.ui.definition.compact.striped.celled.table
   tfoot.full-width
     tr
       th
-      th(colspan=5)
+      th(colspan=6)
         .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
-          i.user.icon
+          i.add.circle.icon
           | Add Task
         .ui.red.small.labeled.icon.button((click)="deleteSelected()")
           i.erase.icon
