@@ -36,10 +36,10 @@ table.ui.definition.compact.striped.celled.table
         i.green.checkmark.icon(*ngIf="t.enabled")
         i.red.remove.icon(*ngIf="!t.enabled")
       td.center.aligned.collapsing
-        .ui.blue.icon.button(#e, [class.loading]="e.loading", (click)="view(t, e)")
+        .ui.blue.icon.button(#e1, [class.loading]="e1.loading", (click)="view(t, e1)")
           i.zoom.icon
       td.center.aligned.collapsing
-        .ui.teal.icon.button(#e, [class.loading]="e.loading", (click)="edit(t, e)")
+        .ui.teal.icon.button(#e2, [class.loading]="e2.loading", (click)="edit(t, e2)")
           i.edit.icon
       td.center.aligned.collapsing
         .ui.red.icon.button((click)="delete(t)")
