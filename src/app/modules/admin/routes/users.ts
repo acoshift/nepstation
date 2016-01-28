@@ -3,12 +3,12 @@ import { FormBuilder, Validators } from 'angular2/common';
 import { NavbarService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
 import { Directives } from '../../../directives';
-import _ = require('lodash');
+import * as _ from 'lodash';
 import { UsersService } from '../services/users';
 import { RolesService } from '../services/roles';
 import { User } from '../models/user';
 import { Role } from '../models/role';
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'dialog',

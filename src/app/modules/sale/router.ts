@@ -1,7 +1,7 @@
-import { Component } from 'angular2/core';
-import { RouteConfig, RouterOutlet } from 'angular2/router';
-import { CustomersRoute } from './routes/customers';
-import { CustomerTypesRoute } from './routes/customer_types';
+import { Component } from 'angular2/core'
+import { RouteConfig, RouterOutlet } from 'angular2/router'
+import { CustomersRoute } from './routes/customers'
+import { CustomerTypesRoute } from './routes/customer_types'
 
 @Component({
   template: '<router-outlet></router-outlet>',

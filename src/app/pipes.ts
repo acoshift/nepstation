@@ -1,10 +1,10 @@
-import { MomentPipe } from './pipes/moment';
-import { TimestampPipe } from './pipes/id';
-import { RepeatPipe } from './pipes/repeat';
-import { CountPipe } from './pipes/count';
-import { FilterPipe } from './pipes/filter';
-import { ReversePipe } from './pipes/reverse';
-import { PagePipe } from './pipes/page';
+import { MomentPipe } from './pipes/moment'
+import { TimestampPipe } from './pipes/id'
+import { RepeatPipe } from './pipes/repeat'
+import { CountPipe } from './pipes/count'
+import { FilterPipe } from './pipes/filter'
+import { ReversePipe } from './pipes/reverse'
+import { PagePipe } from './pipes/page'
 
 export {
   MomentPipe,
@@ -14,7 +14,7 @@ export {
   FilterPipe,
   ReversePipe,
   PagePipe,
-};
+}
 
 export var Pipes = [
   MomentPipe,
@@ -24,4 +24,4 @@ export var Pipes = [
   FilterPipe,
   ReversePipe,
   PagePipe,
-];
+]

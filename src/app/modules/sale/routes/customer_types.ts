@@ -1,12 +1,11 @@
-import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
-import { FormBuilder, Validators } from 'angular2/common';
-import { NavbarService } from '../../../services';
-import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import _ = require('lodash');
-import { Directives } from '../../../directives';
-import { CustomerTypesService } from '../services/customer_types';
-import { CustomerType } from '../models/customer_type';
-declare var $: any;
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core'
+import { FormBuilder, Validators } from 'angular2/common'
+import { NavbarService } from '../../../services'
+import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components'
+import { Directives } from '../../../directives'
+import { CustomerTypesService } from '../services/customer_types'
+import { CustomerType } from '../models/customer_type'
+declare let $: any
 
 @Component({
   selector: 'dialog',
@@ -18,15 +17,15 @@ class CustomerTypeDialog extends ModelDialog<CustomerType> {
     _id: [''],
     name: ['', Validators.required],
     remark: ['']
-  };
+  }
 
   constructor(
     @ViewQuery('modal') e: QueryList<ElementRef>,
     service: CustomerTypesService,
     fb: FormBuilder) {
-    super(e, service);
+    super(e, service)
 
-    this.model = fb.group(this._modelTemplate);
+    this.model = fb.group(this._modelTemplate)
   }
 
   showAdd() {
@@ -34,11 +33,11 @@ class CustomerTypeDialog extends ModelDialog<CustomerType> {
       header: 'Add Customer Type',
       button: 'Add',
       model: this._modelTemplate
-    });
+    })
   }
 
   showEdit(item: CustomerType, e?) {
-    if (e) e.loading = true;
+    if (e) e.loading = true
     this.service.read(item._id).subscribe(
       result => {
         this.show({
@@ -49,13 +48,13 @@ class CustomerTypeDialog extends ModelDialog<CustomerType> {
             name: [result.name, Validators.required],
             remark: [result.remark]
           }
-        });
+        })
       },
       error => { /* TODO: Error handler */ },
       () => {
-        if (e) e.loading = false;
+        if (e) e.loading = false
       }
-    );
+    )
   }
 }
 
@@ -72,21 +71,21 @@ class CustomerTypeDialog extends ModelDialog<CustomerType> {
 })
 export class CustomerTypesRoute extends TableComponent<CustomerType> {
   @ViewChild(CustomerTypeDialog)
-  protected dialog: CustomerTypeDialog;
+  protected dialog: CustomerTypeDialog
 
   @ViewChild(AlertComponent)
-  protected alert: AlertComponent;
+  protected alert: AlertComponent
 
   constructor(navbar: NavbarService,
               service: CustomerTypesService) {
-    super(service);
-    navbar.active('sale/customer_types');
+    super(service)
+    navbar.active('sale/customer_types')
   }
 
   get filters(): { [ key: string ]: Function } {
-    let k = this.search.keyword.toLowerCase();
+    let k = this.search.keyword.toLowerCase()
     return {
       'name': x => !!x.name && x.name.toLowerCase().includes(k)
-    };
+    }
   }
 }

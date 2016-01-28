@@ -1,14 +1,14 @@
-import { Directive, AfterViewInit, ElementRef } from 'angular2/core';
+import { Directive, AfterViewInit, ElementRef } from 'angular2/core'
 
-declare var $: any;
+declare let $: any
 
 @Directive({
   selector: '.ui.checkbox'
 })
 export class CheckboxDirective implements AfterViewInit {
-  constructor(private _elementRef: ElementRef) {}
+  constructor (private _elementRef: ElementRef) {}
 
-  ngAfterViewInit() {
-    $(this._elementRef.nativeElement).checkbox();
+  ngAfterViewInit () {
+    $(this._elementRef.nativeElement).checkbox()
   }
 }

@@ -1,8 +1,8 @@
-import { Operatable } from '../../../models';
+import { Operatable } from '../../../models'
 
 export interface ProductGroup extends Operatable {
-  name: string;
-  type: string;
-  remark: string;
-  _productCount?: number;
+  name: string
+  type: string
+  remark: string
+  _productCount?: number
 }

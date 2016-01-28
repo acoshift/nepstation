@@ -1,15 +1,15 @@
-import { Component, View } from 'angular2/core';
-import { Router, RouteConfig, RouterOutlet } from 'angular2/router';
-import { NavbarComponent } from '../../components';
-import { AuthService } from '../../services';
+import { Component, View } from 'angular2/core'
+import { Router, RouteConfig, RouterOutlet } from 'angular2/router'
+import { NavbarComponent } from '../../components'
+import { AuthService } from '../../services'
 
-import { IndexRoute } from './index';
+import { IndexRoute } from './index'
 
-import { Router as AdminRouter } from '../../modules/admin/router';
-import { Router as SaleRouter } from '../../modules/sale/router';
-import { Router as CollectionRouter } from '../../modules/collection/router';
-import { Router as StockRouter } from '../../modules/stock/router';
-import { Router as EmsRouter } from '../../modules/ems/router';
+import { Router as AdminRouter } from '../../modules/admin/router'
+import { Router as SaleRouter } from '../../modules/sale/router'
+import { Router as CollectionRouter } from '../../modules/collection/router'
+import { Router as StockRouter } from '../../modules/stock/router'
+import { Router as EmsRouter } from '../../modules/ems/router'
 
 @Component({})
 @View({
@@ -29,7 +29,7 @@ import { Router as EmsRouter } from '../../modules/ems/router';
   { path: '/ems/...', name: 'Ems', component: EmsRouter },
 ])
 export class HomeRouter {
-  constructor(auth: AuthService) {
-    if (!auth.check()) return;
+  constructor (auth: AuthService) {
+    if (!auth.check()) return
   }
 }

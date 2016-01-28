@@ -1,21 +1,17 @@
-require('!style!css!./app/style.css');
+require('!style!css!./app/style.css')
 
 import {
   Component,
   provide,
-} from 'angular2/core';
+} from 'angular2/core'
 
 import {
   bootstrap,
-} from 'angular2/bootstrap';
-
-import {
-  FORM_PROVIDERS,
-} from 'angular2/common';
+} from 'angular2/bootstrap'
 
 import {
   ELEMENT_PROBE_PROVIDERS,
-} from 'angular2/platform/browser';
+} from 'angular2/platform/browser'
 
 import {
   RouteConfig,
@@ -24,24 +20,22 @@ import {
   RouterOutlet,
   ROUTER_PROVIDERS,
   ROUTER_PRIMARY_COMPONENT,
-  Router,
-} from 'angular2/router';
+} from 'angular2/router'
 
 import {
   HTTP_PROVIDERS,
-} from 'angular2/http';
+} from 'angular2/http'
 
 import {
-  AuthService,
   Services,
-} from './app/services';
+} from './app/services'
 
-import { Pipes } from './app/pipes';
+import { Pipes } from './app/pipes'
 
-import { AuthRouter } from './app/routes/auth/router';
-import { HomeRouter } from './app/routes/home/router';
+import { AuthRouter } from './app/routes/auth/router'
+import { HomeRouter } from './app/routes/home/router'
 
-import { Services as ModuleServices } from './app/modules';
+import { Services as ModuleServices } from './app/modules'
 
 @Component({
   selector: 'app',
@@ -67,4 +61,4 @@ bootstrap(App, [
   Pipes,
   ModuleServices,
 ])
-.catch(err => console.error(err));
+.catch(err => console.error(err))

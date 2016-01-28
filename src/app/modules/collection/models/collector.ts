@@ -1,9 +1,9 @@
-import { Operatable } from '../../../models';
+import { Operatable } from '../../../models'
 
 export interface Collector extends Operatable {
-  code: string;
-  name: string;
-  phone: string;
-  email: string;
-  quota: number;
+  code: string
+  name: string
+  phone: string
+  email: string
+  quota: number
 }

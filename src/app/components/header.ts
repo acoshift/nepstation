@@ -1,13 +1,6 @@
-import {
-  Component,
-  View,
-} from 'angular2/core';
+import { Component, View } from 'angular2/core'
 
-import {
-  Router,
-  ROUTER_DIRECTIVES
-} from 'angular2/router';
-
+import { Router, ROUTER_DIRECTIVES } from 'angular2/router'
 
 @Component({
 
@@ -16,9 +9,9 @@ import {
   template: '',
 })
 export class HeaderComponent {
-  constructor(private router: Router) { }
+  constructor (private router: Router) { }
 
-  logout() {
-    // this.auth.logout();
+  logout () {
+    // this.auth.logout()
   }
 }

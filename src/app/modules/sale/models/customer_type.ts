@@ -1,7 +1,7 @@
-import { Operatable } from '../../../models';
+import { Operatable } from '../../../models'
 
 export interface CustomerType extends Operatable {
-  name: string;
-  remark: string;
-  _customerCount?: number;
+  name: string
+  remark: string
+  _customerCount?: number
 }

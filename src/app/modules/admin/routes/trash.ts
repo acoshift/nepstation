@@ -2,11 +2,11 @@ import { Component, View, ViewChild } from 'angular2/core';
 import { NavbarService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent } from '../../../components';
 import { TimestampPipe, MomentPipe } from '../../../pipes';
-import _ = require('lodash');
+import * as _ from 'lodash';
 import { Directives } from '../../../directives';
 import { TrashService } from '../services/trash';
 import { Trash } from '../models/trash';
-declare var $: any;
+declare let $: any;
 
 @Component({})
 @View({

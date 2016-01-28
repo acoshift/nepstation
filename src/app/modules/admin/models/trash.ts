@@ -1,6 +1,6 @@
-import { Id } from '../../../models';
+import { Id } from '../../../models'
 
 export interface Trash extends Id {
-  db: string;
-  data: any;
+  db: string
+  data: any
 }

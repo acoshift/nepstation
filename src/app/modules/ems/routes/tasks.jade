@@ -51,6 +51,12 @@ table.ui.definition.compact.striped.celled.table
         .ui.right.floated.small.primary.labeled.icon.button((click)="add()")
           i.add.circle.icon
           | Add Task
+        .ui.right.floated.small.green.labeled.icon.button((click)="file.click()")
+          i.file.icon
+          | Import
+          span(*ngIf="importProgress.total !== 0")
+            | &nbsp;{{importProgress.current}} / {{importProgress.total}}
+          input(#file, type="file", style="display: none;", (change)="import(file)")
         .ui.red.small.labeled.icon.button((click)="deleteSelected()")
           i.erase.icon
           | Delete Selected

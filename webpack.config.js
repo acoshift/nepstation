@@ -1,8 +1,8 @@
-var path = require('path');
-var webpack = require('webpack');
+var path = require('path')
+var webpack = require('webpack')
 // Webpack Plugins
-var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-var DefinePlugin  = require('webpack/lib/DefinePlugin');
+var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin
+var DefinePlugin = require('webpack/lib/DefinePlugin')
 
 var metadata = {
   title: 'NepStation',
@@ -10,7 +10,7 @@ var metadata = {
   host: 'localhost',
   port: 3000,
   ENV: process.env.ENV = process.env.NODE_ENV = 'development'
-};
+}
 /*
  * Config
  */
@@ -59,13 +59,13 @@ module.exports = {
     ],
     loaders: [
       // Support for *.json files.
-      { test: /\.json$/,  loader: 'json-loader' },
+      { test: /\.json$/, loader: 'json-loader' },
 
       // CSS as raw text
-      { test: /\.css$/,   loader: 'to-string-loader!css-loader' },
+      { test: /\.css$/, loader: 'to-string-loader!css-loader' },
 
       // html as raw text
-      { test: /\.html$/,  loader: 'html-loader?minimize=false' },
+      { test: /\.html$/, loader: 'html-loader?minimize=false' },
 
       // jade
       { test: /\.jade$/, loader: 'html-loader?minimize=false!jade-html-loader' },
@@ -106,17 +106,17 @@ module.exports = {
   tslint: {
     emitErrors: false,
     failOnHint: false
-  },
-};
+  }
+}
 
 // Helper functions
 
-function root(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return path.join.apply(path, [__dirname].concat(args));
+function root (args) {
+  args = Array.prototype.slice.call(arguments, 0)
+  return path.join.apply(path, [__dirname].concat(args))
 }
 
-function rootNode(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return root.apply(path, ['node_modules'].concat(args));
+function rootNode (args) {
+  args = Array.prototype.slice.call(arguments, 0)
+  return root.apply(path, ['node_modules'].concat(args))
 }

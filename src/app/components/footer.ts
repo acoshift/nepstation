@@ -1,7 +1,4 @@
-import {
-  Component,
-  View,
-} from 'angular2/core';
+import { Component, View } from 'angular2/core'
 
 @Component({
   selector: 'footer'
@@ -11,7 +8,7 @@ import {
   styles: [ require('./footer.css') ]
 })
 export class FooterComponent {
-  constructor() {
+  constructor () {
     //
   }
 }

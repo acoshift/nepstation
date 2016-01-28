@@ -1,16 +1,15 @@
 import {
   Component,
-  View,
-} from 'angular2/core';
+} from 'angular2/core'
 
 import {
   RouteConfig,
   RouterOutlet,
-} from 'angular2/router';
+} from 'angular2/router'
 
-import { LoginRoute } from './login';
-import { UsernameRoute } from './forgot/username';
-import { PasswordRoute } from './forgot/password';
+import { LoginRoute } from './login'
+import { UsernameRoute } from './forgot/username'
+import { PasswordRoute } from './forgot/password'
 
 @Component({
   template: '<router-outlet></router-outlet>',

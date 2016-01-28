@@ -1,7 +1,7 @@
-import { Component, View } from 'angular2/core';
-import { Router, RouterLink } from 'angular2/router';
-import { AuthService, NavbarService } from '../services';
-declare var $: any;
+import { Component, View } from 'angular2/core'
+import { Router, RouterLink } from 'angular2/router'
+import { AuthService, NavbarService } from '../services'
+declare let $: any
 
 @Component({
   selector: 'navbar'
@@ -14,24 +14,24 @@ declare var $: any;
   styles: [ require('./navbar.css') ]
 })
 export class NavbarComponent {
-  activated: string = '';
+  activated: string = ''
 
-  constructor(private router: Router,
+  constructor (private router: Router,
               private auth: AuthService,
               private navbar: NavbarService) {
-    navbar.onActive(x => this.change(x));
+    navbar.onActive(x => this.change(x))
   }
 
-  change(active) {
-    this.activated = active;
+  change (active) {
+    this.activated = active
   }
 
-  isActive(x: string) {
-    return this.activated === x;
+  isActive (x: string) {
+    return this.activated === x
   }
 
-  logout() {
-    this.auth.logout();
-    this.router.navigate(['/Auth']);
+  logout () {
+    this.auth.logout()
+    this.router.navigate(['/Auth'])
   }
 }

@@ -2,13 +2,13 @@ import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'an
 import { FormBuilder, Validators } from 'angular2/common';
 import { NavbarService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import _ = require('lodash');
+import * as _ from 'lodash';
 import { Directives } from '../../../directives';
 import { TasksService } from '../services/tasks';
 import { StaffsService } from '../services/staffs';
 import { Task } from '../models/task';
 import { Staff } from '../models/staff';
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'dialog',
@@ -110,9 +110,9 @@ export class TasksRoute extends TableComponent<Task> {
   get filters(): { [ key: string ]: Function } {
     let k = this.search.keyword.toLowerCase();
     return {
-      'code': x => !!x.code && x.code.toLowerCase().includes(k),
-      'staff': x => !!x.staff && this.getStaff(x.staff).toLowerCase().includes(k),
-      'status': x => !!x.status && x.status.toLowerCase().includes(k)
+      'code': x => !k || !!x.code && x.code.toLowerCase().includes(k),
+      'staff': x => !k || !!x.staff && this.getStaff(x.staff).toLowerCase().includes(k),
+      'status': x => !k || !!x.status && x.status.toLowerCase().includes(k)
     };
   };
 
@@ -122,6 +122,7 @@ export class TasksRoute extends TableComponent<Task> {
   }
 
   status(status: string): string {
+    if (!status) return '';
     return status.charAt(0).toUpperCase() + status.slice(1);
   }
 }

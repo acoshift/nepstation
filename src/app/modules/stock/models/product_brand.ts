@@ -1,7 +1,7 @@
-import { Operatable } from '../../../models';
+import { Operatable } from '../../../models'
 
 export interface ProductBrand extends Operatable {
-  name: string;
-  remark: string;
-  _productCount?: number;
+  name: string
+  remark: string
+  _productCount?: number
 }

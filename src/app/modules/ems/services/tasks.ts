@@ -7,12 +7,8 @@ import { Task } from '../models/task';
 export class TasksService extends ModelService<Task> {
   constructor(db: DbService) {
     super(db, 'ems.tasks', {
-      refresh: {
-        _id: 1, code: 1, staff: 1, status: 1
-      },
-      read: {
-        _id: 1, code: 1, staff: 1, status: 1, result: 1
-      }
+      refresh: null, //{ _id: 1, code: 1, staff: 1, status: 1 },
+      read: null
     });
   }
 

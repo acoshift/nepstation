@@ -2,7 +2,7 @@ import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'an
 import { FormBuilder, Validators } from 'angular2/common';
 import { NavbarService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import _ = require('lodash');
+import * as _ from 'lodash';
 import { Directives } from '../../../directives';
 import { ProductsService } from '../services/products';
 import { ProductGroupsService } from '../services/product_groups';
@@ -12,7 +12,7 @@ import { Product } from '../models/product';
 import { ProductGroup } from '../models/product_group';
 import { ProductType } from '../models/product_type';
 import { ProductBrand } from '../models/product_brand';
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'dialog',

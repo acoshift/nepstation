@@ -1,8 +1,8 @@
-import { Operatable } from '../../../models';
+import { Operatable } from '../../../models'
 
 export interface ProductUnit extends Operatable {
-  name: string;
-  remark: string;
-  base: string;
-  baseAmount: number;
+  name: string
+  remark: string
+  base: string
+  baseAmount: number
 }

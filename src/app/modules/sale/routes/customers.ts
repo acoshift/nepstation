@@ -1,14 +1,14 @@
-import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
-import { FormBuilder, Validators } from 'angular2/common';
-import { NavbarService } from '../../../services';
-import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import _ = require('lodash');
-import { Directives } from '../../../directives';
-import { CustomersService } from '../services/customers';
-import { CustomerTypesService } from '../services/customer_types';
-import { Customer } from '../models/customer';
-import { CustomerType } from '../models/customer_type';
-declare var $: any;
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core'
+import { FormBuilder, Validators } from 'angular2/common'
+import { NavbarService } from '../../../services'
+import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components'
+import * as _ from 'lodash'
+import { Directives } from '../../../directives'
+import { CustomersService } from '../services/customers'
+import { CustomerTypesService } from '../services/customer_types'
+import { Customer } from '../models/customer'
+import { CustomerType } from '../models/customer_type'
+declare let $: any
 
 @Component({
   selector: 'dialog',
@@ -16,7 +16,7 @@ declare var $: any;
   directives: [ Directives ]
 })
 class CustomerDialog extends ModelDialog<Customer> {
-  types: CustomerType[];
+  types: CustomerType[]
 
   private _modelTemplate = {
     _id: [''],
@@ -24,24 +24,24 @@ class CustomerDialog extends ModelDialog<Customer> {
     gender: ['', Validators.required],
     type: ['', Validators.required],
     phone: ['']
-  };
+  }
 
   constructor(
     @ViewQuery('modal') e: QueryList<ElementRef>,
     service: CustomersService,
     types: CustomerTypesService,
     fb: FormBuilder) {
-    super(e, service);
+    super(e, service)
 
-    this.model = fb.group(this._modelTemplate);
+    this.model = fb.group(this._modelTemplate)
 
     types.list.subscribe(
       result => {
-        this.types = result;
+        this.types = result
       }
-    );
+    )
 
-    types.refresh();
+    types.refresh()
   }
 
   showAdd() {
@@ -49,11 +49,11 @@ class CustomerDialog extends ModelDialog<Customer> {
       header: 'Add Customer',
       button: 'Add',
       model: this._modelTemplate
-    });
+    })
   }
 
   showEdit(item: Customer, e?) {
-    if (e) e.loading = true;
+    if (e) e.loading = true
     this.service.read(item._id).subscribe(
       result => {
         this.show({
@@ -66,13 +66,13 @@ class CustomerDialog extends ModelDialog<Customer> {
             type: [result.type, Validators.required],
             phone: [result.phone]
           }
-        });
+        })
       },
       error => { /* TODO: Error handler */ },
       () => {
-        if (e) e.loading = false;
+        if (e) e.loading = false
       }
-    );
+    )
   }
 }
 
@@ -89,39 +89,39 @@ class CustomerDialog extends ModelDialog<Customer> {
 })
 export class CustomersRoute extends TableComponent<Customer> {
   @ViewChild(CustomerDialog)
-  dialog: CustomerDialog;
+  dialog: CustomerDialog
 
   @ViewChild(AlertComponent)
-  protected alert: AlertComponent;
+  protected alert: AlertComponent
 
-  types: CustomerType[];
+  types: CustomerType[]
 
   constructor(navbar: NavbarService,
               service: CustomersService,
               types: CustomerTypesService) {
-    super(service);
-    navbar.active('sale/customers');
+    super(service)
+    navbar.active('sale/customers')
 
     types.list.subscribe(
       result => {
-        this.types = result;
+        this.types = result
       }
-    );
+    )
 
-    types.refresh();
+    types.refresh()
   }
 
   get filters(): { [ key: string ]: Function } {
-    let k = this.search.keyword.toLowerCase();
+    let k = this.search.keyword.toLowerCase()
     return {
       'name': x => !!x.name && x.name.toLowerCase().includes(k),
       'type': x => !!x.type && this.getType(x.type).toLowerCase().includes(k),
       'phone': x => !!x.phone && x.phone.replace(/\-/, '').toLowerCase().includes(k.replace(/\-/, ''))
-    };
-  };
+    }
+  }
 
   getType(type: string): string {
-    let t = _.find(this.types, x => x._id === type || x.name === type);
-    return t && t.name || type;
+    let t = _.find(this.types, x => x._id === type || x.name === type)
+    return t && t.name || type
   }
 }

@@ -1,11 +1,11 @@
-import { Component } from 'angular2/core';
-import { RouteConfig, RouterOutlet } from 'angular2/router';
-import { ProductsRoute } from './routes/products';
-import { ProductBrandsRoute } from './routes/product_brands';
-import { ProductGroupsRoute } from './routes/product_groups';
-import { ProductUnitsRoute } from './routes/product_units';
-import { ProductTypesRoute } from './routes/product_types';
-import { WarehousesRoute } from './routes/warehouses';
+import { Component } from 'angular2/core'
+import { RouteConfig, RouterOutlet } from 'angular2/router'
+import { ProductsRoute } from './routes/products'
+import { ProductBrandsRoute } from './routes/product_brands'
+import { ProductGroupsRoute } from './routes/product_groups'
+import { ProductUnitsRoute } from './routes/product_units'
+import { ProductTypesRoute } from './routes/product_types'
+import { WarehousesRoute } from './routes/warehouses'
 
 @Component({
   template: '<router-outlet></router-outlet>',

@@ -1,7 +1,7 @@
 import {
   Component,
   View,
-} from 'angular2/core';
+} from 'angular2/core'
 
 import {
   FORM_DIRECTIVES,
@@ -13,18 +13,18 @@ import {
   Control,
   AbstractControl,
   NgClass,
-} from 'angular2/common';
+} from 'angular2/common'
 
 import {
   Router,
   RouterLink,
-} from 'angular2/router';
+} from 'angular2/router'
 
 import {
   AuthService,
-} from '../../../services';
+} from '../../../services'
 
-declare var $: any;
+declare let $: any
 
 @Component({})
 @View({
@@ -38,13 +38,13 @@ declare var $: any;
 })
 export class PasswordRoute {
 
-  constructor(private router: Router,
-              private auth: AuthService,
-              fb: FormBuilder) {
+  constructor (private router: Router,
+               private auth: AuthService,
+               fb: FormBuilder) {
 
   }
 
-  invalidInput() {
+  invalidInput () {
     // TODO: show invalid input to user
   }
 }

@@ -31,7 +31,7 @@ export abstract class ModelService<T> {
 
   submit(item: T): Observable<any> {
     item = this.preSubmit(item);
-    if ((<any>item)._id !== '') {
+    if ((<any>item)._id) {
       return this.db.request('update', this.namespace, [(<any>item)._id, item], this.retrieves.read);
     } else {
       delete (<any>item)._id;
@@ -46,5 +46,13 @@ export abstract class ModelService<T> {
 
   protected preSubmit(item: T) {
     return item;
+  }
+
+  create(item: T | T[]): Observable<any> {
+    if (_.isArray(item) && item.length === 0) return Observable.empty();
+    if (_.isArray(item)) {
+      _.forEach(item, (v, k, a) => a[k] = this.preSubmit(v));
+    }
+    return this.db.request('create', this.namespace, item, null);
   }
 }

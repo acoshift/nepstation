@@ -2,11 +2,11 @@ import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'an
 import { FormBuilder, Validators } from 'angular2/common';
 import { NavbarService } from '../../../services';
 import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import _ = require('lodash');
+import * as _ from 'lodash';
 import { Directives } from '../../../directives';
 import { StaffsService } from '../services/staffs';
 import { Staff } from '../models/staff';
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'dialog',

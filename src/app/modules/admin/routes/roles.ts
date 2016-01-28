@@ -6,7 +6,7 @@ import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from
 import { Directives } from '../../../directives';
 import { RolesService } from '../services/roles';
 import { Role } from '../models/role';
-declare var $: any;
+declare let $: any;
 
 @Component({
   selector: 'dialog',

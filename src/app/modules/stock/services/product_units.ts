@@ -1,10 +1,10 @@
-import { Injectable } from 'angular2/core';
-import { DbService, ModelService } from '../../../services';
-import { ProductUnit } from '../models/product_unit';
+import { Injectable } from 'angular2/core'
+import { DbService, ModelService } from '../../../services'
+import { ProductUnit } from '../models/product_unit'
 
 @Injectable()
 export class ProductUnitsService extends ModelService<ProductUnit> {
-  constructor(db: DbService) {
+  constructor (db: DbService) {
     super(db, 'stock.product_units', {
       refresh: {
         _id: 1, name: 1, base: 1, baseAmount: 1
@@ -12,15 +12,15 @@ export class ProductUnitsService extends ModelService<ProductUnit> {
       read: {
         _id: 1, name: 1, remark: 1, base: 1, baseAmount: 1
       }
-    });
+    })
   }
 
-  preSubmit(item: ProductUnit) {
+  preSubmit (item: ProductUnit) {
     if (!!item.base) {
-      item.$id = { base: item.base };
-      delete item.base;
+      item.$id = { base: item.base }
+      delete item.base
     }
 
-    return item;
+    return item
   }
 }

@@ -1,5 +1,5 @@
-import { Component, View, ElementRef, AfterViewInit, ViewQuery, QueryList } from 'angular2/core';
-declare var $: any;
+import { Component, View, ElementRef, AfterViewInit, ViewQuery, QueryList } from 'angular2/core'
+declare let $: any
 
 @Component({
   selector: 'indicator'
@@ -10,24 +10,24 @@ declare var $: any;
             `</div>`
 })
 export class IndicatorComponent implements AfterViewInit {
-  private _modal = null;
+  private _modal = null
 
-  constructor(@ViewQuery('modal') private _el: QueryList<ElementRef>) {}
+  constructor (@ViewQuery('modal') private _el: QueryList<ElementRef>) {}
 
-  ngAfterViewInit() {
-    this._modal = $(this._el.first.nativeElement);
+  ngAfterViewInit () {
+    this._modal = $(this._el.first.nativeElement)
   }
 
-  show() {
+  show () {
     this._modal
       .modal({
         closable: false,
         allowMultiple: true
       })
-      .modal('show');
+      .modal('show')
   }
 
-  hide() {
-    this._modal.modal('hide');
+  hide () {
+    this._modal.modal('hide')
   }
 }
