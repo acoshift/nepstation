@@ -1,7 +1,7 @@
-import { Injectable } from 'angular2/core';
-import { Observable } from 'rxjs';
-import { DbService, ModelService } from '../../../services';
-import { Staff } from '../models/staff';
+import { Injectable } from 'angular2/core'
+import { Observable } from 'rxjs'
+import { DbService, ModelService } from '../../../services'
+import { Staff } from '../models/staff'
 
 @Injectable()
 export class StaffsService extends ModelService<Staff> {
@@ -15,7 +15,7 @@ export class StaffsService extends ModelService<Staff> {
         _id: 1, name: 1, enabled: 1,
         code: 1, fullname: 1, phone: 1, email: 1, quota: 1
       }
-    });
+    })
   }
 
   refresh(): Observable<Staff[]> {
@@ -23,28 +23,28 @@ export class StaffsService extends ModelService<Staff> {
       .do((xs: Staff[]) => {
         _.forEach(xs, v => {
           this.db.request('count', 'ems.tasks', { $id: { staff: v._id } }, null)
-            .subscribe(result => v._taskCount = result);
-        });
-      });
+            .subscribe(result => v._taskCount = result)
+        })
+      })
     t.subscribe(
       result => this._list.next(result),
       error => { /* skip error here */ }
-    );
-    return t;
+    )
+    return t
   }
 
   preSubmit(item: Staff) {
     if (item.pwd === '') {
-      delete item.pwd;
+      delete item.pwd
     } else {
       item['$bcrypt'] = {
         pwd: item.pwd
-      };
-      delete item.pwd;
+      }
+      delete item.pwd
     }
 
-    item.role = 'ems_staff';
+    item.role = 'ems_staff'
 
-    return item;
+    return item
   }
 }

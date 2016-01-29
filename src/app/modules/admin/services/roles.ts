@@ -1,7 +1,7 @@
-import { Injectable } from 'angular2/core';
-import { Observable } from 'rxjs';
-import { DbService, ModelService } from '../../../services';
-import { Role } from '../models/role';
+import { Injectable } from 'angular2/core'
+import { Observable } from 'rxjs'
+import { DbService, ModelService } from '../../../services'
+import { Role } from '../models/role'
 
 @Injectable()
 export class RolesService extends ModelService<Role> {
@@ -13,7 +13,7 @@ export class RolesService extends ModelService<Role> {
       read: {
         _id: 1, name: 1, dbs: 1
       }
-    });
+    })
   }
 
   refresh(): Observable<Role[]> {
@@ -21,13 +21,13 @@ export class RolesService extends ModelService<Role> {
       .do((xs: Role[]) => {
         _.forEach(xs, v => {
           this.db.request('count', 'db.users', { $or: [ { $id: { role: v._id } }, { role: v.name } ] }, null)
-            .subscribe(result => v._userCount = result);
-        });
-      });
+            .subscribe(result => v._userCount = result)
+        })
+      })
     t.subscribe(
       result => this._list.next(result),
       error => { /* skip error here */ }
-    );
-    return t;
+    )
+    return t
   }
 }

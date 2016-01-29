@@ -1,9 +1,9 @@
-import { Component } from 'angular2/core';
-import { RouteConfig, RouterOutlet } from 'angular2/router';
-import { LogsRoute } from './routes/logs';
-import { RolesRoute } from './routes/roles';
-import { TrashRoute } from './routes/trash';
-import { UsersRoute } from './routes/users';
+import { Component } from 'angular2/core'
+import { RouteConfig, RouterOutlet } from 'angular2/router'
+import { LogsRoute } from './routes/logs'
+import { RolesRoute } from './routes/roles'
+import { TrashRoute } from './routes/trash'
+import { UsersRoute } from './routes/users'
 
 @Component({
   template: '<router-outlet></router-outlet>',

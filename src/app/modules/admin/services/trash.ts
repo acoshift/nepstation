@@ -1,7 +1,7 @@
-import { Injectable } from 'angular2/core';
-import { Observable } from 'rxjs';
-import { DbService, ReadOnlyModelService } from '../../../services';
-import { Trash } from '../models/trash';
+import { Injectable } from 'angular2/core'
+import { Observable } from 'rxjs'
+import { DbService, ReadOnlyModelService } from '../../../services'
+import { Trash } from '../models/trash'
 
 @Injectable()
 export class TrashService extends ReadOnlyModelService<Trash> {
@@ -10,19 +10,19 @@ export class TrashService extends ReadOnlyModelService<Trash> {
       refresh: { _id: 1, db: 1 },
       read: null,
       restore: null
-    });
+    })
   }
 
   refresh(): Observable<Trash[]> {
-    let t = this.db.request('query', this.namespace, null, this.retrieves.refresh);
+    let t = this.db.request('query', this.namespace, null, this.retrieves.refresh)
     t.subscribe(
       result => this._list.next(result),
       error => { /* skip error here */ }
-    );
-    return t;
+    )
+    return t
   }
 
   restore(id: string | string[]): Observable<any> {
-    return this.db.request('restore', '', id, this.retrieves.restore);
+    return this.db.request('restore', '', id, this.retrieves.restore)
   }
 }

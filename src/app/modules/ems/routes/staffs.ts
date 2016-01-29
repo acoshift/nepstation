@@ -1,12 +1,12 @@
-import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
-import { FormBuilder, Validators } from 'angular2/common';
-import { NavbarService } from '../../../services';
-import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import * as _ from 'lodash';
-import { Directives } from '../../../directives';
-import { StaffsService } from '../services/staffs';
-import { Staff } from '../models/staff';
-declare let $: any;
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core'
+import { FormBuilder, Validators } from 'angular2/common'
+import { NavbarService } from '../../../services'
+import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components'
+import * as _ from 'lodash'
+import { Directives } from '../../../directives'
+import { StaffsService } from '../services/staffs'
+import { Staff } from '../models/staff'
+declare let $: any
 
 @Component({
   selector: 'dialog',
@@ -24,15 +24,15 @@ class StaffDialog extends ModelDialog<Staff> {
     phone: [''],
     email: [''],
     quota: [0]
-  };
+  }
 
   constructor(
     @ViewQuery('modal') e: QueryList<ElementRef>,
     service: StaffsService,
     fb: FormBuilder) {
-    super(e, service);
+    super(e, service)
 
-    this.model = fb.group(this._modelTemplate);
+    this.model = fb.group(this._modelTemplate)
   }
 
   showAdd() {
@@ -40,11 +40,11 @@ class StaffDialog extends ModelDialog<Staff> {
       header: 'Add Staff',
       button: 'Add',
       model: this._modelTemplate
-    });
+    })
   }
 
   showEdit(item: Staff, e?) {
-    if (e) e.loading = true;
+    if (e) e.loading = true
     this.service.read(item._id).subscribe(
       result => {
         this.show({
@@ -61,13 +61,13 @@ class StaffDialog extends ModelDialog<Staff> {
             email: [result.email],
             quota: [result.quota]
           }
-        });
+        })
       },
       error => { /* TODO: Error handler */ },
       () => {
-        if (e) e.loading = false;
+        if (e) e.loading = false
       }
-    );
+    )
   }
 }
 
@@ -84,25 +84,25 @@ class StaffDialog extends ModelDialog<Staff> {
 })
 export class StaffsRoute extends TableComponent<Staff> {
   @ViewChild(StaffDialog)
-  dialog: StaffDialog;
+  dialog: StaffDialog
 
   @ViewChild(AlertComponent)
-  protected alert: AlertComponent;
+  protected alert: AlertComponent
 
   constructor(navbar: NavbarService,
               service: StaffsService) {
-    super(service);
-    navbar.active('ems/staffs');
+    super(service)
+    navbar.active('ems/staffs')
   }
 
   get filters(): { [ key: string ]: Function } {
-    let k = this.search.keyword.toLowerCase();
+    let k = this.search.keyword.toLowerCase()
     return {
       'code': x => !!x.code && x.code.toLowerCase().includes(k),
       'fullname': x => !!x.fullname && x.fullname.toLowerCase().includes(k),
       'enabled': x => x.enabled.toString().toLowerCase().includes(k),
       'phone': x => !!x.phone && x.phone.toLowerCase().includes(k),
       'email': x => !!x.email && x.email.toLowerCase().includes(k)
-    };
-  };
+    }
+  }
 }

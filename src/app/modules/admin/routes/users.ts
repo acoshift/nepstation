@@ -1,14 +1,14 @@
-import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
-import { FormBuilder, Validators } from 'angular2/common';
-import { NavbarService } from '../../../services';
-import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import { Directives } from '../../../directives';
-import * as _ from 'lodash';
-import { UsersService } from '../services/users';
-import { RolesService } from '../services/roles';
-import { User } from '../models/user';
-import { Role } from '../models/role';
-declare let $: any;
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core'
+import { FormBuilder, Validators } from 'angular2/common'
+import { NavbarService } from '../../../services'
+import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components'
+import { Directives } from '../../../directives'
+import * as _ from 'lodash'
+import { UsersService } from '../services/users'
+import { RolesService } from '../services/roles'
+import { User } from '../models/user'
+import { Role } from '../models/role'
+declare let $: any
 
 @Component({
   selector: 'dialog',
@@ -16,7 +16,7 @@ declare let $: any;
   directives: [ Directives ]
 })
 class UserDialog extends ModelDialog<User> {
-  roles: Role[];
+  roles: Role[]
 
   private _modelTemplate = {
     _id: [''],
@@ -24,23 +24,23 @@ class UserDialog extends ModelDialog<User> {
     pwd: ['', Validators.required],
     enabled: [false],
     role: ['', Validators.required]
-  };
+  }
 
   constructor(
     @ViewQuery('modal') e: QueryList<ElementRef>,
     service: UsersService,
     fb: FormBuilder,
     roles: RolesService) {
-    super(e, service);
+    super(e, service)
 
-    this.model = fb.group(this._modelTemplate);
+    this.model = fb.group(this._modelTemplate)
 
     roles.list.subscribe(
       result => {
-        this.roles = result;
+        this.roles = result
       }
       // TODO: Error handler
-    );
+    )
   }
 
   showAdd() {
@@ -48,11 +48,11 @@ class UserDialog extends ModelDialog<User> {
       header: 'Add User',
       button: 'Add',
       model: this._modelTemplate
-    });
+    })
   }
 
   showEdit(item: User, e?) {
-    if (e) e.loading = true;
+    if (e) e.loading = true
     this.service.read(item._id).subscribe(
       result => {
         this.show({
@@ -65,13 +65,13 @@ class UserDialog extends ModelDialog<User> {
             enabled: [result.enabled],
             role: [result.role, Validators.required]
           }
-        });
+        })
       },
-      error => { /* TODO: Error handler */ }, //this.error(error)
+      error => { /* TODO: Error handler */ }, // this.error(error)
       () => {
-        if (e) e.loading = false;
+        if (e) e.loading = false
       }
-    );
+    )
   }
 }
 
@@ -87,47 +87,47 @@ class UserDialog extends ModelDialog<User> {
   ]
 })
 export class UsersRoute extends TableComponent<User> {
-  roles: Role[];
+  roles: Role[]
 
   @ViewChild(UserDialog)
-  dialog: UserDialog;
+  dialog: UserDialog
 
   @ViewChild(AlertComponent)
-  protected alert: AlertComponent;
+  protected alert: AlertComponent
 
   constructor(
     navbar: NavbarService,
     service: UsersService,
     roles: RolesService) {
-    super(service);
-    navbar.active('admin/users');
+    super(service)
+    navbar.active('admin/users')
 
     roles.list.subscribe(
       result => {
-        this.roles = result;
+        this.roles = result
       },
       error => this.error(error)
-    );
+    )
 
-    roles.refresh();
+    roles.refresh()
   }
 
   get filters(): { [ key: string ]: Function } {
-    let k = this.search.keyword.toLowerCase();
+    let k = this.search.keyword.toLowerCase()
     return {
       'name': x => !!x.name && x.name.toLowerCase().includes(k),
       'enabled': x => x.enabled.toString().toLowerCase().includes(k),
       'role': x => !!x.role && this.getRole(x.role).toLowerCase().includes(k)
-    };
+    }
   }
 
   getRole(id: string) {
-    let r: any = _.find(this.roles, x => x._id === id);
+    let r: any = _.find(this.roles, x => x._id === id)
     if (r) {
-      r = r.name;
+      r = r.name
     } else {
-      r = id;
+      r = id
     }
-    return r;
+    return r
   }
 }

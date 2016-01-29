@@ -1,7 +1,7 @@
-import { Component } from 'angular2/core';
-import { RouteConfig, RouterOutlet } from 'angular2/router';
-import { StaffsRoute } from './routes/staffs';
-import { TasksRoute } from './routes/tasks';
+import { Component } from 'angular2/core'
+import { RouteConfig, RouterOutlet } from 'angular2/router'
+import { StaffsRoute } from './routes/staffs'
+import { TasksRoute } from './routes/tasks'
 
 @Component({
   template: '<router-outlet></router-outlet>',

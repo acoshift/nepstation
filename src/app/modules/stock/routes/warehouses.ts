@@ -1,12 +1,12 @@
-import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
-import { FormBuilder, Validators } from 'angular2/common';
-import { NavbarService } from '../../../services';
-import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import * as _ from 'lodash';
-import { Directives } from '../../../directives';
-import { WarehousesService } from '../services/warehouses';
-import { Warehouse } from '../models/warehouse';
-declare let $: any;
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core'
+import { FormBuilder, Validators } from 'angular2/common'
+import { NavbarService } from '../../../services'
+import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components'
+import * as _ from 'lodash'
+import { Directives } from '../../../directives'
+import { WarehousesService } from '../services/warehouses'
+import { Warehouse } from '../models/warehouse'
+declare let $: any
 
 @Component({
   selector: 'dialog',
@@ -31,13 +31,13 @@ class WarehouseDialog extends ModelDialog<Warehouse> {
       email: [''],
       website: ['']
     }
-  };
+  }
 
   constructor(
     @ViewQuery('modal') e: QueryList<ElementRef>,
     service: WarehousesService,
     fb: FormBuilder) {
-    super(e, service);
+    super(e, service)
 
     this.model = fb.group({
       _id: [''],
@@ -56,7 +56,7 @@ class WarehouseDialog extends ModelDialog<Warehouse> {
         email: [''],
         website: ['']
       })
-    });
+    })
   }
 
   showAdd() {
@@ -64,11 +64,11 @@ class WarehouseDialog extends ModelDialog<Warehouse> {
       header: 'Add Warehouse',
       button: 'Add',
       model: this._modelTemplate
-    });
+    })
   }
 
   showEdit(item: Warehouse, e?) {
-    if (e) e.loading = true;
+    if (e) e.loading = true
     this.service.read(item._id).subscribe(
       result => {
         this.show({
@@ -92,13 +92,13 @@ class WarehouseDialog extends ModelDialog<Warehouse> {
               website: [result.contact.website]
             }
           }
-        });
+        })
       },
       error => { /* TODO: Error handler */ },
       () => {
-        if (e) e.loading = false;
+        if (e) e.loading = false
       }
-    );
+    )
   }
 }
 
@@ -115,25 +115,25 @@ class WarehouseDialog extends ModelDialog<Warehouse> {
 })
 export class WarehousesRoute extends TableComponent<Warehouse> {
   @ViewChild(WarehouseDialog)
-  protected dialog: WarehouseDialog;
+  protected dialog: WarehouseDialog
 
   @ViewChild(AlertComponent)
-  protected alert: AlertComponent;
+  protected alert: AlertComponent
 
   constructor(navbar: NavbarService,
               service: WarehousesService) {
-    super(service);
-    navbar.active('stock/warehouses');
+    super(service)
+    navbar.active('stock/warehouses')
   }
 
   get filters(): { [ key: string ]: Function } {
-    let k = this.search.keyword.toLowerCase();
+    let k = this.search.keyword.toLowerCase()
     return {
       'name': x => !!x.name && x.name.toLowerCase().includes(k),
       'district': x => !!x.contact && !!x.contact.district && x.contact.district.toLowerCase().includes(k),
       'province': x => !!x.contact && !!x.contact.province && x.contact.province.toLowerCase().includes(k),
       'country': x => !!x.contact && !!x.contact.country && x.contact.country.toLowerCase().includes(k),
       'phone': x => !!x.contact && !!x.contact.phone && x.contact.phone.toLowerCase().includes(k),
-    };
+    }
   }
 }

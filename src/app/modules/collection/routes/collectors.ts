@@ -1,12 +1,12 @@
-import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
-import { FormBuilder, Validators } from 'angular2/common';
-import { NavbarService } from '../../../services';
-import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import * as _ from 'lodash';
-import { Directives } from '../../../directives';
-import { CollectorsService } from '../services/collectors';
-import { Collector } from '../models/collector';
-declare let $: any;
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core'
+import { FormBuilder, Validators } from 'angular2/common'
+import { NavbarService } from '../../../services'
+import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components'
+import * as _ from 'lodash'
+import { Directives } from '../../../directives'
+import { CollectorsService } from '../services/collectors'
+import { Collector } from '../models/collector'
+declare let $: any
 
 @Component({
   selector: 'dialog',
@@ -21,15 +21,15 @@ class CollectorDialog extends ModelDialog<Collector> {
     phone: [''],
     email: [''],
     quota: [0]
-  };
+  }
 
   constructor(
     @ViewQuery('modal') e: QueryList<ElementRef>,
     service: CollectorsService,
     fb: FormBuilder) {
-    super(e, service);
+    super(e, service)
 
-    this.model = fb.group(this._modelTemplate);
+    this.model = fb.group(this._modelTemplate)
   }
 
   showAdd() {
@@ -37,11 +37,11 @@ class CollectorDialog extends ModelDialog<Collector> {
       header: 'Add Collector',
       button: 'Add',
       model: this._modelTemplate
-    });
+    })
   }
 
   showEdit(item: Collector, e?) {
-    if (e) e.loading = true;
+    if (e) e.loading = true
     this.service.read(item._id).subscribe(
       result => {
         this.show({
@@ -55,13 +55,13 @@ class CollectorDialog extends ModelDialog<Collector> {
             email: [result.email],
             quota: [result.quota]
           }
-        });
+        })
       },
       error => { /* TODO: Error handler */ },
       () => {
-        if (e) e.loading = false;
+        if (e) e.loading = false
       }
-    );
+    )
   }
 }
 
@@ -78,24 +78,24 @@ class CollectorDialog extends ModelDialog<Collector> {
 })
 export class CollectorsRoute extends TableComponent<Collector> {
   @ViewChild(CollectorDialog)
-  dialog: CollectorDialog;
+  dialog: CollectorDialog
 
   @ViewChild(AlertComponent)
-  protected alert: AlertComponent;
+  protected alert: AlertComponent
 
   constructor(navbar: NavbarService,
               service: CollectorsService) {
-    super(service);
-    navbar.active('collection/collectors');
+    super(service)
+    navbar.active('collection/collectors')
   }
 
   get filters(): { [ key: string ]: Function } {
-    let k = this.search.keyword.toLowerCase();
+    let k = this.search.keyword.toLowerCase()
     return {
       'code': x => !!x.code && x.code.toLowerCase().includes(k),
       'name': x => !!x.name && x.name.toLowerCase().includes(k),
       'phone': x => !!x.phone && x.phone.replace(/\-/, '').toLowerCase().includes(k.replace(/\-/, '')),
       'email': x => !!x.email && x.email.toLowerCase().includes(k)
-    };
-  };
+    }
+  }
 }

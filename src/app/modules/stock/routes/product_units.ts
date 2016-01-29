@@ -1,12 +1,12 @@
-import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core';
-import { FormBuilder, Validators } from 'angular2/common';
-import { NavbarService } from '../../../services';
-import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components';
-import * as _ from 'lodash';
-import { Directives } from '../../../directives';
-import { ProductUnitsService } from '../services/product_units';
-import { ProductUnit } from '../models/product_unit';
-declare let $: any;
+import { Component, View, ElementRef, ViewChild, ViewQuery, QueryList } from 'angular2/core'
+import { FormBuilder, Validators } from 'angular2/common'
+import { NavbarService } from '../../../services'
+import { PaginationComponent, TableComponent, AlertComponent, ModelDialog } from '../../../components'
+import * as _ from 'lodash'
+import { Directives } from '../../../directives'
+import { ProductUnitsService } from '../services/product_units'
+import { ProductUnit } from '../models/product_unit'
+declare let $: any
 
 @Component({
   selector: 'dialog',
@@ -14,7 +14,7 @@ declare let $: any;
   directives: [ Directives ]
 })
 class ProductUnitDialog extends ModelDialog<ProductUnit> {
-  list: ProductUnit[];
+  list: ProductUnit[]
 
   private _modelTemplate = {
     _id: [''],
@@ -22,23 +22,23 @@ class ProductUnitDialog extends ModelDialog<ProductUnit> {
     remark: [''],
     base: [''],
     baseAmount: []
-  };
+  }
 
   constructor(
     @ViewQuery('modal') e: QueryList<ElementRef>,
     service: ProductUnitsService,
     fb: FormBuilder) {
-    super(e, service);
+    super(e, service)
 
-    this.model = fb.group(this._modelTemplate);
+    this.model = fb.group(this._modelTemplate)
 
     service.list.subscribe(
       result => {
-        this.list = result;
+        this.list = result
       }
-    );
+    )
 
-    service.refresh();
+    service.refresh()
   }
 
   showAdd() {
@@ -46,11 +46,11 @@ class ProductUnitDialog extends ModelDialog<ProductUnit> {
       header: 'Add Product Unit',
       button: 'Add',
       model: this._modelTemplate
-    });
+    })
   }
 
   showEdit(item: ProductUnit, e?) {
-    if (e) e.loading = true;
+    if (e) e.loading = true
     this.service.read(item._id).subscribe(
       result => {
         this.show({
@@ -63,13 +63,13 @@ class ProductUnitDialog extends ModelDialog<ProductUnit> {
             base: [result.base],
             baseAmount: [result.baseAmount]
           }
-        });
+        })
       },
       error => { /* TODO: Error handler */ },
       () => {
-        if (e) e.loading = false;
+        if (e) e.loading = false
       }
-    );
+    )
   }
 }
 
@@ -86,27 +86,27 @@ class ProductUnitDialog extends ModelDialog<ProductUnit> {
 })
 export class ProductUnitsRoute extends TableComponent<ProductUnit> {
   @ViewChild(ProductUnitDialog)
-  dialog: ProductUnitDialog;
+  dialog: ProductUnitDialog
 
   @ViewChild(AlertComponent)
-  protected alert: AlertComponent;
+  protected alert: AlertComponent
 
   constructor(navbar: NavbarService,
               service: ProductUnitsService) {
-    super(service);
-    navbar.active('stock/product_units');
+    super(service)
+    navbar.active('stock/product_units')
   }
 
   get filters(): { [ key: string ]: Function } {
-    let k = this.search.keyword.toLowerCase();
+    let k = this.search.keyword.toLowerCase()
     return {
       'name': x => !!x.name && x.name.toLowerCase().includes(k),
       'base': x => !!x.base && this.getBaseName(x.base).toLowerCase().includes(k),
-    };
-  };
+    }
+  }
 
   getBaseName(id: string) {
-    let t = _.find(this.list, x => x._id === id);
-    return t && t.name || '';
+    let t = _.find(this.list, x => x._id === id)
+    return t && t.name || ''
   }
 }

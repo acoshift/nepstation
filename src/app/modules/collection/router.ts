@@ -1,6 +1,6 @@
-import { Component } from 'angular2/core';
-import { RouteConfig, RouterOutlet } from 'angular2/router';
-import { CollectorsRoute } from './routes/collectors';
+import { Component } from 'angular2/core'
+import { RouteConfig, RouterOutlet } from 'angular2/router'
+import { CollectorsRoute } from './routes/collectors'
 
 @Component({
   template: '<router-outlet></router-outlet>',

@@ -1,6 +1,6 @@
-import { Injectable } from 'angular2/core';
-import { DbService, ReadOnlyModelService } from '../../../services';
-import { Log } from '../models/log';
+import { Injectable } from 'angular2/core'
+import { DbService, ReadOnlyModelService } from '../../../services'
+import { Log } from '../models/log'
 
 @Injectable()
 export class LogsService extends ReadOnlyModelService<Log> {
@@ -12,6 +12,6 @@ export class LogsService extends ReadOnlyModelService<Log> {
         t: { payload: { name: 1 } }
       },
       read: null
-    });
+    })
   }
 }
