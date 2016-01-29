@@ -1,12 +1,12 @@
-var path = require('path');
-var webpack = require('webpack');
+var path = require('path')
+var webpack = require('webpack')
 // Webpack Plugins
-var ProvidePlugin = require('webpack/lib/ProvidePlugin');
-var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-var OccurenceOrderPlugin = require('webpack/lib/optimize/OccurenceOrderPlugin');
-var DedupePlugin = webpack.optimize.DedupePlugin;
-var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
-var DefinePlugin  = require('webpack/lib/DefinePlugin');
+var ProvidePlugin = require('webpack/lib/ProvidePlugin')
+var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin
+var OccurenceOrderPlugin = require('webpack/lib/optimize/OccurenceOrderPlugin')
+var DedupePlugin = webpack.optimize.DedupePlugin
+var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
+var DefinePlugin = require('webpack/lib/DefinePlugin')
 
 var metadata = {
   title: 'NepStation',
@@ -14,7 +14,7 @@ var metadata = {
   host: 'localhost',
   port: 3000,
   ENV: process.env.ENV = process.env.NODE_ENV = 'production'
-};
+}
 /*
  * Config
  */
@@ -61,13 +61,13 @@ module.exports = {
     ],
     loaders: [
       // Support for *.json files.
-      { test: /\.json$/,  loader: 'json-loader' },
+      { test: /\.json$/, loader: 'json-loader' },
 
       // CSS as raw text
-      { test: /\.css$/,   loader: 'to-string-loader!css-loader' },
+      { test: /\.css$/, loader: 'to-string-loader!css-loader' },
 
       // html as raw text
-      { test: /\.html$/,  loader: 'html-loader?minimize=false' },
+      { test: /\.html$/, loader: 'html-loader?minimize=false' },
 
       // jade
       { test: /\.jade$/, loader: 'html-loader?minimize=false!jade-html-loader' },
@@ -120,23 +120,23 @@ module.exports = {
       mangle: false,
       unsafe: true,
       copyright: false
-    }),
+    })
   ],
 
   tslint: {
     emitErrors: true,
     failOnHint: true
-  },
-};
+  }
+}
 
 // Helper functions
 
-function root(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return path.join.apply(path, [__dirname].concat(args));
+function root (args) {
+  args = Array.prototype.slice.call(arguments, 0)
+  return path.join.apply(path, [__dirname].concat(args))
 }
 
-function rootNode(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return root.apply(path, ['node_modules'].concat(args));
+function rootNode (args) {
+  args = Array.prototype.slice.call(arguments, 0)
+  return root.apply(path, ['node_modules'].concat(args))
 }

@@ -28,10 +28,9 @@ exports.config = {
     }
   },
 
-  onPrepare: function() {
-    browser.ignoreSynchronization = true;
+  onPrepare: function () {
+    browser.ignoreSynchronization = true
   },
-
 
   /**
    * Angular 2 configuration
@@ -40,5 +39,5 @@ exports.config = {
    * `rootEl`
    *
    */
-   useAllAngular2AppRoots: true
-};
+  useAllAngular2AppRoots: true
+}
