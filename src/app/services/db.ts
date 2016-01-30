@@ -18,7 +18,6 @@ export class DbService {
   // private _server = 'https://farkpage.com/nepdb'
   // private _server = 'http://localhost:9000'
   private _server = 'https://farkpage.com/nepdb2/test'
-  private _db = 'test'
 
   constructor(private http: Http, private cache: CacheService) { }
 
@@ -108,8 +107,7 @@ export class DbService {
       p = `({},${opt})`
     }
     let ret = retrieves && `{${this._retrieves(retrieves)}}` || ''
-    let n = ns && ` ${this._db}.${ns}` || ''
-    if (ns === '') n = ` ${this._db}`
+    let n = ns && ` ${ns}` || ''
     let r = `${method}${n}${p}${ret}`
     // console.log('make request: ' + r)
     return r

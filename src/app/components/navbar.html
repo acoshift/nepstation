@@ -1,3 +1,14 @@
+<div class="ui left fixed vertical menu">
+  <div class="item">
+    <div class="header">Admin</div>
+    <div class="menu">
+      <a class="item" [class.active]="isActive('admin/users')" [routerLink]="['./Admin/Users']">Users</a>
+      <a class="item" [class.active]="isActive('admin/roles')" [routerLink]="['./Admin/Roles']">Roles</a>
+      <a class="item" [class.active]="isActive('admin/logs')" [routerLink]="['./Admin/Logs']">Logs</a>
+      <a class="item" [class.active]="isActive('admin/trash')" [routerLink]="['./Admin/Trash']">Trash</a>
+    </div>
+  </div>
+</div>
 .ui.left.fixed.vertical.menu
   .item
     .header Admin
@@ -32,5 +43,5 @@
 
 .ui.top.fixed.menu
   .item
-    img(src="./navbar.logo.png")
+    img(src="../images/moonlogo_tranb_300.png")
   a.item((click)="logout()") Log out

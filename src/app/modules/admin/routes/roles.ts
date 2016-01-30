@@ -138,7 +138,7 @@ class RoleDialog extends ModelDialog<Role> {
       _.forOwn(dbs, (v, k) => {
         let hasDeep = false
         _.forEach(v, (v, k) => {
-          if (_.isPlainObject(v) || !_.contains(['c', 'r', 'u', 'd'], k)) {
+          if (_.isPlainObject(v) || !_.some(['c', 'r', 'u', 'd'], k)) {
             hasDeep = true
           }
         })

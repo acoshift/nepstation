@@ -173,7 +173,7 @@ export abstract class TableComponent<T extends Id> {
 
   select (item, value?: boolean): boolean | void {
     if (_.isUndefined(value)) {
-      return _.contains(this.selected, x => x === item)
+      return _.some(this.selected, x => x === item)
     }
     if (value) {
       this.selected.push(item)

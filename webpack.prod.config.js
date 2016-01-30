@@ -1,19 +1,18 @@
 var path = require('path')
+var zlib = require('zlib')
 var webpack = require('webpack')
-// Webpack Plugins
-var ProvidePlugin = require('webpack/lib/ProvidePlugin')
-var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin
-var OccurenceOrderPlugin = require('webpack/lib/optimize/OccurenceOrderPlugin')
-var DedupePlugin = webpack.optimize.DedupePlugin
-var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
-var DefinePlugin = require('webpack/lib/DefinePlugin')
+var CompressionPlugin = require('compression-webpack-plugin')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var WebpackMd5Hash = require('webpack-md5-hash')
+var ENV = process.env.ENV = process.env.NODE_ENV = 'production'
 
 var metadata = {
   title: 'NepStation',
   baseUrl: '/',
   host: 'localhost',
   port: 3000,
-  ENV: process.env.ENV = process.env.NODE_ENV = 'production'
+  ENV: ENV
 }
 /*
  * Config
@@ -21,119 +20,154 @@ var metadata = {
 module.exports = {
   metadata: metadata,
 
+  devtool: 'none',
+  debug: false,
+
   devServer: {
     port: metadata.port,
     host: metadata.host,
     historyApiFallback: true,
-    contentBase: 'src/public',
-    publicPath: '/__build__',
+    // contentBase: 'src/',
     watchOptions: { aggregateTimeout: 300, poll: 1000 }
   },
 
   node: { global: 'window', progress: false, crypto: 'empty', module: false, clearImmediate: false, setImmediate: false },
 
   entry: {
-    'vendor': './src/vendor.ts',
-    'app': './src/bootstrap.ts'
+    'polyfills': './src/polyfills.ts',
+    'main': './src/main.ts'
   },
 
   output: {
-    path: root('__build__'),
-    filename: '[name].js',
-    sourceMapFilename: '[name].js.map',
+    path: root('dist'),
+    filename: '[name].bundle.js',
+    sourceMapFilename: '[name].map',
     chunkFilename: '[id].chunk.js'
   },
 
   resolve: {
     cache: false,
-    extensions: ['', '.ts', '.js', '.json', '.css', '.html', '.jade']
+    extensions: prepend(['.ts', '.js', '.json', '.css', '.html', '.jade'], '.async')
   },
 
   module: {
     preLoaders: [
-      {
-        test: /\.ts$/,
-        loader: 'tslint-loader',
-        exclude: [
-          /node_modules/
-        ]
-      }
+      { test: /\.js$/, loader: 'source-map-loader', exclude: [ root('node_modules/rxjs') ] }
     ],
     loaders: [
-      // Support for *.json files.
-      { test: /\.json$/, loader: 'json-loader' },
-
-      // CSS as raw text
-      { test: /\.css$/, loader: 'to-string-loader!css-loader' },
-
-      // html as raw text
-      { test: /\.html$/, loader: 'html-loader?minimize=false' },
-
-      // jade
-      { test: /\.jade$/, loader: 'html-loader?minimize=false!jade-html-loader' },
-
-      // Fonts
-      { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9\.\=]+)?$/, loader: 'file?name=./fonts/[hash].[ext]' },
-
-      // Images
-      { test: /\.(jpe?g|png|gif)$/i, loader: 'file?name=./img/[hash].[ext]' },
+      // Support Angular 2 async routes via .async.ts
+      { test: /\.async\.ts$/, loaders: ['es6-promise-loader', 'ts-loader'], exclude: [ /\.(spec|e2e)\.ts$/ ] },
 
       // Support for .ts files.
       {
         test: /\.ts$/,
         loader: 'ts-loader',
         query: {
-          'ignoreDiagnostics': [
-            2403, // 2403 -> Subsequent variable declarations
-            2300, // 2300 -> Duplicate identifier
-            2374, // 2374 -> Duplicate number index signature
-            2375  // 2375 -> Duplicate string index signature
-          ]
+          compilerOptions: {
+            removeComments: true,
+            noEmitHelpers: true
+          }
         },
-        transpileOnly: true,
-        exclude: [ /\.(spec|e2e)\.ts$/, /node_modules\/(?!(ng2-.+))/ ]
-      }
+        exclude: [ /\.(spec|e2e|async)\.ts$/ ]
+      },
+
+      // Support for *.json files.
+      { test: /\.json$/, loader: 'json-loader' },
+
+      // Support for CSS as raw text
+      { test: /\.css$/, loader: 'to-string-loader!css-loader' },
+      // { test: /\.css$/, loader: 'raw-loader' },
+
+      // Support for .html as raw text
+      { test: /\.html$/, loader: 'html-loader?minimize=false' },
+      // { test: /\.html$/, loader: 'raw-loader' },
+
+      // Support for .jade to .html
+      { test: /\.jade$/, loader: 'html-loader?minimize=false!jade-html-loader' },
+      // { test: /\.jade$/, loader: 'raw-loader!jade-html-loader' },
+
+      // Images
+      { test: /\.(jpe?g|png|gif)$/i, loader: 'file?name=assets/img/[hash].[ext]' },
+
+      // Fonts
+      { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9\.\=]+)?$/, loader: 'file-loader?name=assets/fonts/[hash].[ext]' }
     ]
   },
 
   plugins: [
-    new DedupePlugin(),
-    new OccurenceOrderPlugin(true),
-    new DefinePlugin({
+    new WebpackMd5Hash(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(true),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'polyfills', filename: 'polyfills.bundle.js', minChunks: Infinity }),
+    new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
+    new HtmlWebpackPlugin({ template: 'src/index.html', inject: false }),
+    new webpack.DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(metadata.ENV),
         'NODE_ENV': JSON.stringify(metadata.ENV)
       }
     }),
-    new ProvidePlugin({
+    new webpack.ProvidePlugin({
       // TypeScript helpers
       '__metadata': 'ts-helper/metadata',
       '__decorate': 'ts-helper/decorate',
       '__awaiter': 'ts-helper/awaiter',
       '__extends': 'ts-helper/extends',
       '__param': 'ts-helper/param',
-      'Reflect': 'es7-reflect-metadata/dist/browser'
+      'Reflect': 'es7-reflect-metadata/src/global/browser'
     }),
-    new CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js', minChunks: Infinity }),
-    new UglifyJsPlugin({
-      comments: false,
+    new webpack.optimize.UglifyJsPlugin({
+      // to debug prod builds uncomment //debug lines and comment //prod lines
+
+      // beautify: true, // debug
+      // mangle: false, // debug
+      // dead_code: false,// debug
+      // unused: false, // debug
+      // deadCode: false, // debug
+      // compress : { screw_ie8 : true, keep_fnames: true, drop_debugger: false, dead_code: false, unused: false, }, // debug
+      // comments: true, // debug
+
+      beautify: false, // prod
+      // disable mangling because of a bug in angular2 beta.1 and beta.2
+      // TODO(mastertinner): enable mangling as soon as angular2 beta.3 is out
+      // mangle: { screw_ie8 : true }, // prod
       mangle: false,
-      unsafe: true,
-      copyright: false
+      compress: { screw_ie8: true }, // prod
+      comments: false // prod
+    }),
+    new CompressionPlugin({
+      algorithm: gzipMaxLevel,
+      regExp: /\.css$|\.html$|\.js$|\.map$/,
+      threshold: 2 * 1024
     })
   ],
 
   tslint: {
-    emitErrors: true,
-    failOnHint: true
+    emitErrors: false,
+    failOnHint: false,
+    resourcePath: 'src'
   }
 }
 
 // Helper functions
 
+function gzipMaxLevel (buffer, callback) {
+  return zlib['gzip'](buffer, {level: 9}, callback)
+}
+
 function root (args) {
   args = Array.prototype.slice.call(arguments, 0)
   return path.join.apply(path, [__dirname].concat(args))
+}
+
+function prepend (extensions, args) {
+  args = args || []
+  if (!Array.isArray(args)) { args = [args] }
+  return extensions.reduce(function (memo, val) {
+    return memo.concat(val, args.map(function (prefix) {
+      return prefix + val
+    }))
+  }, [''])
 }
 
 function rootNode (args) {

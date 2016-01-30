@@ -1,0 +1,18 @@
+<div class="ui long modal" #modal>
+  <div class="header">{{ title }}</div>
+  <div class="content">
+    {{ content }}
+    <pre>
+      {{ code }}
+    </pre>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button" *ngIf="buttons.indexOf('cancel') !== -1">Cancel</div>
+    <div class="ui primary cancel button" *ngIf="buttons.indexOf('cancel.primary') !== -1">Cancel</div>
+    <div class="ui primary ok button" *ngIf="buttons.indexOf('ok') !== -1" [class.loading]="_loading">OK</div>
+    <div class="ui ok button" *ngIf="buttons.indexOf('delete') !== -1" [class.loading]="_loading">Delete</div>
+    <div class="ui ok button" *ngIf="buttons.indexOf('restore') !== -1" [class.loading]="_loading">Restore</div>
+    <div class="ui primary ok button" *ngIf="buttons.indexOf('update') !== -1" [class.loading]="_loading">Update</div>
+    <div class="ui primary ok button" *ngIf="buttons.indexOf('add') !== -1" [class.loading]="_loading">Add</div>
+  </div>
+</div>
