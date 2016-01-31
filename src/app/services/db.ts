@@ -11,13 +11,13 @@ import { Observable } from 'rxjs'
 import { CacheService } from './cache'
 import * as _ from 'lodash'
 
+declare const database: { url: string; ns: string } // from webpack define plugin
+
 const FRESH_CACHE = 2000 // cache timestamp diff for fresh cache
 
 @Injectable()
 export class DbService {
-  // private _server = 'https://farkpage.com/nepdb'
-  // private _server = 'http://localhost:9000'
-  private _server = 'https://farkpage.com/nepdb2/test'
+  private _server = `${database.url}/${database.ns}`
 
   constructor(private http: Http, private cache: CacheService) { }
 

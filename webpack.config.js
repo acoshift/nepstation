@@ -9,7 +9,12 @@ var metadata = {
   baseUrl: '/',
   host: 'localhost',
   port: 3000,
-  ENV: ENV
+  ENV: ENV,
+  ga: '',
+  database: {
+    url: 'https://farkpage.com/nepdb2',
+    ns: 'test'
+  }
 }
 /*
  * Config
@@ -85,12 +90,17 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(true),
     new webpack.optimize.CommonsChunkPlugin({ name: 'polyfills', filename: 'polyfills.bundle.js', minChunks: Infinity }),
     new CopyWebpackPlugin([ { from: 'src/assets', to: 'assets' } ]),
-    new HtmlWebpackPlugin({ template: 'src/index.html', inject: false }),
+    new HtmlWebpackPlugin({
+      inject: false,
+      template: 'src/index.ejs',
+      metadata: metadata
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         'ENV': JSON.stringify(metadata.ENV),
         'NODE_ENV': JSON.stringify(metadata.ENV)
-      }
+      },
+      database: JSON.stringify(metadata.database)
     })
   ],
 
